@@ -1,0 +1,8 @@
+body {
+  font-family: system-ui, sans-serif;
+  background: #181a1b;
+  color: #fafafa;
+  margin: 0;
+}
+a { color: #09f; }
+section:hover { box-shadow: 0 0 18px #0af2; }
