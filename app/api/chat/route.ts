@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     const query = body.query?.trim();
 
     if (!query) {
-      return NextResponse.json({ error: "Query is required." }, { status: 400 });
+      return NextResponse.json({ error: "Query is required. / 必須提供查詢內容。" }, { status: 400 });
     }
 
     const context = await retrieveRelevantChunks(query);
@@ -20,6 +20,6 @@ export async function POST(request: NextRequest) {
       retrieved: context
     });
   } catch {
-    return NextResponse.json({ error: "Unexpected server error." }, { status: 500 });
+    return NextResponse.json({ error: "Unexpected server error. / 非預期伺服器錯誤。" }, { status: 500 });
   }
 }
