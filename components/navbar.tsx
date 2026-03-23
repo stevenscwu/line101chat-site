@@ -5,11 +5,11 @@ import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const navItems = [
-  { href: "#foundations", label: "Foundations / 教育基礎" },
-  { href: "#thesis", label: "Thesis / 論文內容" },
-  { href: "#chatbot", label: "AI Chatbot / 聊天機器人" },
-  { href: "#enterprise", label: "Enterprise / 企業應用" },
-  { href: "#about", label: "About / 關於與聯絡" }
+  { href: "#identity", label: "Identity Blueprint" },
+  { href: "#system", label: "Weekly System" },
+  { href: "#chatbot", label: "AI Coach" },
+  { href: "#monetize", label: "Monetization" },
+  { href: "#about", label: "About & Contact" }
 ];
 
 export function Navbar() {
@@ -33,7 +33,7 @@ export function Navbar() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <a href="#top" className="font-display text-sm font-bold text-brand-700 dark:text-brand-300">
-          AI-Augmented DevSecOps / AI 強化 DevSecOps
+          50+ IT Man Learning Japanese
         </a>
 
         <nav className="hidden items-center gap-6 md:flex">
@@ -54,7 +54,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setOpen((prev) => !prev)}
-            aria-label="Toggle mobile menu / 切換行動版選單"
+            aria-label="Toggle mobile menu"
             className="rounded-md p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
           >
             {open ? <X size={20} /> : <Menu size={20} />}

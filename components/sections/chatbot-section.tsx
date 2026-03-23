@@ -14,11 +14,11 @@ type ChatMessage = {
 const qrCodeImagePath = "/images/chatbot-line-qr.svg";
 
 const prompts = [
-  "Explain the pipeline / 說明流程架構",
-  "What is DevSecOps? / 什麼是 DevSecOps？",
-  "Summarize results / 摘要實驗結果",
-  "Compare SAST and DAST / 比較 SAST 與 DAST",
-  "Security implications / 安全影響分析"
+  "Give me a 30-minute Japanese study plan for tonight.",
+  "Rewrite this post in a warm 50+ creator voice.",
+  "Turn today's lesson into a Reel + Shorts script.",
+  "How can I monetize this week with my IT background?",
+  "Draft a channel bio for a senior man learning Japanese."
 ];
 
 export function ChatbotSection() {
@@ -27,7 +27,7 @@ export function ChatbotSection() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
-      text: "Ask about the thesis architecture, cloud technologies, SAST/DAST triage, or enterprise adoption. / 你可以詢問論文架構、雲端技術、SAST/DAST 分流，或企業導入情境。"
+      text: "I can help you with Japanese study routines, content scripts, social messaging, and weekly monetization actions for your 50+ IT creator identity."
     }
   ]);
 
@@ -48,14 +48,14 @@ export function ChatbotSection() {
       const data = await response.json();
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: data.answer ?? "No answer generated. / 尚未產生回答。" }
+        { role: "assistant", text: data.answer ?? "No answer generated yet." }
       ]);
     } catch {
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          text: "The demo API is unavailable. Check local server and environment settings. / 目前示範 API 無法使用，請檢查本機伺服器與環境設定。"
+          text: "The demo API is unavailable. Check local server and environment settings."
         }
       ]);
     } finally {
@@ -66,16 +66,16 @@ export function ChatbotSection() {
   return (
     <Section
       id="chatbot"
-      eyebrow="AI Thesis Assistant / AI 論文助理"
-      title="Interactive Chatbot Demo / 互動式聊天機器人展示"
-      description="This interface demonstrates a retrieval-augmented assistant grounded in thesis materials, and includes a dedicated LINE QR code area for adding the chatbot. / 本介面展示以論文資料為基礎之檢索增強助理，並提供 LINE 加好友 QR Code 專區。"
+      eyebrow="AI Creator Coach"
+      title="Japanese Learning + Content + Monetization Assistant"
+      description="Use this coach to draft scripts, plan study sessions, create platform-specific posts, and map your weekly actions to family-support income goals."
       className="bg-slate-50 dark:bg-slate-950"
     >
       <div className="grid gap-6 lg:grid-cols-3">
         <Reveal>
           <aside className="glass-card rounded-2xl p-6 lg:col-span-1">
             <h3 className="font-display text-lg font-bold text-slate-900 dark:text-slate-50">
-              Suggested Prompts / 建議提問
+              Suggested Prompts
             </h3>
             <div className="mt-4 flex flex-wrap gap-2">
               {prompts.map((prompt) => (
@@ -91,27 +91,27 @@ export function ChatbotSection() {
             </div>
             <div className="mt-6 rounded-xl border border-slate-200 bg-white p-4 text-sm dark:border-slate-700 dark:bg-slate-900">
               <p className="font-semibold text-slate-900 dark:text-slate-100">
-                RAG Placeholder Stack / RAG 示意流程
+                Coaching Stack
               </p>
               <ul className="mt-2 space-y-2 text-slate-600 dark:text-slate-300">
-                <li>1. Document ingestion and chunking / 文件匯入與切塊</li>
-                <li>2. Embedding generation / 向量嵌入生成</li>
-                <li>3. Vector retrieval / 向量檢索</li>
-                <li>4. LLM response synthesis / 語言模型回應合成</li>
+                <li>1. Japanese study planning</li>
+                <li>2. Content idea conversion</li>
+                <li>3. Platform-tailored messaging</li>
+                <li>4. Monetization action suggestions</li>
               </ul>
             </div>
             <div className="mt-6 rounded-xl border border-brand-200 bg-brand-50/60 p-4 text-sm dark:border-brand-500/40 dark:bg-brand-500/10">
               <p className="font-semibold text-slate-900 dark:text-slate-100">
-                LINE Chatbot QR Code / LINE 聊天機器人加好友 QR Code
+                LINE Community QR Code
               </p>
               <p className="mt-2 text-slate-600 dark:text-slate-300">
-                Scan the QR code below to befriend the chatbot. Replace the image file when your official LINE QR code
-                changes. / 掃描下方 QR Code 即可加入聊天機器人；若 LINE 官方 QR Code 變更，請直接替換該圖片檔案。
+                Scan to join the learning community and receive weekly updates. Replace this image when your official
+                LINE QR code changes.
               </p>
               <div className="mt-3 flex justify-center rounded-lg bg-white p-3 dark:bg-slate-900">
                 <Image
                   src={qrCodeImagePath}
-                  alt="LINE chatbot QR code / LINE 聊天機器人 QR Code"
+                  alt="LINE community QR code"
                   width={176}
                   height={176}
                   className="h-44 w-44 rounded-md border border-slate-200 object-contain dark:border-slate-700"
@@ -137,7 +137,7 @@ export function ChatbotSection() {
                   </p>
                 </div>
               ))}
-              {loading && <p className="text-sm text-slate-500">Generating answer... / 正在產生回答...</p>}
+              {loading && <p className="text-sm text-slate-500">Generating answer...</p>}
             </div>
 
             <form
@@ -148,13 +148,13 @@ export function ChatbotSection() {
               className="mt-3 flex gap-2"
             >
               <label htmlFor="chat-input" className="sr-only">
-                Ask thesis assistant / 詢問論文助理
+                Ask AI creator coach
               </label>
               <input
                 id="chat-input"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Ask a question about the thesis... / 請輸入論文相關問題..."
+                placeholder="Ask about Japanese learning, content, or monetization..."
                 className="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-brand-500 focus:ring-2 dark:border-slate-700 dark:bg-slate-900"
               />
               <button
@@ -162,7 +162,7 @@ export function ChatbotSection() {
                 disabled={loading}
                 className="rounded-lg bg-accent-600 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Send / 送出
+                Send
               </button>
             </form>
           </div>

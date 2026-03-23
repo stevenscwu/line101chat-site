@@ -1,16 +1,19 @@
-# AI-Augmented DevSecOps Thesis Website
+# 50+ IT Man Learning Japanese - Creator Website
 
-Professional research website for the thesis:
+A Next.js site focused on this exact identity:
 
-**AI-Augmented DevSecOps: Integrating SonarQube and GPT-4.1 for Intelligent Vulnerability Triage**
+- Senior man learning Japanese
+- 50+ IT background
+- Building a brand-new social media presence
+- Creating stable income to support family
 
 ## Tech Stack
 
 - Next.js (App Router)
 - TypeScript
 - Tailwind CSS
-- Chart.js via react-chartjs-2
-- API Route scaffold for RAG chatbot demo
+- Chart.js via `react-chartjs-2`
+- API Route scaffold for RAG-style creator coach demo
 
 ## Run Locally
 
@@ -70,6 +73,7 @@ lib/
   ingest.ts
   llm.ts
   retrieval.ts
+vercel.json
 ```
 
 ## Deployment
@@ -79,16 +83,9 @@ lib/
 1. Push repository to GitHub.
 2. Import project in Vercel.
 3. Set environment variables in project settings.
-4. Deploy using default Next.js build configuration.
-
-### Azure Static Web Apps
-
-1. Create Azure Static Web App linked to your GitHub repo.
-2. Set app location to `/` and output location to `.next` for Next.js workflow support.
-3. Configure environment variables in Azure portal.
-4. Use Azure-managed workflow to build and deploy on push.
+4. Deploy with Next.js framework settings (or use the included `vercel.json`).
 
 ## Notes
 
-- Chatbot backend currently uses a placeholder retrieval and generation pipeline for demonstration.
-- Replace `lib/retrieval.ts` with real vector DB integration and `lib/llm.ts` with Azure OpenAI/OpenAI client logic.
+- Chatbot backend currently uses placeholder retrieval and generation logic for demo.
+- Replace `lib/retrieval.ts` with real vector search and `lib/llm.ts` with real OpenAI/Azure OpenAI integration when ready.

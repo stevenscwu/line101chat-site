@@ -8,32 +8,32 @@ export type RetrievedChunk = {
 export async function retrieveRelevantChunks(query: string): Promise<RetrievedChunk[]> {
   const mockCorpus: RetrievedChunk[] = [
     {
-      id: "arch-1",
+      id: "identity-1",
       score: 0.91,
-      source: "thesis-architecture.md",
+      source: "identity-blueprint.md",
       content:
-        "The pipeline integrates SonarQube findings with Azure Virtual Machine orchestration, Azure Functions, and OpenAI/Azure OpenAI reasoning for contextual prioritization. / 流程整合 SonarQube、Azure 虛擬機器、Azure Functions 與 OpenAI/Azure OpenAI 以進行情境化排序。"
+        "Brand identity anchor: a 50+ IT man learning Japanese in public, sharing real progress and building stable family-support income."
     },
     {
-      id: "result-1",
+      id: "system-1",
       score: 0.86,
-      source: "experiment-results.md",
+      source: "weekly-system.md",
       content:
-        "Experimental data indicates reduced triage time and improved focus on high-severity vulnerabilities with human-in-the-loop validation. / 實驗結果顯示分流時間下降，且在人機協作下可更聚焦高風險弱點。"
+        "Weekly loop: learn Japanese daily, publish short-form content, repurpose into long-form summaries, and review conversion metrics each weekend."
     },
     {
-      id: "security-1",
+      id: "content-1",
       score: 0.84,
-      source: "security-education.md",
+      source: "content-pillars.md",
       content:
-        "SAST identifies code-level weakness patterns, while DAST validates runtime exposure; both feed a vulnerability triage model using CWE, CVSS, exploitability, and business impact. / SAST 著重程式碼層弱點，DAST 著重執行期暴露，兩者共同輸入以 CWE、CVSS、可利用性與業務衝擊為基礎之弱點分流模型。"
+        "Core pillars: Japanese learning logs, IT x Japanese crossover insights, and transparent family-income progress."
     },
     {
-      id: "pdf-20250709",
+      id: "monetize-1",
       score: 0.82,
-      source: "thesis/20250709.pdf",
+      source: "monetization-path.md",
       content:
-        "Thesis oral-defense package dated 2025-07-09 is available in the Thesis section for direct reading and citation reference. / 2025-07-09 口試文件已整合於 Thesis 區塊，可直接閱讀與引用。"
+        "Monetization ladder: free content -> low-ticket resources -> paid community -> coaching or workshops for mature learners."
     }
   ];
 

@@ -4,27 +4,25 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "AI-Augmented DevSecOps Thesis | AI 強化 DevSecOps 論文網站",
+  title: "50+ IT Man Learning Japanese | New Social Identity Build",
   description:
-    "Master's research website for AI-Augmented DevSecOps with SonarQube and GPT-4.1 / 碩士論文網站：整合 SonarQube 與 GPT-4.1，實現智慧化弱點分級與處置排序。",
+    "A practical creator system for a 50+ IT man learning Japanese, building a new social media identity, and creating stable family-support income.",
   keywords: [
-    "DevSecOps",
-    "SonarQube",
-    "GPT-4.1",
-    "SAST",
-    "DAST",
-    "AI security",
-    "RAG",
-    "Azure",
-    "雲端運算",
-    "弱點分流",
-    "靜態應用程式安全測試",
-    "動態應用程式安全測試"
+    "50+ Japanese learner",
+    "senior man learning Japanese",
+    "IT background creator",
+    "social media identity",
+    "creator monetization",
+    "family support income",
+    "content strategy",
+    "Japanese study workflow",
+    "RAG assistant",
+    "personal brand"
   ],
   openGraph: {
-    title: "AI-Augmented DevSecOps Thesis | AI 強化 DevSecOps 論文網站",
+    title: "50+ IT Man Learning Japanese | Build, Share, Monetize",
     description:
-      "Explore architecture, experiments, and enterprise applications of AI-assisted vulnerability triage / 探索 AI 輔助弱點分流之架構、實驗與企業應用。",
+      "Documenting the real journey of a 50+ IT man learning Japanese and building social channels that support his family.",
     type: "website"
   }
 };
@@ -35,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-Hant" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body>
         <Navbar />
         {children}
