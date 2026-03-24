@@ -1,104 +1,84 @@
-import Link from "next/link";
-import { getDashboardMetrics, getTodayFocus } from "@/lib/content";
+import type { Metadata } from "next";
+import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
+import { EncouragementBanner } from "@/components/dashboard/EncouragementBanner";
+import { DailyQuestList } from "@/components/dashboard/DailyQuestList";
+import { MissionHeroCard } from "@/components/dashboard/MissionHeroCard";
+import { StreakWidget } from "@/components/dashboard/StreakWidget";
+import { WeeklyGoalCard } from "@/components/dashboard/WeeklyGoalCard";
+import { XPWidget } from "@/components/dashboard/XPWidget";
+import { BadgeShelf } from "@/components/achievements/BadgeShelf";
+import { DailyJournalCard } from "@/components/journal/DailyJournalCard";
+import { LearningPathMap } from "@/components/learn/LearningPathMap";
+import { VocabularyReviewCard } from "@/components/learn/VocabularyReviewCard";
+import { MaterialInsightCard } from "@/components/materials/MaterialInsightCard";
+import { UploadStudyMaterialCard } from "@/components/materials/UploadStudyMaterialCard";
+import { PronunciationPlayerCard } from "@/components/pronunciation/PronunciationPlayerCard";
+import { SocialClipIdeasCard } from "@/components/social/SocialClipIdeasCard";
+import {
+  activityFeed,
+  badgeItems,
+  dailyQuests,
+  encouragementBanners,
+  journalPrompts,
+  learningPathNodes,
+  missionData,
+  phraseOfTheDay,
+  progressData,
+  socialIdeas,
+  vocabularyOfTheDay
+} from "@/data/site-data";
+
+export const metadata: Metadata = {
+  title: "儀表板 | Japanese After 50",
+  description:
+    "核心學習儀表板：今日任務、連續天數、XP、每日任務、發音練習、素材上傳、日誌與社群靈感。"
+};
 
 export default function DashboardPage() {
-  const metrics = getDashboardMetrics();
-  const focus = getTodayFocus();
-
   return (
     <main className="space-y-6">
-      <section>
-        <h1 className="font-display text-3xl font-bold">Dashboard</h1>
-        <p className="mt-2 text-slate-600 dark:text-slate-300">
-          Your daily study cockpit: focus, momentum, and shortcuts.
-        </p>
+      <header>
+        <h1 className="text-3xl font-black text-white">學習儀表板</h1>
+        <p className="mt-2 text-sm text-slate-300">今天要做什麼，一眼就知道。現在就開始。</p>
+      </header>
+
+      <MissionHeroCard mission={missionData} />
+
+      <section className="grid gap-4 md:grid-cols-3">
+        <StreakWidget days={progressData.streakDays} />
+        <XPWidget xp={progressData.xp} level={progressData.level} />
+        <WeeklyGoalCard
+          studiedMinutes={progressData.weeklyStudiedMinutes}
+          targetMinutes={progressData.weeklyTargetMinutes}
+        />
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <article className="panel">
-          <p className="text-xs uppercase tracking-wide text-slate-500">Streak</p>
-          <p className="mt-2 text-3xl font-bold">{metrics.currentStreakDays} days</p>
-        </article>
-        <article className="panel">
-          <p className="text-xs uppercase tracking-wide text-slate-500">Minutes Today</p>
-          <p className="mt-2 text-3xl font-bold">{metrics.minutesToday}</p>
-        </article>
-        <article className="panel">
-          <p className="text-xs uppercase tracking-wide text-slate-500">Total Sessions</p>
-          <p className="mt-2 text-3xl font-bold">{metrics.totalSessions}</p>
-        </article>
-        <article className="panel">
-          <p className="text-xs uppercase tracking-wide text-slate-500">Total Minutes</p>
-          <p className="mt-2 text-3xl font-bold">{metrics.totalMinutes}</p>
-        </article>
+      <section className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
+        <DailyQuestList quests={dailyQuests} />
+        <LearningPathMap nodes={learningPathNodes} compact />
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
-        <article className="panel">
-          <h2 className="font-display text-xl font-semibold">Today&apos;s Study Focus</h2>
-          <p className="mt-3 text-slate-700 dark:text-slate-200">{focus.primaryGoal}</p>
-          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{focus.pronunciationTarget}</p>
-          <ul className="mt-4 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-            {focus.tasks.map((task) => (
-              <li key={task} className="rounded-lg bg-slate-100 px-3 py-2 dark:bg-slate-800">
-                {task}
-              </li>
-            ))}
-          </ul>
-        </article>
-
-        <article className="panel">
-          <h2 className="font-display text-xl font-semibold">Quick Shortcuts</h2>
-          <div className="mt-4 grid gap-2 text-sm">
-            <Link
-              href="/materials"
-              className="rounded-lg border border-slate-200 px-3 py-2 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
-            >
-              Open Materials
-            </Link>
-            <Link
-              href="/pronunciation-lab"
-              className="rounded-lg border border-slate-200 px-3 py-2 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
-            >
-              Start Pronunciation Lab
-            </Link>
-            <Link
-              href="/study-log"
-              className="rounded-lg border border-slate-200 px-3 py-2 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
-            >
-              Write Study Log
-            </Link>
-            <Link
-              href="/content-studio"
-              className="rounded-lg border border-slate-200 px-3 py-2 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
-            >
-              Generate Content Ideas
-            </Link>
-          </div>
-          <div className="mt-5 rounded-xl bg-slate-100 p-3 text-sm text-slate-700 dark:bg-slate-800 dark:text-slate-200">
-            <p className="font-semibold">Today&apos;s Social Prompt</p>
-            <p className="mt-1">{focus.socialPrompt}</p>
-          </div>
-        </article>
+      <section className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
+        <PronunciationPlayerCard phrase={phraseOfTheDay} />
+        <VocabularyReviewCard item={vocabularyOfTheDay} />
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-3">
-        <article className="panel">
-          <p className="text-xs uppercase tracking-wide text-slate-500">Latest Material</p>
-          <p className="mt-2 font-semibold">{metrics.latestMaterial?.title}</p>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{metrics.latestMaterial?.topic}</p>
-        </article>
-        <article className="panel">
-          <p className="text-xs uppercase tracking-wide text-slate-500">Latest Study Log</p>
-          <p className="mt-2 font-semibold">{metrics.latestStudyLog?.focusArea}</p>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{metrics.latestStudyLog?.reflection}</p>
-        </article>
-        <article className="panel">
-          <p className="text-xs uppercase tracking-wide text-slate-500">Latest Weekly Review</p>
-          <p className="mt-2 font-semibold">{metrics.latestWeeklyReview?.weekLabel}</p>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{metrics.latestWeeklyReview?.nextWeekFocus}</p>
-        </article>
+      <section className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+        <UploadStudyMaterialCard />
+        <MaterialInsightCard extractedVocabulary={42} extractedPhrases={16} generatedDrills={9} />
       </section>
+
+      <section className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+        <DailyJournalCard prompts={journalPrompts} />
+        <SocialClipIdeasCard ideas={socialIdeas} />
+      </section>
+
+      <section className="grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
+        <BadgeShelf badges={badgeItems} />
+        <ActivityFeed items={activityFeed} />
+      </section>
+
+      <EncouragementBanner message={encouragementBanners[1]} />
     </main>
   );
 }

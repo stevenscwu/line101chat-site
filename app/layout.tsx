@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
+import { AppShell } from "@/components/shared/AppShell";
 
 export const metadata: Metadata = {
-  title: "Japanese After 50 | Personal Study Dashboard",
+  metadataBase: new URL("https://line101chat.com"),
+  title: "Japanese After 50 | 50後學日語",
   description:
-    "A personal Japanese study dashboard for daily practice, pronunciation drills, progress tracking, and lightweight content creation.",
+    "台灣 50+ 學習者的日語修行平台：每日任務、發音練習、單字複習、學習素材與公開成長紀錄。",
   keywords: [
+    "50後學日語",
+    "台灣人學日文",
+    "日語學習記錄",
     "Japanese after 50",
-    "Japanese study dashboard",
-    "pronunciation practice",
-    "study log",
-    "weekly review",
-    "materials system"
+    "日本語修行中",
+    "日文發音練習"
   ],
   openGraph: {
-    title: "Japanese After 50 | Daily Study System",
+    title: "Japanese After 50 | 50後學日語",
     description:
-      "A calm, practical dashboard for daily Japanese study, speaking practice, and visible progress.",
+      "以繁中介面 + 日文學習內容打造的 50+ 長期日語修行計畫。每天一點，穩定前進。",
+    siteName: "Japanese After 50",
+    locale: "zh_TW",
     type: "website"
   }
 };
@@ -29,11 +31,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="zh-Hant" suppressHydrationWarning>
       <body className="min-h-screen">
-        <Navbar />
-        <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-6 sm:px-6 lg:px-8">{children}</div>
-        <Footer />
+        <AppShell>
+          {children}
+        </AppShell>
       </body>
     </html>
   );
