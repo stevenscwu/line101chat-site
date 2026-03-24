@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "reset:site": "node scripts/reset-site.mjs --yes --local-only",
+    "reset:site:cloud": "node scripts/reset-site.mjs --yes --push --deploy",
+    "reset:site:dry-run": "node scripts/reset-site.mjs --yes --dry-run --push --deploy"
   },
   "dependencies": {
     "chart.js": "^4.5.1",

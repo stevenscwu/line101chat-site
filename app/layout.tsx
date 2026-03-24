@@ -4,25 +4,21 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "50+ IT Man Learning Japanese | New Social Identity Build",
+  title: "Japanese After 50 | Personal Study Dashboard",
   description:
-    "A practical creator system for a 50+ IT man learning Japanese, building a new social media identity, and creating stable family-support income.",
+    "A personal Japanese study dashboard for daily practice, pronunciation drills, progress tracking, and lightweight content creation.",
   keywords: [
-    "50+ Japanese learner",
-    "senior man learning Japanese",
-    "IT background creator",
-    "social media identity",
-    "creator monetization",
-    "family support income",
-    "content strategy",
-    "Japanese study workflow",
-    "RAG assistant",
-    "personal brand"
+    "Japanese after 50",
+    "Japanese study dashboard",
+    "pronunciation practice",
+    "study log",
+    "weekly review",
+    "materials system"
   ],
   openGraph: {
-    title: "50+ IT Man Learning Japanese | Build, Share, Monetize",
+    title: "Japanese After 50 | Daily Study System",
     description:
-      "Documenting the real journey of a 50+ IT man learning Japanese and building social channels that support his family.",
+      "A calm, practical dashboard for daily Japanese study, speaking practice, and visible progress.",
     type: "website"
   }
 };
@@ -34,9 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="min-h-screen">
         <Navbar />
-        {children}
+        <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-6 sm:px-6 lg:px-8">{children}</div>
         <Footer />
       </body>
     </html>
