@@ -48,3 +48,25 @@ npm run dev
   - `UI_COMPONENT_SPEC.md`
   - `SITE_MAP.md`
   - `CONTENT_STRATEGY.md`
+
+## Materials Upload v2.1 (Cloud-Persistent)
+
+- Real upload route: `POST /api/materials/upload`
+- Versioned material list: `GET /api/materials`
+- Local download/preview route: `GET /api/materials/files/[...segments]`
+- Material versioning spec: `MATERIALS_VERSIONING_V2.md`
+
+### Storage driver
+- `MATERIALS_STORAGE_DRIVER=auto` (default): if `BLOB_READ_WRITE_TOKEN` exists, use cloud; otherwise local.
+- `MATERIALS_STORAGE_DRIVER=cloud`: force Vercel Blob (recommended for production persistence).
+- `MATERIALS_STORAGE_DRIVER=local`: force local filesystem.
+
+### Vercel production setup
+1. Create/connect a Vercel Blob store in your Vercel project.
+2. Add environment variable `BLOB_READ_WRITE_TOKEN` in Vercel (`Production` and `Preview` as needed).
+3. Add `MATERIALS_STORAGE_DRIVER=cloud`.
+4. Redeploy.
+
+### Local notes
+- Local uploads are written to `storage/materials/` and ignored by Git (except `.gitkeep`).
+- Runtime binary uploads should not be committed to Git.

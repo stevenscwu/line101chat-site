@@ -24,7 +24,7 @@ interface SidebarNavProps {
   onNavigate?: () => void;
 }
 
-const iconByRoute: Record<Route, ComponentType<{ className?: string }>> = {
+const iconByRoute: Partial<Record<Route, ComponentType<{ className?: string }>>> = {
   "/": Home,
   "/dashboard": LayoutDashboard,
   "/learn": Compass,

@@ -9,3 +9,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+storage/materials/**
+!storage/materials/.gitkeep
