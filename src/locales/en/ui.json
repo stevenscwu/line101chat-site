@@ -63,7 +63,7 @@
   "footer": {
     "description": "A Taiwan-based premium digital studio delivering websites, grounded AI assistants, and custom applications for growth-ready businesses.",
     "contactLabel": "Business Contact",
-    "email": "hello@line101.studio",
+    "email": "service@line101chat.com",
     "consultationNote": "Consultation inquiries are typically answered within one business day.",
     "sections": {
       "company": "Studio",
@@ -108,6 +108,6 @@
     "submit": "Submit Inquiry",
     "submitting": "Submitting...",
     "success": "Thanks, your inquiry has been received. We will reply shortly.",
-    "error": "Unable to submit right now. Please try again or email hello@line101.studio."
+    "error": "Unable to submit right now. Please try again or email service@line101chat.com."
   }
 }

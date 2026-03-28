@@ -63,7 +63,7 @@
   "footer": {
     "description": "立足台灣、面向國際的精品數位工作室，專注高質感網站、RAG 智能助理與客製化應用系統。",
     "contactLabel": "商務聯繫",
-    "email": "hello@line101.studio",
+    "email": "service@line101chat.com",
     "consultationNote": "諮詢需求通常於 1 個工作天內回覆。",
     "sections": {
       "company": "工作室",
@@ -108,6 +108,6 @@
     "submit": "送出需求",
     "submitting": "送出中...",
     "success": "感謝你的來信，我們已收到需求並會盡快回覆。",
-    "error": "送出失敗，請稍後再試，或直接來信 hello@line101.studio。"
+    "error": "送出失敗，請稍後再試，或直接來信 service@line101chat.com。"
   }
 }
