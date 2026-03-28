@@ -1,0 +1,197 @@
+{
+  "metadata": {
+    "title": "台灣精品數位工作室",
+    "description": "提供高質感網站、RAG 企業知識助理與客製化應用系統，協助企業建立下一層數位競爭力。"
+  },
+  "hero": {
+    "eyebrow": "Taiwan-based Premium Digital Studio",
+    "headline": "打造下一層數位競爭力",
+    "subheadline": "為成長中的企業打造高質感網站、RAG 智能助理與客製化應用系統。",
+    "primaryCta": {
+      "label": "開始專案",
+      "href": "/contact"
+    },
+    "secondaryCta": {
+      "label": "了解服務",
+      "href": "/services"
+    },
+    "trustPoints": [
+      "台灣在地協作，面向國際標準",
+      "策略與開發由同一窗口主導",
+      "1 個工作天內初步回覆"
+    ],
+    "visualLabels": {
+      "website": "網站體驗",
+      "chatbot": "知識助理",
+      "app": "應用系統"
+    },
+    "stats": [
+      {
+        "label": "核心能力",
+        "value": "網站建置 / AI 助理 / 應用系統"
+      },
+      {
+        "label": "合作方式",
+        "value": "直接協作，快速決策"
+      },
+      {
+        "label": "交付目標",
+        "value": "可上線、可維運、可擴充"
+      }
+    ]
+  },
+  "servicePanels": [
+    {
+      "id": "websites",
+      "title": "高質感網站建置",
+      "subtitle": "企業官網、品牌網站、多語系網站與高轉換著陸頁，兼顧形象與成效。",
+      "cta": "查看網站服務",
+      "href": "/services/websites"
+    },
+    {
+      "id": "rag-chatbots",
+      "title": "企業知識型 AI 助理",
+      "subtitle": "將文件、FAQ 與內部知識整合為可查詢、可追溯、可持續維運的 RAG 助理。",
+      "cta": "查看 AI 助理服務",
+      "href": "/services/rag-chatbots"
+    },
+    {
+      "id": "apps",
+      "title": "客製化應用系統",
+      "subtitle": "依照營運流程建置內部工具、客戶入口與產品雛型，為後續擴張打好基礎。",
+      "cta": "查看應用服務",
+      "href": "/services/apps"
+    }
+  ],
+  "whyUs": {
+    "title": "為什麼是這間工作室",
+    "description": "以精品級執行品質與工程深度，打造真正能支撐成長的數位系統。",
+    "cards": [
+      {
+        "title": "精品級交付",
+        "description": "從策略架構到細節呈現，維持一致、專業且可衡量的品質。"
+      },
+      {
+        "title": "AI-ready 架構",
+        "description": "先建立可延展的內容與資料基礎，讓 AI 導入更穩定。"
+      },
+      {
+        "title": "聚焦且快速",
+        "description": "直接協作、短決策鏈，讓專案持續往商業目標前進。"
+      },
+      {
+        "title": "面向長期成長",
+        "description": "每次開發都以後續維運與擴充為前提，降低重工風險。"
+      }
+    ]
+  },
+  "process": {
+    "title": "合作流程",
+    "description": "以清楚四步驟推進，讓策略、設計與交付節奏都可預期。",
+    "steps": [
+      {
+        "title": "探索",
+        "description": "釐清目標、受眾、商業流程與技術限制。"
+      },
+      {
+        "title": "設計",
+        "description": "定義資訊架構、介面方向與系統藍圖。"
+      },
+      {
+        "title": "建置",
+        "description": "以迭代方式完成網站、AI 助理與應用模組。"
+      },
+      {
+        "title": "上線與支持",
+        "description": "完成上線驗證、交接訓練與後續優化。"
+      }
+    ]
+  },
+  "showcase": {
+    "title": "精選展示",
+    "description": "在正式公開客戶案例前，以下為工作室的概念與示範專案。",
+    "items": [
+      {
+        "title": "品牌企業網站",
+        "category": "精選概念",
+        "summary": "多語企業官網概念，聚焦品牌定位與高轉換資訊架構。"
+      },
+      {
+        "title": "RAG 知識助理",
+        "category": "示範專案",
+        "summary": "以文件與 FAQ 為核心的知識助理，支援可追溯回答與持續擴充。"
+      },
+      {
+        "title": "流程管理 Dashboard",
+        "category": "工作室探索",
+        "summary": "整合進度、任務與報表的管理介面，作為產品化基礎。"
+      }
+    ]
+  },
+  "pricingPreview": {
+    "title": "方案預覽",
+    "description": "以商業成果與長期可維運性為核心，規劃每個交付方案。",
+    "packages": [
+      {
+        "name": "啟動官網方案",
+        "description": "建立專業品牌門面與清楚的商業敘事。",
+        "idealFor": "新創團隊與品牌升級企業",
+        "includes": [
+          "品牌導向首頁與關鍵頁面",
+          "RWD 與 SEO 基礎優化",
+          "上線流程與維運建議"
+        ],
+        "startingFrom": "NT$180,000",
+        "cta": "預約方案諮詢"
+      },
+      {
+        "name": "AI 商務網站方案",
+        "description": "結合網站與企業知識助理，提升服務效率與資訊可得性。",
+        "idealFor": "有內容資產與客服需求的企業",
+        "includes": [
+          "高質感企業網站",
+          "RAG 助理規劃與部署",
+          "資料維護流程設計"
+        ],
+        "startingFrom": "NT$360,000",
+        "cta": "預約方案諮詢"
+      },
+      {
+        "name": "客製產品建置",
+        "description": "針對流程與成長需求打造可持續擴充的產品基礎。",
+        "idealFor": "要數位化核心流程的成長型公司",
+        "includes": [
+          "產品需求與架構定義",
+          "核心模組開發",
+          "分階段交付與擴充規劃"
+        ],
+        "startingFrom": "NT$600,000",
+        "cta": "討論建置方向"
+      }
+    ],
+    "viewAllCta": "查看完整方案"
+  },
+  "aboutSnapshot": {
+    "title": "一間獨立運作、以高標準交付為核心的數位工作室。",
+    "description": "以資深實作經驗為基礎，提供直接、有效率且可長期合作的交付模式。",
+    "points": [
+      "獨立但具備完整端到端能力",
+      "策略與開發由同一窗口協作",
+      "可依專案規模彈性延展合作資源"
+    ],
+    "cta": "認識工作室",
+    "href": "/about"
+  },
+  "finalCta": {
+    "title": "準備好打造下一個數位系統了嗎？",
+    "description": "從網站到 AI 與應用系統，一起定義你的下一個成長節點。",
+    "primary": {
+      "label": "預約諮詢",
+      "href": "/contact"
+    },
+    "secondary": {
+      "label": "告訴我你的需求",
+      "href": "/contact"
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "brand": {
+    "name": "LINE101 STUDIO",
+    "tagline": "Premium Digital Systems Studio"
+  },
+  "language": {
+    "label": "Language",
+    "switch": "Switch language",
+    "zh-TW": "繁體中文",
+    "en": "English"
+  },
+  "header": {
+    "menu": "Menu",
+    "close": "Close",
+    "bookConsultation": "Book a Consultation"
+  },
+  "navigation": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Services",
+      "href": "/services"
+    },
+    {
+      "label": "Work",
+      "href": "/work"
+    },
+    {
+      "label": "Process",
+      "href": "/process"
+    },
+    {
+      "label": "Pricing",
+      "href": "/pricing"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact"
+    }
+  ],
+  "buttons": {
+    "bookConsultation": "Book a Consultation",
+    "startProject": "Start a Project",
+    "exploreServices": "Explore Services",
+    "tellUsProject": "Tell Us About Your Project",
+    "viewDetails": "View Details",
+    "learnMore": "Learn More"
+  },
+  "common": {
+    "startingFrom": "Starting from",
+    "bestFor": "Best for",
+    "recommended": "Recommended",
+    "selectedConcepts": "Selected Concepts",
+    "demoProjects": "Demo Projects",
+    "studioExplorations": "Studio Explorations"
+  },
+  "footer": {
+    "description": "A Taiwan-based premium digital studio delivering websites, grounded AI assistants, and custom applications for growth-ready businesses.",
+    "contactLabel": "Business Contact",
+    "email": "hello@line101.studio",
+    "consultationNote": "Consultation inquiries are typically answered within one business day.",
+    "sections": {
+      "company": "Studio",
+      "services": "Services",
+      "legal": "Legal"
+    },
+    "links": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "copyright": "© 2026 LINE101 STUDIO. All rights reserved."
+  },
+  "contactForm": {
+    "intro": "Share your goals and we will respond within one business day.",
+    "fields": {
+      "name": "Name",
+      "company": "Company / Brand",
+      "email": "Email",
+      "projectType": "Project Type",
+      "serviceSelection": "Service Selection",
+      "budget": "Budget Range",
+      "message": "Project Brief"
+    },
+    "placeholders": {
+      "name": "Alex Chen",
+      "company": "Example Co., Ltd.",
+      "email": "you@company.com",
+      "message": "Tell us about your current stage, goals, and ideal launch window."
+    },
+    "projectTypes": [
+      "Premium brand website",
+      "RAG business assistant",
+      "Custom app platform",
+      "Not sure yet, need consultation"
+    ],
+    "budgetRanges": [
+      "US$5,000 - US$10,000",
+      "US$10,000 - US$20,000",
+      "US$20,000 - US$40,000",
+      "US$40,000+"
+    ],
+    "submit": "Submit Inquiry",
+    "submitting": "Submitting...",
+    "success": "Thanks, your inquiry has been received. We will reply shortly.",
+    "error": "Unable to submit right now. Please try again or email hello@line101.studio."
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "work": {
+    "metadata": {
+      "title": "Work",
+      "description": "Selected concepts, demo projects, and studio explorations from a premium digital studio in Taiwan."
+    },
+    "hero": {
+      "kicker": "Work",
+      "title": "Selected concepts and studio builds",
+      "description": "Real client case studies will be published progressively. This page currently presents concept and demo work from the studio."
+    },
+    "collections": [
+      {
+        "title": "Premium Business Website",
+        "label": "Selected Concepts",
+        "summary": "A bilingual corporate website concept with premium storytelling, clear architecture, and conversion-focused CTA flow.",
+        "highlights": [
+          "Multilingual content hierarchy",
+          "Premium visual system",
+          "SEO-first page structure"
+        ],
+        "stack": "Next.js, TypeScript, Tailwind CSS"
+      },
+      {
+        "title": "RAG Knowledge Assistant",
+        "label": "Demo Projects",
+        "summary": "A grounded assistant prototype that retrieves policy and FAQ data with traceable context snippets.",
+        "highlights": [
+          "Knowledge ingestion pipeline",
+          "Retrieval + answer orchestration",
+          "Admin-friendly update workflow"
+        ],
+        "stack": "RAG pipeline, vector search, web chat UI"
+      },
+      {
+        "title": "Workflow App Dashboard",
+        "label": "Studio Explorations",
+        "summary": "A modular dashboard concept for approvals, task tracking, and operational reporting in one system.",
+        "highlights": [
+          "Role-based workflow views",
+          "Operational KPI widgets",
+          "Roadmap-ready component architecture"
+        ],
+        "stack": "Next.js App Router, API-first architecture"
+      }
+    ],
+    "future": {
+      "title": "Case-study architecture ready",
+      "description": "The layout is prepared for future expansion with galleries, measurable outcomes, and implementation notes per project."
+    }
+  },
+  "process": {
+    "metadata": {
+      "title": "Process",
+      "description": "A clear four-step process from discovery to launch and support."
+    },
+    "hero": {
+      "kicker": "Process",
+      "title": "A clear and disciplined delivery method",
+      "description": "Every project follows a focused process that balances strategy, design quality, and execution speed."
+    },
+    "steps": [
+      {
+        "name": "Discover",
+        "objective": "Align business goals, audience needs, and system constraints.",
+        "deliverables": "Brief, scope direction, technical decision frame"
+      },
+      {
+        "name": "Design",
+        "objective": "Shape information architecture and interface direction.",
+        "deliverables": "Wireframes, visual direction, implementation blueprint"
+      },
+      {
+        "name": "Build",
+        "objective": "Develop core features with staged reviews.",
+        "deliverables": "Working product increments, QA reports, content integration"
+      },
+      {
+        "name": "Launch & Support",
+        "objective": "Release safely and establish post-launch rhythm.",
+        "deliverables": "Launch checklist, handoff docs, optimization backlog"
+      }
+    ],
+    "principles": {
+      "title": "Operating principles",
+      "items": [
+        "Direct communication without agency layers",
+        "Transparent decisions with practical tradeoff framing",
+        "Strong technical baseline for future scale"
+      ]
+    }
+  },
+  "pricing": {
+    "metadata": {
+      "title": "Pricing",
+      "description": "Premium pricing packages for websites, RAG chatbots, apps, and ongoing support."
+    },
+    "hero": {
+      "kicker": "Pricing",
+      "title": "Premium packages with clear scope",
+      "description": "Pricing is structured around business outcomes, implementation depth, and long-term maintainability."
+    },
+    "offerings": [
+      {
+        "name": "Websites",
+        "bestFor": "Businesses building a premium digital presence",
+        "description": "Strategic website projects for positioning, trust, and conversion.",
+        "startingFrom": "US$6,000",
+        "includes": [
+          "Architecture and page strategy",
+          "Premium responsive implementation",
+          "SEO-ready setup"
+        ]
+      },
+      {
+        "name": "RAG Chatbots",
+        "bestFor": "Teams operationalizing internal knowledge",
+        "description": "Grounded assistants that turn fragmented documents into practical answers.",
+        "startingFrom": "US$10,000",
+        "includes": [
+          "Knowledge source integration",
+          "RAG behavior design",
+          "Deployment and governance setup"
+        ]
+      },
+      {
+        "name": "Apps",
+        "bestFor": "Operations needing custom workflow systems",
+        "description": "Custom product and workflow app development for long-term growth.",
+        "startingFrom": "US$20,000",
+        "includes": [
+          "Workflow and feature scoping",
+          "Core product module build",
+          "Scalable technical foundation"
+        ]
+      },
+      {
+        "name": "Ongoing Support",
+        "bestFor": "Teams requiring continuous iteration",
+        "description": "Monthly support for optimization, feature updates, and performance care.",
+        "startingFrom": "US$1,500 / month",
+        "includes": [
+          "Priority issue response",
+          "Iteration planning",
+          "Technical advisory"
+        ]
+      }
+    ],
+    "note": "Final pricing depends on scope complexity, integration needs, and delivery timeline."
+  },
+  "about": {
+    "metadata": {
+      "title": "About",
+      "description": "A Taiwan-based independent digital studio with international ambition."
+    },
+    "hero": {
+      "kicker": "About",
+      "title": "Taiwan-based. Internationally minded.",
+      "description": "LINE101 Studio is an independent digital studio delivering premium web, AI, and product systems for modern businesses."
+    },
+    "mission": {
+      "title": "Mission",
+      "content": "Build digital systems that make businesses more credible, more efficient, and more ready for AI-driven operations."
+    },
+    "whatWeBuild": {
+      "title": "What we build",
+      "items": [
+        "Premium multilingual websites",
+        "RAG-powered business assistants",
+        "Custom workflow and product applications"
+      ]
+    },
+    "howWeWork": {
+      "title": "How we work",
+      "items": [
+        "Senior-level execution with direct collaboration",
+        "Compact process with clear milestones",
+        "Systems designed for long-term maintainability"
+      ]
+    },
+    "whyChoose": {
+      "title": "Why clients choose us",
+      "items": [
+        "Premium quality without unnecessary overhead",
+        "Balanced design and technical depth",
+        "A scalable boutique model for growing teams"
+      ]
+    }
+  },
+  "contact": {
+    "metadata": {
+      "title": "Contact",
+      "description": "Start a conversation about your website, RAG chatbot, or app project."
+    },
+    "hero": {
+      "kicker": "Contact",
+      "title": "Tell us what you need to build next",
+      "description": "Share your business goals, timeline, and scope. We will reply with clear next steps."
+    },
+    "aside": {
+      "title": "What happens next",
+      "items": [
+        "Initial review in one business day",
+        "A focused consultation to align goals",
+        "A scoped proposal with timeline and options"
+      ],
+      "emailLabel": "Direct email",
+      "email": "hello@line101.studio"
+    }
+  }
+}

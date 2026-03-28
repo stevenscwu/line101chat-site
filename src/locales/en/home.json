@@ -1,0 +1,197 @@
+{
+  "metadata": {
+    "title": "Premium Digital Studio in Taiwan",
+    "description": "Premium websites, grounded RAG assistants, and custom applications built for modern businesses."
+  },
+  "hero": {
+    "eyebrow": "Taiwan-based Premium Digital Studio",
+    "headline": "Build your next digital layer",
+    "subheadline": "Premium websites, grounded RAG assistants, and custom apps engineered for modern business growth.",
+    "primaryCta": {
+      "label": "Start a Project",
+      "href": "/contact"
+    },
+    "secondaryCta": {
+      "label": "Explore Services",
+      "href": "/services"
+    },
+    "trustPoints": [
+      "Taiwan delivery base with international quality standards",
+      "Direct strategy-to-build collaboration",
+      "Initial response within one business day"
+    ],
+    "visualLabels": {
+      "website": "Website Experience",
+      "chatbot": "Knowledge Assistant",
+      "app": "Application Layer"
+    },
+    "stats": [
+      {
+        "label": "Core Capabilities",
+        "value": "Websites / AI Assistants / Custom Apps"
+      },
+      {
+        "label": "Collaboration Model",
+        "value": "Direct engagement with fast decision cycles"
+      },
+      {
+        "label": "Delivery Objective",
+        "value": "Launch-ready systems built for scale"
+      }
+    ]
+  },
+  "servicePanels": [
+    {
+      "id": "websites",
+      "title": "Premium Website Building",
+      "subtitle": "Corporate sites, brand websites, multilingual experiences, and high-converting landing pages with premium execution.",
+      "cta": "Explore Website Services",
+      "href": "/services/websites"
+    },
+    {
+      "id": "rag-chatbots",
+      "title": "RAG Chatbots",
+      "subtitle": "Turn your documents, FAQs, and internal knowledge into grounded assistants with traceable, reliable responses.",
+      "cta": "Explore AI Assistant Services",
+      "href": "/services/rag-chatbots"
+    },
+    {
+      "id": "apps",
+      "title": "App Development",
+      "subtitle": "Custom internal tools, client portals, and operational systems built as scalable digital product foundations.",
+      "cta": "Explore App Services",
+      "href": "/services/apps"
+    }
+  ],
+  "whyUs": {
+    "title": "Why this studio",
+    "description": "Boutique-level craft with technical precision to build digital systems that perform today and scale tomorrow.",
+    "cards": [
+      {
+        "title": "Premium execution",
+        "description": "Every layer, from architecture to interface detail, is designed for quality and business clarity."
+      },
+      {
+        "title": "AI-ready architecture",
+        "description": "Information and system foundations are prepared early to support future AI capabilities."
+      },
+      {
+        "title": "Fast, focused delivery",
+        "description": "Compact communication and direct ownership keep momentum high and decisions clear."
+      },
+      {
+        "title": "Built for long-term scale",
+        "description": "Solutions are engineered for maintainability, extension, and operational growth."
+      }
+    ]
+  },
+  "process": {
+    "title": "Process",
+    "description": "A disciplined four-step workflow keeps strategy, design quality, and launch velocity aligned.",
+    "steps": [
+      {
+        "title": "Discover",
+        "description": "Align goals, stakeholders, workflows, and technical constraints."
+      },
+      {
+        "title": "Design",
+        "description": "Define information architecture, UX direction, and system blueprint."
+      },
+      {
+        "title": "Build",
+        "description": "Implement websites, assistants, and product modules in focused iterations."
+      },
+      {
+        "title": "Launch & Support",
+        "description": "Launch with confidence and continue with structured optimization support."
+      }
+    ]
+  },
+  "showcase": {
+    "title": "Selected Work",
+    "description": "Until client case studies are publicly released, this section presents studio concepts and demo implementations.",
+    "items": [
+      {
+        "title": "Premium Business Website",
+        "category": "Selected Concepts",
+        "summary": "A multilingual business site concept focused on positioning clarity and conversion-ready structure."
+      },
+      {
+        "title": "RAG Knowledge Assistant",
+        "category": "Demo Projects",
+        "summary": "A grounded assistant prototype connecting internal docs and FAQs for reliable operational answers."
+      },
+      {
+        "title": "Workflow App Dashboard",
+        "category": "Studio Explorations",
+        "summary": "A dashboard concept that unifies tasks, approvals, and reporting visibility in one workflow layer."
+      }
+    ]
+  },
+  "pricingPreview": {
+    "title": "Package Preview",
+    "description": "Each package is scoped around business outcomes, implementation depth, and long-term maintainability.",
+    "packages": [
+      {
+        "name": "Launch Site",
+        "description": "Establish a premium digital presence with strategic message clarity.",
+        "idealFor": "New brands and growth-stage businesses",
+        "includes": [
+          "Strategic homepage and core pages",
+          "Responsive build with baseline SEO",
+          "Launch guidance and handoff"
+        ],
+        "startingFrom": "US$6,000",
+        "cta": "Book Package Consultation"
+      },
+      {
+        "name": "AI Business Site",
+        "description": "Combine a premium website with a grounded assistant built from your business knowledge.",
+        "idealFor": "Teams with strong content assets and service workflows",
+        "includes": [
+          "Premium business website",
+          "RAG assistant architecture and setup",
+          "Knowledge maintenance framework"
+        ],
+        "startingFrom": "US$12,000",
+        "cta": "Book Package Consultation"
+      },
+      {
+        "name": "Custom Product Build",
+        "description": "Design and build a scalable product foundation tailored to your operations.",
+        "idealFor": "Companies digitizing internal or client-facing workflows",
+        "includes": [
+          "Product scope and architecture definition",
+          "Core module implementation",
+          "Phased roadmap for scale"
+        ],
+        "startingFrom": "US$20,000",
+        "cta": "Discuss Product Build"
+      }
+    ],
+    "viewAllCta": "See Full Pricing"
+  },
+  "aboutSnapshot": {
+    "title": "An independent digital studio delivering premium web, AI, and product systems.",
+    "description": "Senior-level execution, direct collaboration, and a scalable boutique delivery model.",
+    "points": [
+      "Independent, end-to-end technical ownership",
+      "Direct strategy and execution partnership",
+      "Scalable collaboration as project scope expands"
+    ],
+    "cta": "About the Studio",
+    "href": "/about"
+  },
+  "finalCta": {
+    "title": "Ready to build your next digital system?",
+    "description": "From premium web to AI and product systems, we can define your next growth layer together.",
+    "primary": {
+      "label": "Book a Consultation",
+      "href": "/contact"
+    },
+    "secondary": {
+      "label": "Tell Us About Your Project",
+      "href": "/contact"
+    }
+  }
+}

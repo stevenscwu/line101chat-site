@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+:root {
+  --surface-light: #f6f8fb;
+  --surface-neutral: #eef2f7;
+  --surface-dark: #090f1b;
+  --text-primary: #0f172a;
+  --text-inverse: #f8fafc;
+}
+
+@theme inline {
+  --font-sans: var(--font-manrope);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-manrope), var(--font-noto-sans-tc), "Segoe UI", sans-serif;
+  letter-spacing: -0.014em;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01" on, "cv01" on;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-rise-in {
+  animation: riseIn 0.7s ease-out both;
+}
+
+.animate-fade-scale {
+  animation: fadeScale 0.7s ease-out both;
+}
+
+::selection {
+  background: rgba(56, 189, 248, 0.24);
+}
