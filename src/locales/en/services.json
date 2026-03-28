@@ -1,0 +1,212 @@
+{
+  "overview": {
+    "metadata": {
+      "title": "Services",
+      "description": "Explore premium website, RAG chatbot, and app development services for modern businesses."
+    },
+    "hero": {
+      "kicker": "Services",
+      "title": "Digital systems designed for growth",
+      "description": "We design and build premium websites, grounded AI assistants, and custom applications that support real business outcomes."
+    },
+    "cards": [
+      {
+        "slug": "websites",
+        "title": "Premium Website Building",
+        "summary": "Corporate and brand websites with multilingual support and conversion-focused structure.",
+        "includes": [
+          "Brand-first UX and visual direction",
+          "Fast and SEO-ready implementation",
+          "Scalable content architecture"
+        ],
+        "cta": "Explore Websites",
+        "href": "/services/websites"
+      },
+      {
+        "slug": "rag-chatbots",
+        "title": "RAG Chatbots",
+        "summary": "Grounded AI assistants built from your documents, FAQs, and internal knowledge sources.",
+        "includes": [
+          "Knowledge ingestion and retrieval design",
+          "Assistant behavior and answer controls",
+          "Operational handoff for your team"
+        ],
+        "cta": "Explore Chatbots",
+        "href": "/services/rag-chatbots"
+      },
+      {
+        "slug": "apps",
+        "title": "App Development",
+        "summary": "Custom internal tools, client portals, and workflow systems built for long-term operations.",
+        "includes": [
+          "Workflow and product discovery",
+          "Modular implementation strategy",
+          "Roadmap-ready architecture"
+        ],
+        "cta": "Explore Apps",
+        "href": "/services/apps"
+      }
+    ]
+  },
+  "details": {
+    "websites": {
+      "metadata": {
+        "title": "Premium Website Building",
+        "description": "High-end business websites designed for trust, conversion, and long-term brand growth."
+      },
+      "hero": {
+        "kicker": "Website Building",
+        "title": "Premium websites built to perform",
+        "description": "Strategic and visual execution for businesses that need both credibility and conversion."
+      },
+      "whoFor": {
+        "title": "Who this is for",
+        "items": [
+          "Businesses upgrading from outdated websites",
+          "Brands preparing for multilingual expansion",
+          "Teams that need better conversion structure"
+        ]
+      },
+      "problems": {
+        "title": "What problems it solves",
+        "items": [
+          "Unclear positioning and weak first impression",
+          "Inconsistent UX across desktop and mobile",
+          "Sites that are hard to maintain or scale"
+        ]
+      },
+      "included": {
+        "title": "What is included",
+        "items": [
+          "Discovery workshop and page architecture",
+          "Premium UI system and responsive implementation",
+          "Technical SEO foundations and launch checklist"
+        ]
+      },
+      "timeline": {
+        "title": "Typical timeline",
+        "items": [
+          "Week 1-2: Strategy, content direction, and structure",
+          "Week 3-5: Design and iterative implementation",
+          "Week 6: QA, launch prep, and handoff"
+        ]
+      },
+      "engagement": {
+        "title": "Engagement model",
+        "description": "Project-based delivery with weekly decision checkpoints and direct founder collaboration."
+      },
+      "cta": {
+        "title": "Plan your premium website build",
+        "description": "Share your business goals and we will scope the right execution path.",
+        "primaryLabel": "Book a Consultation",
+        "secondaryLabel": "Tell Us About Your Project"
+      }
+    },
+    "rag-chatbots": {
+      "metadata": {
+        "title": "RAG Chatbots",
+        "description": "Grounded business assistants that turn documents and internal knowledge into reliable answers."
+      },
+      "hero": {
+        "kicker": "RAG Chatbots",
+        "title": "Grounded AI assistants for real business use",
+        "description": "We transform your knowledge base into searchable, context-aware AI assistants for customers and teams."
+      },
+      "whoFor": {
+        "title": "Who this is for",
+        "items": [
+          "Teams handling repeated customer or internal questions",
+          "Businesses with extensive documentation or SOPs",
+          "Organizations preparing AI-enabled service workflows"
+        ]
+      },
+      "problems": {
+        "title": "What problems it solves",
+        "items": [
+          "Slow and inconsistent responses to common questions",
+          "Knowledge buried in files and disconnected channels",
+          "AI answers that are generic or not trustworthy"
+        ]
+      },
+      "included": {
+        "title": "What is included",
+        "items": [
+          "Knowledge source mapping and retrieval strategy",
+          "RAG pipeline setup and answer behavior tuning",
+          "Admin flow for updates and operational continuity"
+        ]
+      },
+      "timeline": {
+        "title": "Typical timeline",
+        "items": [
+          "Week 1: Knowledge audit and use-case definition",
+          "Week 2-4: Retrieval design and assistant build",
+          "Week 5: Testing, guardrails, and deployment"
+        ]
+      },
+      "engagement": {
+        "title": "Engagement model",
+        "description": "Phased implementation with measurable milestones and optional post-launch optimization support."
+      },
+      "cta": {
+        "title": "Build a reliable AI assistant",
+        "description": "Let us map your knowledge sources and define a grounded assistant strategy.",
+        "primaryLabel": "Book a Consultation",
+        "secondaryLabel": "Tell Us About Your Project"
+      }
+    },
+    "apps": {
+      "metadata": {
+        "title": "App Development",
+        "description": "Custom web applications for internal operations, client workflows, and scalable digital products."
+      },
+      "hero": {
+        "kicker": "App Development",
+        "title": "Custom apps aligned with your operations",
+        "description": "From internal tools to client portals, we build practical systems that support growth and control."
+      },
+      "whoFor": {
+        "title": "Who this is for",
+        "items": [
+          "Businesses replacing manual spreadsheet workflows",
+          "Teams building client-facing digital services",
+          "Founders validating product ideas with execution speed"
+        ]
+      },
+      "problems": {
+        "title": "What problems it solves",
+        "items": [
+          "Operational friction across disconnected tools",
+          "Lack of visibility over tasks, approvals, or reporting",
+          "No scalable foundation for future product growth"
+        ]
+      },
+      "included": {
+        "title": "What is included",
+        "items": [
+          "Workflow discovery and system requirements definition",
+          "Core module build with role-based access design",
+          "Roadmap recommendations for phase two expansion"
+        ]
+      },
+      "timeline": {
+        "title": "Typical timeline",
+        "items": [
+          "Week 1-2: Discovery, scope, and architecture decisions",
+          "Week 3-8: Core feature implementation and QA",
+          "Week 9: Launch support and performance tuning"
+        ]
+      },
+      "engagement": {
+        "title": "Engagement model",
+        "description": "Milestone-based build with direct communication and transparent prioritization."
+      },
+      "cta": {
+        "title": "Build your custom digital product layer",
+        "description": "Share your workflow goals and we will shape a realistic, scalable build plan.",
+        "primaryLabel": "Book a Consultation",
+        "secondaryLabel": "Tell Us About Your Project"
+      }
+    }
+  }
+}
