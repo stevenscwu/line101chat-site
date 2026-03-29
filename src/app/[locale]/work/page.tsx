@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { Section } from "@/components/layout/Section";
 import { CTASection } from "@/components/shared/CTASection";
 import { PageHero } from "@/components/shared/PageHero";
+import { withLocale } from "@/lib/i18n/config";
 import { getLocaleDictionary } from "@/lib/i18n/get-dictionary";
 import { resolveLocale } from "@/lib/i18n/server";
 import { createPageMetadata } from "@/lib/seo";
@@ -31,6 +33,30 @@ export default async function WorkPage({ params }: WorkPageProps) {
   const locale = resolveLocale(localeParam);
   const dictionary = await getLocaleDictionary(locale);
   const content = dictionary.pages.work;
+  const bakeryCase =
+    locale === "zh-TW"
+      ? {
+          label: "示範專案",
+          title: "簡單純麵包 / Simple Pure Bakery",
+          summary: "暖色編輯感烘焙品牌展示站，聚焦台灣生活風格與精品日常麵包體驗。",
+          highlights: ["品牌首頁敘事與視覺風格", "產品列表與產品明細頁", "團購、配送、FAQ 與聯絡流程"],
+          stack: "Next.js App Router、TypeScript、Tailwind CSS",
+          href: "/work/simple-bakery",
+          cta: "前往展示站",
+        }
+      : {
+          label: "Demo Project",
+          title: "Simple Pure Bakery",
+          summary: "Warm editorial bakery showcase with Taiwanese lifestyle tone and premium daily bread storytelling.",
+          highlights: [
+            "Branded landing page narrative",
+            "Products listing and product detail flow",
+            "Group-order, delivery, FAQ, and contact pages",
+          ],
+          stack: "Next.js App Router, TypeScript, Tailwind CSS",
+          href: "/work/simple-bakery",
+          cta: "Open Demo Site",
+        };
 
   return (
     <div className="animate-fade-scale">
@@ -66,6 +92,33 @@ export default async function WorkPage({ params }: WorkPageProps) {
               </details>
             </article>
           ))}
+
+          <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_10px_28px_rgba(15,23,42,0.05)]">
+            <p className="text-xs uppercase tracking-[0.12em] text-slate-500">{bakeryCase.label}</p>
+            <h2 className="mt-3 text-xl font-semibold text-slate-900">{bakeryCase.title}</h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-600">{bakeryCase.summary}</p>
+
+            <details className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4" open>
+              <summary className="cursor-pointer text-sm font-medium text-slate-700">
+                {dictionary.ui.buttons.viewDetails}
+              </summary>
+              <ul className="mt-3 space-y-2 text-sm text-slate-600">
+                {bakeryCase.highlights.map((highlight) => (
+                  <li key={highlight} className="rounded-lg bg-white px-3 py-2">
+                    {highlight}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 text-xs uppercase tracking-[0.1em] text-slate-500">{bakeryCase.stack}</p>
+            </details>
+
+            <Link
+              href={withLocale(locale, bakeryCase.href)}
+              className="mt-4 inline-flex rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+            >
+              {bakeryCase.cta}
+            </Link>
+          </article>
         </div>
 
         <div className="mt-6 rounded-3xl border border-slate-200 bg-slate-50 p-7">
