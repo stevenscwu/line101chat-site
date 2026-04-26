@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://line101.studio/sitemap.xml",
+    sitemap: "https://line101chat.com/sitemap.xml",
   };
 }

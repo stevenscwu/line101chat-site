@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --surface-light: #f6f8fb;
-  --surface-neutral: #eef2f7;
+  --surface-light: #f5fbf6;
+  --surface-neutral: #e9f5ed;
   --surface-dark: #090f1b;
   --text-primary: #0f172a;
   --text-inverse: #f8fafc;
@@ -24,7 +24,7 @@ body {
 
 body {
   font-family: var(--font-manrope), var(--font-noto-sans-tc), "Segoe UI", sans-serif;
-  letter-spacing: -0.014em;
+  letter-spacing: 0;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "ss01" on, "cv01" on;
@@ -76,5 +76,5 @@ p {
 }
 
 ::selection {
-  background: rgba(56, 189, 248, 0.24);
+  background: rgba(6, 199, 85, 0.22);
 }

@@ -1,13 +1,14 @@
-# LINE101 Studio Website
+# LINE101 Chat Landing Page
 
-Premium bilingual (`zh-TW` + `en`) business website built with Next.js App Router, TypeScript, and Tailwind CSS for a Taiwan-based digital studio.
+A simple landing page for the LINE Indonesian ↔ Traditional Chinese translation chatbot at `https://line101chat.com/`.
+
+The page explains the service, shows the “Add LINE Friend” QR code, and encourages users to add the LINE bot for quick daily conversation translation inside LINE.
 
 ## Stack
 
 - Next.js 16 (App Router)
 - TypeScript
 - Tailwind CSS v4
-- Locale routing with proxy-based redirects
 
 ## Local Development
 
@@ -16,11 +17,7 @@ npm install
 npm run dev
 ```
 
-Open:
-
-- `http://localhost:3000/` (auto-redirects by locale preference)
-- `http://localhost:3000/zh-TW`
-- `http://localhost:3000/en`
+Open `http://localhost:3000/`.
 
 Production checks:
 
@@ -34,71 +31,42 @@ npm run build
 ```text
 src/
   app/
-    [locale]/
-      page.tsx
-      services/
-      work/
-      process/
-      pricing/
-      about/
-      contact/
     layout.tsx
     page.tsx
     robots.ts
     sitemap.ts
-  components/
-    forms/
-    home/
-    layout/
-    navigation/
-    shared/
-  lib/
-    i18n/
-    seo.ts
-  locales/
-    zh-TW/
-      ui.json
-      home.json
-      services.json
-      pages.json
-    en/
-      ui.json
-      home.json
-      services.json
-      pages.json
-  proxy.ts
+public/
+  line-qr.png
 ```
 
-## Localization Architecture
+## QR Code
 
-- Route format: `/{locale}/...`
-- Locales: `zh-TW` (default), `en`
-- Root and non-localized routes are redirected via `src/proxy.ts`
-- Language preference is persisted in `studio_locale` cookie
-- Dictionaries are loaded from:
-  - `src/locales/zh-TW/*.json`
-  - `src/locales/en/*.json`
+The LINE add-friend QR code lives at:
 
-## SEO and Metadata
+```text
+public/line-qr.png
+```
 
-- Localized metadata per page (`title`, `description`, Open Graph)
-- Canonical and language alternates generated via `createPageMetadata`
-- `robots.ts` and `sitemap.ts` included
+To update the QR code, replace that file and keep the same filename so the page continues to reference `/line-qr.png`.
 
-## Vercel Readiness
+The “Add on LINE” button URL is defined in `src/app/page.tsx` as `lineAddFriendUrl`.
 
-- Uses standard Next.js build output with no custom server.
-- No non-default `vercel.json` is required.
-- Ready for Vercel auto-detection (`Framework Preset: Next.js`).
+## SEO
 
-## Notes for Expansion
+The root layout defines:
 
-- Content is centralized in locale JSON files for easy CMS migration later.
-- Contact form is client-side with placeholder submission flow and ready for CRM/email API wiring.
-- Work page is structured for future real case-study expansion.
+- Title: `LINE Indonesian Chinese Translator`
+- Description: `A LINE chatbot for quick Indonesian and Traditional Chinese daily conversation translation.`
+- Open Graph metadata for `https://line101chat.com/`
+- `robots.ts` and `sitemap.ts`
 
-See also:
+## Deployment
 
-- `CONTENT_GUIDE.md`
-- `BRAND_GUIDE.md`
-- `TODO_NEXT.md`
+The repository is deployed on Vercel. Vercel auto-detects the Next.js app and uses:
+
+```bash
+npm install
+npm run build
+```
+
+The included `vercel.json` keeps the framework preset and build command explicit.
