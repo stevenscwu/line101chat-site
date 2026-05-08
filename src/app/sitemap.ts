@@ -2,13 +2,23 @@ import type { MetadataRoute } from "next";
 
 const baseUrl = "https://line101chat.com";
 
+const routes = [
+  "",
+  "/services",
+  "/rag-chatbot",
+  "/translation-chatbot",
+  "/case-studies",
+  "/pricing",
+  "/contact",
+  "/about",
+  "/privacy",
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-  ];
+  return routes.map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: route === "" ? 1 : 0.8,
+  }));
 }

@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --surface-light: #f5fbf6;
-  --surface-neutral: #e9f5ed;
-  --surface-dark: #090f1b;
+  --surface-light: #f8fafc;
+  --surface-neutral: #edf7f1;
+  --surface-dark: #0f172a;
   --text-primary: #0f172a;
   --text-inverse: #f8fafc;
 }
 
 @theme inline {
-  --font-sans: var(--font-manrope);
+  --font-sans: "Noto Sans TC", "Manrope", ui-sans-serif, system-ui, sans-serif;
 }
 
 * {
@@ -23,11 +23,15 @@ body {
 }
 
 body {
-  font-family: var(--font-manrope), var(--font-noto-sans-tc), "Segoe UI", sans-serif;
+  font-family: var(--font-noto-sans-tc), var(--font-manrope), "Segoe UI", sans-serif;
   letter-spacing: 0;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "ss01" on, "cv01" on;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 h1,
@@ -77,4 +81,11 @@ p {
 
 ::selection {
   background: rgba(6, 199, 85, 0.22);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }

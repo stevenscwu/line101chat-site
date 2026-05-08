@@ -2,11 +2,9 @@ import type { Metadata } from "next";
 import { Manrope, Noto_Sans_TC } from "next/font/google";
 
 import "@/app/globals.css";
-
-const siteUrl = "https://line101chat.com";
-const title = "LINE Indonesian Chinese Translator";
-const description =
-  "A LINE chatbot for quick Indonesian and Traditional Chinese daily conversation translation.";
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
+import { site } from "@/data/site";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -21,24 +19,31 @@ const notoSansTc = Noto_Sans_TC({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title,
-  description,
+  metadataBase: new URL(site.url),
+  title: {
+    default: site.title,
+    template: "%s｜LINE101Chat",
+  },
+  description: site.description,
+  keywords: site.keywords,
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
-    url: siteUrl,
-    siteName: "LINE101 Chat",
-    title,
-    description,
+    url: site.url,
+    siteName: "LINE101Chat",
+    title: site.title,
+    description: site.description,
     locale: "zh_TW",
   },
   twitter: {
     card: "summary",
-    title,
-    description,
+    title: site.title,
+    description: site.description,
+  },
+  formatDetection: {
+    telephone: false,
   },
 };
 
@@ -48,9 +53,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${manrope.variable} ${notoSansTc.variable}`}>
+    <html lang="zh-Hant-TW" className={`${manrope.variable} ${notoSansTc.variable}`}>
       <body className="min-h-screen bg-[var(--surface-light)] text-[var(--text-primary)] antialiased">
+        <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

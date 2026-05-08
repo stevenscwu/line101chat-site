@@ -1,14 +1,65 @@
-# LINE101 Chat Landing Page
+# LINE101Chat Business Website
 
-A simple landing page for the LINE Indonesian ↔ Traditional Chinese translation chatbot at `https://line101chat.com/`.
+LINE101Chat is a Taiwan-focused AI chatbot business website for SMEs, schools, education organizations, manufacturers, HR/admin/IT teams, employers, and LINE-based customer service teams.
 
-The page explains the service, shows the “Add LINE Friend” QR code, and encourages users to add the LINE bot for quick daily conversation translation inside LINE.
+The site presents two core services:
+
+- RAG Knowledge Assistant for official-document Q&A with source-grounded answers
+- LINE Translation Assistant for Indonesian ⇄ Traditional Chinese communication
+
+Production domain:
+
+```text
+https://line101chat.com/
+```
+
+Repository:
+
+```text
+https://github.com/stevenscwu/line101chat-site
+```
 
 ## Stack
 
-- Next.js 16 (App Router)
+- Next.js 16 with App Router
 - TypeScript
 - Tailwind CSS v4
+- Static pages suitable for Vercel
+- Local presenter images from `public/presenter`
+- `next/image` for local images
+
+## Presenter Assets
+
+Presenter files inspected in `public/presenter`:
+
+```text
+1.png
+2.png
+3.png
+4.png
+5.png
+6.png
+7.png
+8.png
+host-main.png
+```
+
+Chosen images are configured in:
+
+```text
+src/data/presenter.ts
+```
+
+Current assignment:
+
+- Home hero: `3.png`
+- Home CTA: `1.png`
+- RAG page: `4.png`
+- Translation page: `2.png`
+- About page: `1.png`
+- Contact page: `1.png`
+
+Only the business-suit presenter images are used on the website to keep the identity consistent and professional.
 
 ## Local Development
 
@@ -17,56 +68,57 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000/`.
+Open:
 
-Production checks:
+```text
+http://localhost:3000/
+```
+
+## Production Checks
+
+```bash
+npm run build
+```
+
+Optional lint check:
 
 ```bash
 npm run lint
-npm run build
 ```
-
-## Project Structure
-
-```text
-src/
-  app/
-    layout.tsx
-    page.tsx
-    robots.ts
-    sitemap.ts
-public/
-  line-qr.png
-```
-
-## QR Code
-
-The LINE add-friend QR code lives at:
-
-```text
-public/line-qr.png
-```
-
-To update the QR code, replace that file and keep the same filename so the page continues to reference `/line-qr.png`.
-
-The “Add on LINE” button URL is defined in `src/app/page.tsx` as `lineAddFriendUrl`.
-
-## SEO
-
-The root layout defines:
-
-- Title: `LINE Indonesian Chinese Translator`
-- Description: `A LINE chatbot for quick Indonesian and Traditional Chinese daily conversation translation.`
-- Open Graph metadata for `https://line101chat.com/`
-- `robots.ts` and `sitemap.ts`
 
 ## Deployment
 
-The repository is deployed on Vercel. Vercel auto-detects the Next.js app and uses:
+Vercel deploys from GitHub. Typical workflow:
 
 ```bash
 npm install
+npm run dev
 npm run build
+git add .
+git commit -m "Build LINE101Chat business website"
+git push
 ```
 
-The included `vercel.json` keeps the framework preset and build command explicit.
+Vercel auto deploys from GitHub after push.
+
+Vercel project:
+
+```text
+https://vercel.com/line101chats-projects?repo=https://github.com/stevenscwu/line101chat-site
+```
+
+## Pages
+
+- `/`
+- `/services`
+- `/rag-chatbot`
+- `/translation-chatbot`
+- `/case-studies`
+- `/pricing`
+- `/contact`
+- `/about`
+- `/privacy`
+
+## Future Integrations
+
+The v1 site has no backend, database, CRM, email sender, booking system, or LINE official account API integration. The contact form is visually complete and includes source comments showing where future integrations can be connected.
