@@ -22,17 +22,21 @@ export const site = {
   url: "https://line101chat.com",
   email: "contact@line101chat.com",
   lineAddFriendUrl: "https://line.me/R/ti/p/@539iuksp",
-  title: "LINE101Chat｜台灣中小企業 AI 聊天機器人與 RAG 知識助理",
+  title: "LINE101Chat｜台灣中小企業 RAG 知識助理與 LINE AI 導入",
   description:
-    "LINE101Chat 幫助台灣中小企業、學校與組織建置 LINE 與網站 AI 聊天機器人，支援 RAG 文件問答、來源引用、SOP 知識庫、招生 FAQ 與印尼文繁體中文翻譯。",
+    "LINE101Chat 以 RAG 文件問答為核心，協助台灣中小企業、學校與組織建置可追溯來源的 LINE 與網站 AI 知識助理，並可加購印尼文繁體中文翻譯服務。",
   keywords: [
     "AI 聊天機器人",
     "LINE chatbot",
     "RAG",
     "知識助理",
     "台灣中小企業",
+    "北科大",
+    "NTUT",
     "SOP chatbot",
     "招生 FAQ",
+    "本地端部署",
+    "雲端部署",
     "印尼文翻譯",
     "Ollama",
     "本地端 LLM",
@@ -43,17 +47,17 @@ export const navItems = [
   { label: "首頁", href: "/" },
   { label: "服務項目", href: "/services" },
   { label: "RAG 知識助理", href: "/rag-chatbot" },
-  { label: "LINE 翻譯助理", href: "/translation-chatbot" },
+  { label: "翻譯加值服務", href: "/translation-chatbot" },
   { label: "成功案例 / Demo", href: "/case-studies" },
   { label: "價格方案", href: "/pricing" },
   { label: "聯絡我們", href: "/contact" },
 ];
 
 export const primaryCtas = {
-  demo: { label: "預約 Demo", href: "/contact" },
-  poc: { label: "取得 PoC 評估", href: "/contact" },
+  demo: { label: "預約 RAG Demo", href: "/contact" },
+  poc: { label: "取得 RAG PoC 評估", href: "/contact" },
   line: { label: "加入 LINE 詢問", href: site.lineAddFriendUrl },
-  services: { label: "了解服務方案", href: "/services" },
+  services: { label: "查看 RAG 方案", href: "/services" },
 };
 
 export const problemCards = [
@@ -61,24 +65,45 @@ export const problemCards = [
   { title: "文件散落各處", description: "FAQ、SOP、表單與規章分散在不同資料夾，查找成本高。", icon: FileSearch },
   { title: "新人訓練成本高", description: "制度與經驗難以快速傳承，新人需要反覆問資深同仁。", icon: GraduationCap },
   { title: "LINE 客服回覆慢", description: "客戶與使用者都習慣用 LINE，但人力無法 24/7 回覆。", icon: Headphones },
-  { title: "跨語言溝通困難", description: "雇主、移工、看護與工廠現場需要簡單可靠的雙向翻譯。", icon: Languages },
+  { title: "需要跨語言加值服務", description: "RAG 上線後，可再把印尼文繁體中文翻譯接到 LINE 使用流程。", icon: Languages },
   { title: "重要知識只存在資深員工腦中", description: "關鍵知識沒有被整理成可查詢的系統，離職或調動就流失。", icon: UsersRound },
 ];
 
 export const coreServices = [
   {
-    title: "RAG 知識助理",
+    title: "RAG 知識助理（核心服務）",
     href: "/rag-chatbot",
     icon: DatabaseZap,
     description:
-      "將 FAQ、SOP、招生資訊、規章、產品手冊與內部文件轉換成可查詢的 AI 助理。回答時可附上來源，降低錯誤與重複工作。",
+      "將 FAQ、SOP、招生資訊、規章、產品手冊與內部文件轉換成可查詢、可追溯來源的 AI 助理，是 LINE101Chat 的主要導入方案。",
   },
   {
-    title: "LINE 翻譯助理",
+    title: "LINE 翻譯加值服務",
     href: "/translation-chatbot",
     icon: Languages,
     description:
-      "針對台灣雇主、移工、看護、工廠與仲介場景，提供印尼文與繁體中文之間的自然翻譯，協助日常溝通。",
+      "在 RAG 或 LINE chatbot 導入後，可加購印尼文與繁體中文雙向翻譯，協助雇主、移工、看護、工廠與仲介日常溝通。",
+  },
+];
+
+export const teamHighlights = [
+  {
+    title: "北科大工程背景",
+    description:
+      "工程團隊來自 NTUT（國立台北科技大學 / 北科大），熟悉台灣企業對務實、穩定與可維護系統的期待。",
+    icon: GraduationCap,
+  },
+  {
+    title: "台灣 SME 導入節奏",
+    description:
+      "先做 2-3 週小範圍 PoC，再用 4-6 週正式上線，避免中小企業一開始就承擔過大的導入風險。",
+    icon: Building2,
+  },
+  {
+    title: "雲端與本地端都可規劃",
+    description:
+      "可依文件敏感度、預算、IT 維運能力與使用量，選擇雲端代管、本地端主機或私有雲部署。",
+    icon: ShieldCheck,
   },
 ];
 
@@ -110,23 +135,28 @@ export const benefits = [
   "讓員工專注處理高價值任務",
   "讓客服與行政團隊不用立刻增聘人力",
   "讓使用者可以 24/7 查詢資訊",
+  "先用雲端快速驗證，再依敏感度評估本地端部署",
 ];
 
 export const packages = [
   {
-    title: "Starter PoC",
+    title: "RAG Starter PoC",
+    price: "NT$50,000-90,000",
     description: "用一個明確場景驗證文件品質、問答準確度與使用流程。",
-    items: ["1 個服務場景", "20-30 頁乾淨文件", "LINE 或網站介面", "基礎準確度檢查"],
+    items: ["2-3 週", "1 個服務場景", "20-40 頁乾淨文件", "LINE 或網站介面", "基礎準確度檢查"],
+    highlighted: true,
   },
   {
-    title: "Standard Business Assistant",
+    title: "SME Cloud RAG",
+    price: "NT$120,000-260,000",
     description: "適合正式導入客服、行政、招生、內部支援或產品知識庫。",
-    items: ["多分類知識庫", "LINE + Web 整合", "管理者更新流程", "使用紀錄與維護方案"],
+    items: ["4-6 週", "多分類知識庫", "LINE + Web 整合", "管理者更新流程", "使用紀錄與維護方案"],
   },
   {
-    title: "Custom Enterprise / Private Deployment",
+    title: "Local / Private RAG",
+    price: "NT$350,000 起",
     description: "適合需要本地端、私有雲、權限控管或系統整合的組織。",
-    items: ["Local LLM / Ollama", "私有化部署", "客製權限與紀錄", "進階安全與整合"],
+    items: ["6-10 週", "Local LLM / Ollama", "本地端或私有雲部署", "客製權限與紀錄", "進階安全與整合"],
   },
 ];
 
@@ -135,34 +165,112 @@ export const pricingPlans = [
     name: "免費需求評估",
     price: "NT$0",
     summary: "先確認場景、資料狀況與導入可行性。",
+    timeline: "30 分鐘",
+    bestFor: "還在評估是否要導入 AI 的 SME",
     includes: ["30 分鐘諮詢", "使用場景討論", "文件準備建議", "粗略導入評估"],
   },
   {
-    name: "Starter PoC",
-    price: "NT$80,000 起",
-    summary: "用最小範圍驗證 RAG 或翻譯助理是否適合。",
+    name: "RAG Starter PoC",
+    price: "NT$50,000-90,000",
+    summary: "用最小範圍驗證 RAG 是否真的能降低重複問答與文件查找成本。",
+    timeline: "2-3 週",
+    bestFor: "第一次導入 AI 知識助理的中小企業",
     highlighted: true,
     includes: [
-      "1 個聊天機器人使用場景",
-      "最多 30 頁乾淨文件",
+      "1 個 RAG 使用場景",
+      "20-40 頁乾淨文件",
       "最多 50 個測試問題",
-      "基礎 RAG 知識庫",
+      "基礎 RAG 知識庫與索引",
       "LINE 或網站聊天介面",
       "來源引用",
       "基礎準確度檢查",
     ],
   },
   {
-    name: "Business Plan",
-    price: "NT$200,000 起",
-    summary: "正式導入到部門或客服流程，支援維護與擴充。",
-    includes: ["更多文件與分類", "LINE + Web 整合", "管理者更新流程", "使用紀錄", "維護方案選項"],
+    name: "SME Cloud RAG",
+    price: "NT$120,000-260,000",
+    summary: "正式導入到部門、客服或招生流程，由雲端代管降低維運負擔。",
+    timeline: "4-6 週",
+    bestFor: "希望快速上線、沒有專職 IT 維運人力的 SME",
+    includes: [
+      "100-300 頁文件建置",
+      "LINE + Web 整合",
+      "管理者更新流程",
+      "使用紀錄與問題回顧",
+      "月維護費 NT$12,000-35,000 起",
+    ],
   },
   {
-    name: "Custom / Private Deployment",
-    price: "專案報價",
+    name: "Local / Private RAG",
+    price: "NT$350,000 起",
     summary: "適合資料敏感、需要本地端或私有雲部署的組織。",
-    includes: ["本地端或私有雲部署", "Local LLM", "權限控管", "客製系統整合", "進階安全與紀錄"],
+    timeline: "6-10 週",
+    bestFor: "有內部 IT、資料不適合外流或需權限控管的組織",
+    includes: [
+      "本地端或私有雲部署",
+      "Local LLM / Ollama 可評估",
+      "權限控管與稽核紀錄",
+      "客製系統整合",
+      "月維護費 NT$35,000-90,000 起",
+    ],
+  },
+  {
+    name: "Translation Add-on",
+    price: "NT$30,000-80,000",
+    summary: "在既有 LINE chatbot 或 RAG 導入後，加上印尼文繁體中文雙向翻譯。",
+    timeline: "1-2 週",
+    bestFor: "已有 LINE 使用流程，另需跨語言溝通的現場團隊",
+    includes: [
+      "Indonesian ⇄ Traditional Chinese",
+      "LINE 文字訊息翻譯",
+      "使用量紀錄",
+      "額度或付費模式規劃",
+      "可接在 RAG 或 LINE chatbot 後方",
+    ],
+  },
+];
+
+export const deploymentOptions = [
+  {
+    name: "Cloud-hosted RAG",
+    priceSignal: "建置 NT$120,000-260,000；維護 NT$12,000-35,000 / 月起",
+    timeline: "約 4-6 週正式上線",
+    pros: ["上線速度快", "不用自備 GPU 或伺服器", "維運負擔低", "適合先驗證 ROI"],
+    cons: ["敏感文件需審慎評估", "長期大量使用會有雲端費用", "需規劃資料處理與存取邊界"],
+  },
+  {
+    name: "Local / Private RAG",
+    priceSignal: "建置 NT$350,000 起；維護 NT$35,000-90,000 / 月起",
+    timeline: "約 6-10 週，視硬體與權限整合而定",
+    pros: ["資料留在客戶環境", "可做更嚴格權限與稽核", "適合內規、合約或研發資料", "可評估 Local LLM / Ollama"],
+    cons: ["初期成本較高", "需要 IT 維運與硬體規劃", "模型更新與效能調校需要長期管理"],
+  },
+];
+
+export const smeRolloutSchedule = [
+  {
+    phase: "Phase 0",
+    title: "免費需求評估",
+    duration: "30 分鐘",
+    detail: "確認痛點、文件狀況、使用者與是否需要雲端或本地端部署。",
+  },
+  {
+    phase: "Phase 1",
+    title: "RAG Starter PoC",
+    duration: "2-3 週",
+    detail: "以 20-40 頁文件與 30-50 個真實問題驗證回答品質、來源引用與 LINE / Web 體驗。",
+  },
+  {
+    phase: "Phase 2",
+    title: "SME 正式導入",
+    duration: "4-6 週",
+    detail: "擴充文件分類、管理者更新流程、使用紀錄與維護機制，讓團隊開始日常使用。",
+  },
+  {
+    phase: "Phase 3",
+    title: "私有化或加值服務",
+    duration: "依範圍評估",
+    detail: "依資料敏感度升級本地端 / 私有雲，或加購翻譯、權限、稽核與系統整合。",
   },
 ];
 
@@ -185,17 +293,17 @@ export const faqItems = [
   {
     question: "可以部署在本地端嗎？",
     answer:
-      "可以依需求評估本地端或私有雲部署，也可使用 Ollama 等 Local LLM 方案。實際架構會依資料敏感度、使用量、硬體與維護能力決定。",
+      "可以依需求評估本地端或私有雲部署，也可使用 Ollama 等 Local LLM 方案。雲端上線快、維護成本較低；本地端初期成本較高，但資料可留在客戶環境。",
   },
   {
     question: "客戶需要準備什麼文件？",
     answer:
-      "建議先準備最新、正式、可選取文字的 FAQ、SOP、規章、招生資訊或產品文件。PoC 階段以 20-30 頁乾淨資料與 30-50 個真實問題最容易驗證成效。",
+      "建議先準備最新、正式、可選取文字的 FAQ、SOP、規章、招生資訊或產品文件。PoC 階段以 20-40 頁乾淨資料與 30-50 個真實問題最容易驗證成效。",
   },
   {
     question: "PoC 通常需要多久？",
     answer:
-      "若文件清楚、範圍明確，通常 2-4 週可完成第一版 PoC。若需要大量文件清理、權限設計或系統整合，時程會再拉長。",
+      "若文件清楚、範圍明確，RAG Starter PoC 通常 2-3 週可完成第一版。正式雲端導入多為 4-6 週；本地端或私有雲因硬體、權限與資安流程，通常需 6-10 週以上。",
   },
   {
     question: "可以取代員工嗎？",
@@ -210,12 +318,17 @@ export const faqItems = [
   {
     question: "可以支援英文、印尼文或日文嗎？",
     answer:
-      "可以依使用場景評估。現有翻譯助理以印尼文與繁體中文雙向溝通為主，RAG 知識助理則可依文件語言與模型能力規劃多語支援。",
+      "可以依使用場景評估。RAG 知識助理會先以文件問答為主；印尼文與繁體中文雙向翻譯則定位為 LINE chatbot 的加值服務，可在核心 RAG 導入後加購。",
   },
   {
     question: "價格怎麼計算？",
     answer:
-      "主要依文件量、使用場景數、LINE 或 Web 整合、是否需要本地端部署、使用量紀錄、權限控管與維護頻率計算。建議先從免費需求評估或 Starter PoC 開始。",
+      "主要依文件量、使用場景數、LINE 或 Web 整合、部署位置、使用量紀錄、權限控管與維護頻率計算。台灣中小企業建議先從免費需求評估或 NT$50,000-90,000 的 RAG Starter PoC 開始。",
+  },
+  {
+    question: "為什麼強調北科大工程背景？",
+    answer:
+      "工程團隊來自 NTUT（國立台北科技大學 / 北科大），對台灣企業常見的務實導入、維護成本、資安與文件流程有更貼近市場的理解。",
   },
 ];
 
@@ -255,7 +368,7 @@ export const demoCases = [
   {
     title: "Indonesian ⇄ Traditional Chinese LINE Translation Bot",
     description:
-      "一個用於日常溝通的 LINE 翻譯助理，支援印尼文與繁體中文雙向翻譯，可搭配使用量紀錄與額度管理。",
+      "一個可作為 LINE chatbot 加值服務的翻譯助理，支援印尼文與繁體中文雙向翻譯，可搭配使用量紀錄與額度管理。",
     features: ["Text-only translation", "LINE webhook", "Local Ollama model", "Usage records", "Quota and paid user support"],
     icon: Bot,
   },
@@ -263,6 +376,7 @@ export const demoCases = [
 
 export const trustPoints = [
   { title: "來源引用", description: "讓使用者知道答案根據哪份文件，方便追溯與修正。", icon: CheckCircle2 },
+  { title: "北科大工程背景", description: "NTUT（國立台北科技大學 / 北科大）工程團隊，適合需要在地信任感的台灣 SME 市場。", icon: GraduationCap },
   { title: "資料安全", description: "敏感文件可評估本地端或私有化部署，降低資料外流風險。", icon: ShieldCheck },
   { title: "可衡量效益", description: "以問題量、回覆速度、人工處理時間與使用紀錄判斷成效。", icon: LineChart },
   { title: "導入節奏清楚", description: "先從需求評估與 PoC 開始，再逐步擴充場景與文件。", icon: CalendarDays },

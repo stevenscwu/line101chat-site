@@ -49,9 +49,19 @@ type PricingCardProps = {
   summary: string;
   includes: string[];
   highlighted?: boolean;
+  timeline?: string;
+  bestFor?: string;
 };
 
-export function PricingCard({ name, price, summary, includes, highlighted = false }: PricingCardProps) {
+export function PricingCard({
+  name,
+  price,
+  summary,
+  includes,
+  highlighted = false,
+  timeline,
+  bestFor,
+}: PricingCardProps) {
   return (
     <article
       className={`rounded-lg border p-6 shadow-sm ${
@@ -68,6 +78,22 @@ export function PricingCard({ name, price, summary, includes, highlighted = fals
       <h3 className="text-xl font-black text-slate-950">{name}</h3>
       <p className="mt-3 text-3xl font-black text-slate-950">{price}</p>
       <p className="mt-3 text-sm leading-7 text-slate-600">{summary}</p>
+      {timeline || bestFor ? (
+        <div className="mt-4 grid gap-2 rounded-lg border border-slate-200 bg-white/70 p-3 text-xs leading-5 text-slate-700">
+          {timeline ? (
+            <p>
+              <span className="font-black text-slate-950">時程：</span>
+              {timeline}
+            </p>
+          ) : null}
+          {bestFor ? (
+            <p>
+              <span className="font-black text-slate-950">適合：</span>
+              {bestFor}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
       <ul className="mt-6 grid gap-3">
         {includes.map((item) => (
           <li key={item} className="flex gap-3 text-sm leading-6 text-slate-700">

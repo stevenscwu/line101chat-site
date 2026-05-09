@@ -2,23 +2,24 @@ import type { Metadata } from "next";
 
 import { PresenterCallout } from "@/components/presenter";
 import { SectionHeading } from "@/components/section-heading";
+import { teamHighlights } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "關於 LINE101Chat｜有人味的 AI 聊天助理服務",
+  title: "關於 LINE101Chat｜北科大工程團隊打造 RAG 知識助理",
   description:
-    "LINE101Chat 專注於台灣中小企業、學校與組織可以實際落地的 AI 聊天助理，重視文件品質、資料安全、來源引用與可衡量的效率改善。",
+    "LINE101Chat 由 NTUT（國立台北科技大學 / 北科大）工程背景團隊打造，專注於台灣中小企業可以實際落地的 RAG 知識助理。",
   alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
   return (
     <main>
-      <section className="bg-slate-50 px-5 py-16 sm:px-8 lg:px-10">
+      <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="關於我們"
             title="關於 LINE101Chat"
-            description="LINE101Chat 專注於台灣中小企業、學校與組織可以實際落地的 AI 聊天助理。我們重視文件品質、資料安全、來源引用與可衡量的工作效率改善，而不是只做一個看起來會聊天的 AI。"
+            description="LINE101Chat 專注於台灣中小企業、學校與組織可以實際落地的 RAG 知識助理。工程團隊來自 NTUT（國立台北科技大學 / 北科大），重視文件品質、資料安全、來源引用與可衡量的工作效率改善。"
           />
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {[
@@ -29,6 +30,25 @@ export default function AboutPage() {
               <article key={title} className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
                 <h2 className="text-xl font-black text-slate-950">{title}</h2>
                 <p className="mt-3 text-sm leading-7 text-slate-600">{body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-slate-50 px-5 py-16 sm:px-8 lg:px-10">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeading
+            eyebrow="工程團隊"
+            title="北科大工程背景，貼近台灣企業採購信任"
+            description="對台灣 SME 來說，AI 導入必須兼顧預算、時程、維護責任與資料安全。北科大工程背景讓我們更適合用務實方式把 RAG 做進既有工作流程。"
+          />
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {teamHighlights.map((item) => (
+              <article key={item.title} className="rounded-lg border border-slate-200 bg-slate-50 p-5">
+                <item.icon className="h-6 w-6 text-emerald-600" aria-hidden="true" />
+                <h2 className="mt-4 text-xl font-black text-slate-950">{item.title}</h2>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
               </article>
             ))}
           </div>

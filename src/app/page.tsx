@@ -11,6 +11,7 @@ import {
   coreServices,
   problemCards,
   processSteps,
+  teamHighlights,
   trustPoints,
 } from "@/data/site";
 
@@ -43,12 +44,27 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="核心服務"
-            title="兩大核心服務"
-            description="從文件問答與跨語言溝通開始，選擇一個最痛的場景做 PoC，再逐步擴充到更多部門與使用者。"
+            title="RAG 是主服務，翻譯是加值服務"
+            description="先把正式文件變成能追溯來源的 AI 知識助理，確認成效後，再依現場需求加上 LINE 翻譯、權限或私有化部署。"
           />
           <div className="mt-8 grid gap-5 lg:grid-cols-2">
             {coreServices.map((service) => (
               <ServiceCard key={service.title} {...service} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeading
+            eyebrow="台灣市場信任"
+            title="北科大工程背景，為台灣 SME 做務實導入"
+            description="導入 AI 不只是 demo 漂亮，更要符合台灣公司對預算、維護、資料安全與可追溯答案的要求。"
+          />
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {teamHighlights.map((item) => (
+              <BenefitCard key={item.title} title={item.title} description={item.description} icon={item.icon} />
             ))}
           </div>
         </div>
@@ -79,7 +95,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="導入流程"
             title="導入流程"
-            description="先把目標與資料範圍定清楚，再建立知識庫與介面。這比一開始追求很大的 AI 系統更穩。"
+            description="先用小範圍 RAG PoC 驗證文件品質與效益，再依資料敏感度決定雲端、本地端或私有化部署。"
           />
           <div className="mt-8">
             <ProcessSteps steps={processSteps} />
@@ -112,7 +128,7 @@ export default function Home() {
             title="把 AI 導入做得務實、可追溯、可維護"
             description="RAG 與 LINE chatbot 的價值不只在會聊天，而是在能否回答得準、能否追溯來源、能否被團隊長期維護。"
           />
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {trustPoints.map((item) => (
               <BenefitCard key={item.title} title={item.title} description={item.description} icon={item.icon} />
             ))}

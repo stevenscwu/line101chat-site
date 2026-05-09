@@ -33,10 +33,10 @@ export function ContactForm() {
             <option value="" disabled>
               請選擇感興趣的服務
             </option>
-            <option>RAG 知識助理</option>
-            <option>LINE 翻譯助理</option>
-            <option>Starter PoC</option>
-            <option>本地端 / 私有化部署</option>
+            <option>RAG Starter PoC</option>
+            <option>SME Cloud RAG</option>
+            <option>Local / Private RAG</option>
+            <option>翻譯加值服務</option>
             <option>還不確定，需要先評估</option>
           </select>
         </label>
@@ -45,7 +45,7 @@ export function ContactForm() {
           <textarea
             className={`${fieldClass} min-h-36 resize-y`}
             name="message"
-            placeholder="請簡單描述你的文件類型、使用對象、希望接 LINE 或網站，以及目前遇到的問題。"
+            placeholder="請簡單描述你的文件類型、使用對象、希望接 LINE 或網站、資料是否敏感，以及目前遇到的問題。"
           />
         </label>
       </div>

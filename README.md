@@ -1,11 +1,13 @@
 # LINE101Chat Business Website
 
-LINE101Chat is a Taiwan-focused AI chatbot business website for SMEs, schools, education organizations, manufacturers, HR/admin/IT teams, employers, and LINE-based customer service teams.
+LINE101Chat is a Taiwan-focused RAG knowledge assistant business website for SMEs, schools, education organizations, manufacturers, HR/admin/IT teams, and LINE-based customer service teams.
 
-The site presents two core services:
+The site now presents RAG as the core service and translation as an add-on:
 
 - RAG Knowledge Assistant for official-document Q&A with source-grounded answers
-- LINE Translation Assistant for Indonesian ⇄ Traditional Chinese communication
+- SME Cloud RAG and Local / Private RAG deployment options
+- LINE Translation Add-on for Indonesian ⇄ Traditional Chinese communication
+- NTUT / National Taipei University of Technology engineering team positioning for the Taiwan market
 
 Production domain:
 
