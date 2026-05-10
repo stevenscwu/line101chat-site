@@ -8,7 +8,7 @@ import { deploymentOptions, pricingPlans, smeRolloutSchedule } from "@/data/site
 export const metadata: Metadata = {
   title: "價格方案｜LINE101Chat",
   description:
-    "LINE101Chat 提供 RAG Starter PoC、SME Cloud RAG、Local / Private RAG 與 Translation Add-on，適合台灣中小企業導入 AI 知識助理。",
+    "LINE101Chat 提供企業 AI 知識助理 Starter PoC、SME Cloud RAG、Local / Private RAG 與翻譯選配模組，適合台灣中小企業導入 LINE 文件查詢。",
   alternates: { canonical: "/pricing" },
 };
 
@@ -19,8 +19,8 @@ export default function PricingPage() {
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="價格方案"
-            title="符合台灣 SME 節奏的 RAG 價格方案"
-            description="先用小額 PoC 驗證，再決定正式導入、雲端代管或本地端私有化。翻譯 chatbot 不是主方案，而是可在 LINE 流程成熟後加購。"
+            title="符合台灣 SME 節奏的企業 AI 助理價格方案"
+            description="先用小額 PoC 驗證 LINE 查詢體驗、來源引用與資料保密邊界，再決定正式導入、雲端代管或本地端私有化。翻譯 chatbot 不是主方案，而是可在 LINE 流程成熟後選配。"
           />
           <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {pricingPlans.map((plan) => (
@@ -60,7 +60,7 @@ export default function PricingPage() {
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="部署選擇"
-            title="RAG 可以雲端代管，也可以本地端 / 私有雲"
+            title="AI 助理可以雲端代管，也可以本地端 / 私有雲"
             description="部署方式會直接影響價格、時程、維護責任與資料安全邊界。"
           />
           <div className="mt-8 grid gap-5 lg:grid-cols-2">

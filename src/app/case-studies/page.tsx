@@ -7,7 +7,7 @@ import { demoCases } from "@/data/site";
 export const metadata: Metadata = {
   title: "成功案例 / Demo｜LINE101Chat",
   description:
-    "查看 LINE101Chat 的核心 RAG 文件問答助理 Demo，以及可加購的 Indonesian ⇄ Traditional Chinese 翻譯加值服務 Demo。",
+    "查看 LINE101Chat 的核心企業 AI 文件問答助理 Demo，以及可選配的 Indonesian ⇄ Traditional Chinese 翻譯模組 Demo。",
   alternates: { canonical: "/case-studies" },
 };
 
@@ -19,7 +19,7 @@ export default function CaseStudiesPage() {
           <SectionHeading
             eyebrow="成功案例 / Demo"
             title="成功案例 / Demo"
-            description="目前展示重點是文件來源導向的 RAG 問答助理；LINE 裡的印尼文繁體中文翻譯則作為加值服務 Demo。"
+            description="目前展示重點是能引用來源、可透過 LINE 查詢的企業 AI 文件問答助理；印尼文繁體中文翻譯則只作為選配模組 Demo。"
           />
           <div className="mt-8 grid gap-5 lg:grid-cols-2">
             {demoCases.map((demo) => (
@@ -33,8 +33,8 @@ export default function CaseStudiesPage() {
         <div className="mx-auto grid max-w-7xl gap-5 md:grid-cols-3">
           {[
             ["PoC 重點", "先選一個可衡量的場景，例如招生 FAQ、SOP 查詢或跨語言溝通。"],
-            ["驗證方式", "使用真實問題測試 RAG 回答準確度、來源引用、LINE 使用體驗與維護流程。"],
-            ["下一步", "若 RAG PoC 成效明確，再擴充文件、使用者、權限、雲端或本地端部署。"],
+            ["驗證方式", "使用真實問題測試回答準確度、來源引用、LINE 使用體驗、資料邊界與維護流程。"],
+            ["下一步", "若 AI 助理 PoC 成效明確，再擴充文件、使用者、權限、雲端或本地端部署。"],
           ].map(([title, body]) => (
             <article key={title} className="rounded-lg border border-slate-200 bg-slate-50 p-5">
               <h2 className="text-lg font-black text-slate-950">{title}</h2>
@@ -46,8 +46,8 @@ export default function CaseStudiesPage() {
 
       <CTASection
         title="想用你的文件做第一個 Demo？"
-        body="準備一份乾淨文件與真實問題，我們可以協助判斷是否適合做 RAG Starter PoC。"
-        label="取得 RAG PoC 評估"
+        body="準備一份乾淨文件與真實問題，我們可以協助判斷是否適合做企業 AI 助理 Starter PoC。"
+        label="取得 AI 助理 PoC 評估"
       />
     </main>
   );

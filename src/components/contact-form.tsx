@@ -33,10 +33,10 @@ export function ContactForm() {
             <option value="" disabled>
               請選擇感興趣的服務
             </option>
-            <option>RAG Starter PoC</option>
+            <option>企業 AI 助理 Starter PoC</option>
             <option>SME Cloud RAG</option>
             <option>Local / Private RAG</option>
-            <option>翻譯加值服務</option>
+            <option>翻譯選配模組</option>
             <option>還不確定，需要先評估</option>
           </select>
         </label>

@@ -17,7 +17,7 @@ export function Header() {
               LINE101Chat
             </span>
             <span className="block text-xs font-semibold text-slate-500">
-              RAG for Taiwan SMEs
+              LINE AI knowledge assistant
             </span>
           </span>
         </Link>

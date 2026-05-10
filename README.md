@@ -1,12 +1,14 @@
 # LINE101Chat Business Website
 
-LINE101Chat is a Taiwan-focused RAG knowledge assistant business website for SMEs, schools, education organizations, manufacturers, HR/admin/IT teams, and LINE-based customer service teams.
+LINE101Chat is a Taiwan-focused enterprise AI knowledge assistant website for SMEs, schools, education organizations, manufacturers, HR/admin/IT teams, and LINE-based customer service teams.
 
-The site now presents RAG as the core service and translation as an add-on:
+The site now presents confidential company knowledge search through LINE as the core service and translation as an optional module:
 
-- RAG Knowledge Assistant for official-document Q&A with source-grounded answers
+- Enterprise AI Knowledge Assistant for official-document Q&A with source-grounded answers
+- LINE-based company knowledge search with cloud, local, or private deployment options
+- Confidentiality positioning around data boundaries, source citation, and controlled deployment
 - SME Cloud RAG and Local / Private RAG deployment options
-- LINE Translation Add-on for Indonesian ⇄ Traditional Chinese communication
+- LINE Translation Optional Module for Indonesian ⇄ Traditional Chinese communication
 - NTUT / National Taipei University of Technology engineering team positioning for the Taiwan market
 
 Production domain:
@@ -120,7 +122,8 @@ https://vercel.com/line101chats-projects?repo=https://github.com/stevenscwu/line
 - `/contact`
 - `/about`
 - `/privacy`
+- `/mail` noindexed internal shortcut for Zoho Mail access
 
 ## Future Integrations
 
-The v1 site has no backend, database, CRM, email sender, booking system, or LINE official account API integration. The contact form is visually complete and includes source comments showing where future integrations can be connected.
+The v1 site has no backend, database, CRM, email sender, booking system, or LINE official account API integration. The contact form is visually complete and includes source comments showing where future integrations can be connected. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.

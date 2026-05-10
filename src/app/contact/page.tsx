@@ -10,7 +10,7 @@ import { site } from "@/data/site";
 export const metadata: Metadata = {
   title: "聯絡我們｜預約 Demo 與 PoC 評估",
   description:
-    "聯絡 LINE101Chat，預約 30 分鐘 RAG 需求評估、RAG 知識助理 Demo、翻譯加值服務或本地端私有化部署討論。",
+    "聯絡 LINE101Chat，預約 30 分鐘企業 AI 知識助理需求評估、LINE 文件查詢 Demo、資料保密部署或本地端私有化部署討論。",
   alternates: { canonical: "/contact" },
 };
 
@@ -23,7 +23,7 @@ export default function ContactPage() {
             <SectionHeading
               eyebrow="聯絡我們"
               title="聯絡我們"
-              description="如果你正在評估 RAG 知識助理、雲端代管、本地端部署或翻譯加值服務，歡迎先用一封信描述目前的文件、使用場景與資料敏感度。"
+              description="如果你正在評估企業 AI 知識助理、LINE 文件查詢、雲端代管或本地端部署，歡迎先用一封信描述目前的文件、使用場景與資料敏感度。"
             />
             <div className="mt-8">
               <ContactForm />
@@ -33,8 +33,8 @@ export default function ContactPage() {
             <PresenterCallout
               imageKey="contact"
               label="30 分鐘需求評估"
-              title="先聊清楚，再決定是否做 RAG PoC"
-              body="我們會協助確認文件狀況、使用者場景、LINE 或網站入口、雲端或本地端部署方向，以及 PoC 需要準備的資料。"
+              title="先聊清楚，再決定是否做 AI 助理 PoC"
+              body="我們會協助確認文件狀況、資料敏感度、使用者場景、LINE 或網站入口、雲端或本地端部署方向，以及 PoC 需要準備的資料。"
             />
             <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
               <h2 className="text-lg font-black text-slate-950">直接聯絡</h2>

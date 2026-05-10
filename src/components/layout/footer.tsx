@@ -16,12 +16,12 @@ export function Footer() {
             <span>
               <span className="block text-lg font-black">LINE101Chat</span>
               <span className="block text-sm text-slate-300">
-                RAG Knowledge Assistant for Taiwan SMEs
+                Enterprise AI Knowledge Assistant for Taiwan SMEs
               </span>
             </span>
           </Link>
           <p className="mt-5 max-w-md text-sm leading-7 text-slate-300">
-            北科大工程背景團隊，協助台灣中小企業、學校與組織，把正式文件整理成可追溯來源的 RAG AI 知識助理，並依需求加上 LINE 翻譯服務。
+            北科大工程背景團隊，協助台灣中小企業、學校與組織，把公司文件整理成可透過 LINE 查詢、可追溯來源、可依資料敏感度部署的企業 AI 知識助理。
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <a
@@ -62,12 +62,15 @@ export function Footer() {
               <Link href="/privacy" className="text-sm text-slate-300 hover:text-white">
                 Privacy policy
               </Link>
+              <Link href="/mail" className="text-sm text-slate-300 hover:text-white">
+                信箱登入
+              </Link>
             </div>
           </div>
           <div>
             <h2 className="text-sm font-black text-white">聯絡</h2>
             <p className="mt-4 text-sm leading-7 text-slate-300">
-              RAG PoC / 雲端或本地端部署：
+              AI 助理 PoC / 雲端或本地端部署：
               <br />
               {site.email}
             </p>

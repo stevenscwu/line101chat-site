@@ -9,10 +9,14 @@ import {
   FileSearch,
   GraduationCap,
   Headphones,
+  Inbox,
+  KeyRound,
   Languages,
   LineChart,
+  LockKeyhole,
   MessageCircle,
   SearchCheck,
+  ServerCog,
   ShieldCheck,
   UsersRound,
 } from "lucide-react";
@@ -21,15 +25,20 @@ export const site = {
   name: "LINE101Chat",
   url: "https://line101chat.com",
   email: "contact@line101chat.com",
+  founderEmail: "steven@line101chat.com",
+  mailLoginUrl: "https://mail.zoho.com",
+  mailAdminUrl: "https://mailadmin.zoho.com",
   lineAddFriendUrl: "https://line.me/R/ti/p/@539iuksp",
-  title: "LINE101Chat｜台灣中小企業 RAG 知識助理與 LINE AI 導入",
+  title: "LINE101Chat｜企業 AI 知識助理與 LINE 文件查詢",
   description:
-    "LINE101Chat 以 RAG 文件問答為核心，協助台灣中小企業、學校與組織建置可追溯來源的 LINE 與網站 AI 知識助理，並可加購印尼文繁體中文翻譯服務。",
+    "LINE101Chat 協助台灣中小企業把公司文件、SOP 與內部知識整理成可保密、可追溯來源、可透過 LINE 快速搜尋的企業 AI 助理。",
   keywords: [
     "AI 聊天機器人",
     "LINE chatbot",
+    "企業 AI 助理",
     "RAG",
     "知識助理",
+    "公司資料保密",
     "台灣中小企業",
     "北科大",
     "NTUT",
@@ -46,18 +55,17 @@ export const site = {
 export const navItems = [
   { label: "首頁", href: "/" },
   { label: "服務項目", href: "/services" },
-  { label: "RAG 知識助理", href: "/rag-chatbot" },
-  { label: "翻譯加值服務", href: "/translation-chatbot" },
+  { label: "AI 知識助理", href: "/rag-chatbot" },
   { label: "成功案例 / Demo", href: "/case-studies" },
   { label: "價格方案", href: "/pricing" },
   { label: "聯絡我們", href: "/contact" },
 ];
 
 export const primaryCtas = {
-  demo: { label: "預約 RAG Demo", href: "/contact" },
-  poc: { label: "取得 RAG PoC 評估", href: "/contact" },
+  demo: { label: "預約 AI 助理 Demo", href: "/contact" },
+  poc: { label: "取得 AI 助理 PoC 評估", href: "/contact" },
   line: { label: "加入 LINE 詢問", href: site.lineAddFriendUrl },
-  services: { label: "查看 RAG 方案", href: "/services" },
+  services: { label: "查看 AI 助理方案", href: "/services" },
 };
 
 export const problemCards = [
@@ -65,24 +73,24 @@ export const problemCards = [
   { title: "文件散落各處", description: "FAQ、SOP、表單與規章分散在不同資料夾，查找成本高。", icon: FileSearch },
   { title: "新人訓練成本高", description: "制度與經驗難以快速傳承，新人需要反覆問資深同仁。", icon: GraduationCap },
   { title: "LINE 客服回覆慢", description: "客戶與使用者都習慣用 LINE，但人力無法 24/7 回覆。", icon: Headphones },
-  { title: "需要跨語言加值服務", description: "RAG 上線後，可再把印尼文繁體中文翻譯接到 LINE 使用流程。", icon: Languages },
+  { title: "資料不適合隨便外流", description: "合約、SOP、客戶資料與內部知識需要清楚的存取邊界。", icon: LockKeyhole },
   { title: "重要知識只存在資深員工腦中", description: "關鍵知識沒有被整理成可查詢的系統，離職或調動就流失。", icon: UsersRound },
 ];
 
 export const coreServices = [
   {
-    title: "RAG 知識助理（核心服務）",
+    title: "企業 AI 知識助理（核心服務）",
     href: "/rag-chatbot",
     icon: DatabaseZap,
     description:
-      "將 FAQ、SOP、招生資訊、規章、產品手冊與內部文件轉換成可查詢、可追溯來源的 AI 助理，是 LINE101Chat 的主要導入方案。",
+      "將 FAQ、SOP、規章、產品手冊與內部文件轉換成可透過 LINE 查詢、可追溯來源、可依資料敏感度規劃保密邊界的 AI 助理。",
   },
   {
-    title: "LINE 翻譯加值服務",
+    title: "LINE 翻譯選配模組",
     href: "/translation-chatbot",
     icon: Languages,
     description:
-      "在 RAG 或 LINE chatbot 導入後，可加購印尼文與繁體中文雙向翻譯，協助雇主、移工、看護、工廠與仲介日常溝通。",
+      "若 AI 知識助理上線後仍有跨語言現場溝通需求，可再加上印尼文與繁體中文雙向翻譯；它不是主服務，而是選配模組。",
   },
 ];
 
@@ -102,7 +110,7 @@ export const teamHighlights = [
   {
     title: "雲端與本地端都可規劃",
     description:
-      "可依文件敏感度、預算、IT 維運能力與使用量，選擇雲端代管、本地端主機或私有雲部署。",
+      "可依文件敏感度、預算、IT 維運能力與使用量，選擇雲端代管、本地端主機或私有雲部署，讓資料留在可控範圍。",
     icon: ShieldCheck,
   },
 ];
@@ -121,7 +129,7 @@ export const processSteps = [
   "需求訪談",
   "文件盤點",
   "資料整理",
-  "建立 RAG 知識庫",
+  "建立 AI 知識庫",
   "LINE / Web Chatbot 串接",
   "測試與修正",
   "上線與維護",
@@ -129,6 +137,7 @@ export const processSteps = [
 
 export const benefits = [
   "降低 30-70% 重複查詢工作量",
+  "讓同仁在 LINE 裡快速查公司知識",
   "提升回覆速度",
   "減少新人訓練時間",
   "保留組織知識",
@@ -138,11 +147,34 @@ export const benefits = [
   "先用雲端快速驗證，再依敏感度評估本地端部署",
 ];
 
+export const securityPrinciples = [
+  {
+    title: "資料邊界先定義",
+    description: "先盤點哪些文件可進 PoC、哪些資料需遮蔽、哪些場景必須本地端或私有雲。",
+    icon: LockKeyhole,
+  },
+  {
+    title: "LINE 入口，後端可控",
+    description: "使用者在熟悉的 LINE 提問，文件索引、權限與紀錄則依企業需求放在可管理的環境。",
+    icon: MessageCircle,
+  },
+  {
+    title: "來源引用與修正流程",
+    description: "答案附上文件來源，管理者可以追查、修正與更新知識庫，避免黑箱回答。",
+    icon: SearchCheck,
+  },
+  {
+    title: "雲端或本地端部署",
+    description: "一般資料可用雲端快速驗證，敏感資料可評估本地端、私有雲、權限控管與稽核紀錄。",
+    icon: ServerCog,
+  },
+];
+
 export const packages = [
   {
-    title: "RAG Starter PoC",
+    title: "AI Assistant Starter PoC",
     price: "NT$50,000-90,000",
-    description: "用一個明確場景驗證文件品質、問答準確度與使用流程。",
+    description: "用一個明確場景驗證 LINE 查詢體驗、文件品質、問答準確度與資料邊界。",
     items: ["2-3 週", "1 個服務場景", "20-40 頁乾淨文件", "LINE 或網站介面", "基礎準確度檢查"],
     highlighted: true,
   },
@@ -170,17 +202,17 @@ export const pricingPlans = [
     includes: ["30 分鐘諮詢", "使用場景討論", "文件準備建議", "粗略導入評估"],
   },
   {
-    name: "RAG Starter PoC",
+    name: "AI Assistant Starter PoC",
     price: "NT$50,000-90,000",
-    summary: "用最小範圍驗證 RAG 是否真的能降低重複問答與文件查找成本。",
+    summary: "用最小範圍驗證 LINE AI 助理是否真的能降低重複問答與文件查找成本。",
     timeline: "2-3 週",
     bestFor: "第一次導入 AI 知識助理的中小企業",
     highlighted: true,
     includes: [
-      "1 個 RAG 使用場景",
+      "1 個 AI 助理使用場景",
       "20-40 頁乾淨文件",
       "最多 50 個測試問題",
-      "基礎 RAG 知識庫與索引",
+      "基礎 AI 知識庫與索引",
       "LINE 或網站聊天介面",
       "來源引用",
       "基礎準確度檢查",
@@ -215,9 +247,9 @@ export const pricingPlans = [
     ],
   },
   {
-    name: "Translation Add-on",
+    name: "Translation Optional Module",
     price: "NT$30,000-80,000",
-    summary: "在既有 LINE chatbot 或 RAG 導入後，加上印尼文繁體中文雙向翻譯。",
+    summary: "在既有 LINE chatbot 或企業 AI 助理導入後，加上印尼文繁體中文雙向翻譯。",
     timeline: "1-2 週",
     bestFor: "已有 LINE 使用流程，另需跨語言溝通的現場團隊",
     includes: [
@@ -225,7 +257,7 @@ export const pricingPlans = [
       "LINE 文字訊息翻譯",
       "使用量紀錄",
       "額度或付費模式規劃",
-      "可接在 RAG 或 LINE chatbot 後方",
+      "可接在 AI 助理或 LINE chatbot 後方",
     ],
   },
 ];
@@ -256,9 +288,9 @@ export const smeRolloutSchedule = [
   },
   {
     phase: "Phase 1",
-    title: "RAG Starter PoC",
+    title: "AI Assistant Starter PoC",
     duration: "2-3 週",
-    detail: "以 20-40 頁文件與 30-50 個真實問題驗證回答品質、來源引用與 LINE / Web 體驗。",
+    detail: "以 20-40 頁文件與 30-50 個真實問題驗證回答品質、來源引用、資料邊界與 LINE / Web 體驗。",
   },
   {
     phase: "Phase 2",
@@ -283,7 +315,7 @@ export const faqItems = [
   {
     question: "和一般 ChatGPT 聊天機器人有什麼不同？",
     answer:
-      "一般聊天機器人容易依照模型既有知識回答，內容不一定符合你的公司文件。RAG 知識助理會優先查找你提供的正式資料，並可附上來源，比較適合商務與行政場景。",
+      "一般聊天機器人容易依照模型既有知識回答，內容不一定符合你的公司文件。企業 AI 知識助理會優先查找你提供的正式資料，並可附上來源，比較適合商務與行政場景。",
   },
   {
     question: "可以接 LINE 嗎？",
@@ -303,7 +335,7 @@ export const faqItems = [
   {
     question: "PoC 通常需要多久？",
     answer:
-      "若文件清楚、範圍明確，RAG Starter PoC 通常 2-3 週可完成第一版。正式雲端導入多為 4-6 週；本地端或私有雲因硬體、權限與資安流程，通常需 6-10 週以上。",
+      "若文件清楚、範圍明確，AI Assistant Starter PoC 通常 2-3 週可完成第一版。正式雲端導入多為 4-6 週；本地端或私有雲因硬體、權限與資安流程，通常需 6-10 週以上。",
   },
   {
     question: "可以取代員工嗎？",
@@ -318,12 +350,12 @@ export const faqItems = [
   {
     question: "可以支援英文、印尼文或日文嗎？",
     answer:
-      "可以依使用場景評估。RAG 知識助理會先以文件問答為主；印尼文與繁體中文雙向翻譯則定位為 LINE chatbot 的加值服務，可在核心 RAG 導入後加購。",
+      "可以依使用場景評估。企業 AI 知識助理會先以文件問答為主；印尼文與繁體中文雙向翻譯則定位為選配模組，可在核心 LINE 查詢流程穩定後加購。",
   },
   {
     question: "價格怎麼計算？",
     answer:
-      "主要依文件量、使用場景數、LINE 或 Web 整合、部署位置、使用量紀錄、權限控管與維護頻率計算。台灣中小企業建議先從免費需求評估或 NT$50,000-90,000 的 RAG Starter PoC 開始。",
+      "主要依文件量、使用場景數、LINE 或 Web 整合、部署位置、使用量紀錄、權限控管與維護頻率計算。台灣中小企業建議先從免費需求評估或 NT$50,000-90,000 的 AI Assistant Starter PoC 開始。",
   },
   {
     question: "為什麼強調北科大工程背景？",
@@ -353,9 +385,9 @@ export const readinessScores = [
 
 export const demoCases = [
   {
-    title: "北科大創新前瞻科技學院 iFIRST RAG Q&A",
+    title: "北科大創新前瞻科技學院 iFIRST AI 文件問答",
     description:
-      "使用北科大創新前瞻科技學院公開文件建立的 LINE RAG 問答助理，可依照人工智慧、資訊安全、半導體三個學程分類回答問題，並附上資料來源。",
+      "使用北科大創新前瞻科技學院公開文件建立的 LINE AI 文件問答助理，可依照人工智慧、資訊安全、半導體三個學程分類回答問題，並附上資料來源。",
     features: [
       "Official document retrieval",
       "Three knowledge collections",
@@ -366,9 +398,9 @@ export const demoCases = [
     icon: SearchCheck,
   },
   {
-    title: "Indonesian ⇄ Traditional Chinese LINE Translation Bot",
+    title: "LINE 翻譯選配模組 Demo",
     description:
-      "一個可作為 LINE chatbot 加值服務的翻譯助理，支援印尼文與繁體中文雙向翻譯，可搭配使用量紀錄與額度管理。",
+      "一個可在核心 LINE AI 助理上線後選配的翻譯模組，支援印尼文與繁體中文雙向翻譯，可搭配使用量紀錄與額度管理。",
     features: ["Text-only translation", "LINE webhook", "Local Ollama model", "Usage records", "Quota and paid user support"],
     icon: Bot,
   },
@@ -377,7 +409,22 @@ export const demoCases = [
 export const trustPoints = [
   { title: "來源引用", description: "讓使用者知道答案根據哪份文件，方便追溯與修正。", icon: CheckCircle2 },
   { title: "北科大工程背景", description: "NTUT（國立台北科技大學 / 北科大）工程團隊，適合需要在地信任感的台灣 SME 市場。", icon: GraduationCap },
-  { title: "資料安全", description: "敏感文件可評估本地端或私有化部署，降低資料外流風險。", icon: ShieldCheck },
+  { title: "資料保密", description: "敏感文件可評估本地端、私有雲與權限控管，降低公司資訊外流風險。", icon: ShieldCheck },
   { title: "可衡量效益", description: "以問題量、回覆速度、人工處理時間與使用紀錄判斷成效。", icon: LineChart },
   { title: "導入節奏清楚", description: "先從需求評估與 PoC 開始，再逐步擴充場景與文件。", icon: CalendarDays },
+];
+
+export const emailAccounts = [
+  {
+    address: site.founderEmail,
+    label: "Steven",
+    purpose: "管理者與主要商務往來",
+    icon: KeyRound,
+  },
+  {
+    address: site.email,
+    label: "Contact",
+    purpose: "網站表單、LINE 詢問與客戶來信",
+    icon: Inbox,
+  },
 ];

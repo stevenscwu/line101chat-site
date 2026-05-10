@@ -5,14 +5,14 @@ import { PresenterCallout } from "@/components/presenter";
 import { SectionHeading } from "@/components/section-heading";
 
 export const metadata: Metadata = {
-  title: "翻譯加值服務｜LINE 印尼文繁體中文雙向翻譯",
+  title: "翻譯選配模組｜LINE 印尼文繁體中文雙向翻譯",
   description:
-    "LINE101Chat 翻譯加值服務支援 Indonesian ⇄ Traditional Chinese，可接在 RAG 或 LINE chatbot 之後，協助台灣雇主、移工、看護、工廠、仲介與家庭日常溝通。",
+    "LINE101Chat 翻譯選配模組支援 Indonesian ⇄ Traditional Chinese，可在企業 AI 知識助理或 LINE chatbot 上線後視需求加購。",
   alternates: { canonical: "/translation-chatbot" },
 };
 
 const translationFeatures = [
-  "定位為 RAG / LINE chatbot 加值服務",
+  "定位為企業 AI 助理之後的選配模組",
   "Indonesian ⇄ Traditional Chinese",
   "直接在 LINE 裡使用",
   "適合移工、看護、工廠、仲介與家庭",
@@ -35,19 +35,19 @@ export default function TranslationChatbotPage() {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_420px] lg:items-center">
           <div>
             <p className="inline-flex rounded-lg bg-sky-50 px-4 py-2 text-sm font-black text-sky-700">
-              Add-on Service / LINE Translation Assistant
+              Optional Add-on / LINE Translation Assistant
             </p>
             <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight tracking-[0] text-slate-950 sm:text-5xl">
-              翻譯加值服務：讓 LINE chatbot 支援印尼文繁體中文
+              翻譯選配模組：需要時再讓 LINE 支援印尼文繁體中文
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-9 text-slate-600">
-              LINE101Chat 的主服務是 RAG 知識助理；若你的現場還需要跨語言溝通，可加購印尼文與繁體中文雙向翻譯，讓雇主、移工、看護、工廠管理者、仲介與家庭用熟悉的 LINE 溝通。
+              LINE101Chat 的主服務是企業 AI 知識助理與 LINE 文件查詢；若你的現場還需要跨語言溝通，才加購印尼文與繁體中文雙向翻譯，讓雇主、移工、看護、工廠管理者、仲介與家庭用熟悉的 LINE 溝通。
             </p>
           </div>
           <PresenterCallout
             imageKey="translation"
             label="適合日常使用"
-            title="先把核心 RAG 做穩，再依需求加上翻譯"
+            title="先把核心 AI 助理做穩，再依需求加上翻譯"
             body="適合已經有 LINE 使用流程、需要頻繁跨語言溝通，但又希望操作方式簡單的場景。"
           />
         </div>
@@ -57,8 +57,8 @@ export default function TranslationChatbotPage() {
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <SectionHeading
             eyebrow="服務能力"
-            title="為台灣現場情境設計的加值能力"
-            description="翻譯助理不取代 RAG 知識助理，而是補上日常句子、提醒、工作安排與照護溝通的跨語言需求。"
+            title="為台灣現場情境保留的選配能力"
+            description="翻譯助理不取代企業 AI 知識助理，而是在核心文件查詢流程完成後，補上日常句子、提醒、工作安排與照護溝通的跨語言需求。"
           />
           <div className="grid gap-3 sm:grid-cols-2">
             {translationFeatures.map((feature) => (

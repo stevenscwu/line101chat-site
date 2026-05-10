@@ -11,6 +11,7 @@ import {
   coreServices,
   problemCards,
   processSteps,
+  securityPrinciples,
   teamHighlights,
   trustPoints,
 } from "@/data/site";
@@ -25,7 +26,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="導入痛點"
             title="我們解決的問題"
-            description="不是每個組織都需要大型 AI 平台。很多時候，先把文件整理好、讓 LINE 或網站能回答重複問題，就能立即減少團隊壓力。"
+            description="不是每個組織都需要大型 AI 平台。很多時候，先把文件整理好、把資料邊界定義清楚，讓同仁在 LINE 裡查得到答案，就能立即減少團隊壓力。"
           />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {problemCards.map((item) => (
@@ -44,12 +45,27 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="核心服務"
-            title="RAG 是主服務，翻譯是加值服務"
-            description="先把正式文件變成能追溯來源的 AI 知識助理，確認成效後，再依現場需求加上 LINE 翻譯、權限或私有化部署。"
+            title="企業 AI 知識助理是主服務，翻譯只是選配"
+            description="先把正式文件變成能追溯來源、能在 LINE 快速查詢、能依資料敏感度部署的 AI 助理。確認成效後，再視現場需求加上翻譯或其他模組。"
           />
           <div className="mt-8 grid gap-5 lg:grid-cols-2">
             {coreServices.map((service) => (
               <ServiceCard key={service.title} {...service} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeading
+            eyebrow="資料保密"
+            title="讓公司資訊留在可控邊界，也能被 LINE 快速搜尋"
+            description="LINE101Chat 的重點不是把所有資料丟進公開模型，而是先界定資料範圍、部署方式與更新流程，讓公司知識變得好查、可追溯、可維護。"
+          />
+          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {securityPrinciples.map((item) => (
+              <BenefitCard key={item.title} title={item.title} description={item.description} icon={item.icon} />
             ))}
           </div>
         </div>
@@ -95,7 +111,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="導入流程"
             title="導入流程"
-            description="先用小範圍 RAG PoC 驗證文件品質與效益，再依資料敏感度決定雲端、本地端或私有化部署。"
+            description="先用小範圍 AI 助理 PoC 驗證文件品質、LINE 查詢體驗與效益，再依資料敏感度決定雲端、本地端或私有化部署。"
           />
           <div className="mt-8">
             <ProcessSteps steps={processSteps} />
@@ -126,7 +142,7 @@ export default function Home() {
           <SectionHeading
             eyebrow="信任與維護"
             title="把 AI 導入做得務實、可追溯、可維護"
-            description="RAG 與 LINE chatbot 的價值不只在會聊天，而是在能否回答得準、能否追溯來源、能否被團隊長期維護。"
+            description="企業 AI 助理與 LINE chatbot 的價值不只在會聊天，而是在能否回答得準、能否追溯來源、能否保護資料邊界，並被團隊長期維護。"
           />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {trustPoints.map((item) => (

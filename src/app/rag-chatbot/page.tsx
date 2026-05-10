@@ -7,15 +7,17 @@ import { SectionHeading } from "@/components/section-heading";
 import { acceptedFormats, deploymentOptions, ragUseCases, smeRolloutSchedule } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "RAG 知識助理｜台灣 SME 文件問答與來源引用",
+  title: "企業 AI 知識助理｜LINE 文件查詢、資料保密與來源引用",
   description:
-    "LINE101Chat RAG 知識助理可將 FAQ、SOP、規章、產品手冊與內部文件轉為 LINE 或網站 AI 問答助理，支援來源引用、雲端代管與本地端部署。",
+    "LINE101Chat 企業 AI 知識助理可將 FAQ、SOP、規章、產品手冊與內部文件轉為 LINE 或網站 AI 問答助理，支援來源引用、資料保密邊界、雲端代管與本地端部署。",
   alternates: { canonical: "/rag-chatbot" },
 };
 
 const ragReasons = [
   "回答前先查找你的正式文件，而不是只依賴模型記憶。",
   "可附上來源段落或文件名稱，方便使用者追溯。",
+  "使用者可透過 LINE 問問題，不必知道文件放在哪個資料夾。",
+  "可依文件敏感度規劃雲端、本地端或私有雲部署。",
   "當文件更新時，可透過知識庫更新改善答案。",
   "比一般聊天機器人更適合招生規章、SOP、內部制度與客服知識庫。",
 ];
@@ -27,20 +29,20 @@ export default function RagChatbotPage() {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_420px] lg:items-center">
           <div>
             <p className="inline-flex rounded-lg bg-emerald-50 px-4 py-2 text-sm font-black text-emerald-700">
-              Core Service / RAG Knowledge Assistant
+              Core Service / Enterprise AI Knowledge Assistant
             </p>
             <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight tracking-[0] text-slate-950 sm:text-5xl">
-              RAG 知識助理：LINE101Chat 的核心導入服務
+              企業 AI 知識助理：公司資料保密，也能在 LINE 一問就找到
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-9 text-slate-600">
-              RAG 不是讓 AI 憑空回答，而是先從你的文件中找出相關內容，再根據這些內容產生答案。因此更適合台灣中小企業的招生規章、SOP、產品手冊、內部制度與客服知識庫。
+              LINE101Chat 不是讓 AI 憑空回答，而是先從你的文件中找出相關內容，再根據這些內容產生答案。企業可以依資料敏感度規劃雲端、本地端或私有雲，讓同仁用熟悉的 LINE 快速查 SOP、產品手冊、內部制度與客服知識庫。
             </p>
           </div>
           <PresenterCallout
             imageKey="rag"
             label="顧問提醒"
-            title="先驗證文件品質，再談導入規模"
-            body="RAG 成敗通常取決於文件是否正式、最新、結構清楚，以及測試問題是否接近真實場景。雲端或本地端部署則在 PoC 後一起評估。"
+            title="先定義資料邊界，再談導入規模"
+            body="AI 助理成敗通常取決於文件是否正式、最新、結構清楚，以及哪些資料可以進 PoC。雲端或本地端部署會依敏感度一起評估。"
           />
         </div>
       </section>
@@ -48,9 +50,9 @@ export default function RagChatbotPage() {
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            eyebrow="為什麼選 RAG"
-            title="為什麼 RAG 比一般聊天機器人更適合商務場景？"
-            description="中小企業與學校最在意的通常不是 AI 說得多漂亮，而是答案是否符合正式文件、是否能追溯來源、是否能被維護。"
+            eyebrow="為什麼選文件檢索式 AI"
+            title="為什麼文件檢索式 AI 比一般聊天機器人更適合商務場景？"
+            description="中小企業與學校最在意的通常不是 AI 說得多漂亮，而是答案是否符合正式文件、是否能追溯來源、資料是否在可控邊界內，以及是否能長期維護。"
           />
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             {ragReasons.map((reason) => (
@@ -86,7 +88,7 @@ export default function RagChatbotPage() {
           <SectionHeading
             eyebrow="部署架構"
             title="雲端代管或本地端部署，依資料敏感度決定"
-            description="RAG 的價格與時程會受到部署方式影響。多數 SME 可先用雲端快速驗證 ROI；敏感資料、內規或研發文件則可評估本地端或私有雲。"
+            description="企業 AI 助理的價格與時程會受到部署方式影響。多數 SME 可先用雲端快速驗證 ROI；敏感資料、內規或研發文件則可評估本地端或私有雲。"
           />
           <div className="mt-8 grid gap-5 lg:grid-cols-2">
             {deploymentOptions.map((option) => (
@@ -127,7 +129,7 @@ export default function RagChatbotPage() {
           <SectionHeading
             eyebrow="文件準備"
             title="文件準備方式"
-            description="PoC 階段建議先準備 20-40 頁乾淨、正式、最新的文件。資料越清楚，越容易評估 RAG 的真實效果。"
+            description="PoC 階段建議先準備 20-40 頁乾淨、正式、最新的文件。資料越清楚，越容易評估 AI 助理的真實效果。"
           />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
             {acceptedFormats.map((format) => (
@@ -164,8 +166,8 @@ export default function RagChatbotPage() {
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="導入節奏"
-            title="適合 SME 的 RAG 導入時程"
-            description="用可控範圍快速驗證，再把預算花在確定有價值的正式導入與維護。"
+            title="適合 SME 的 AI 助理導入時程"
+            description="用可控範圍快速驗證 LINE 查詢體驗、來源引用與資料邊界，再把預算花在確定有價值的正式導入與維護。"
           />
           <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {smeRolloutSchedule.map((item) => (

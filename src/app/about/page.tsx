@@ -5,9 +5,9 @@ import { SectionHeading } from "@/components/section-heading";
 import { teamHighlights } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "關於 LINE101Chat｜北科大工程團隊打造 RAG 知識助理",
+  title: "關於 LINE101Chat｜北科大工程團隊打造企業 AI 知識助理",
   description:
-    "LINE101Chat 由 NTUT（國立台北科技大學 / 北科大）工程背景團隊打造，專注於台灣中小企業可以實際落地的 RAG 知識助理。",
+    "LINE101Chat 由 NTUT（國立台北科技大學 / 北科大）工程背景團隊打造，專注於台灣中小企業可以實際落地的企業 AI 知識助理與 LINE 文件查詢。",
   alternates: { canonical: "/about" },
 };
 
@@ -19,7 +19,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="關於我們"
             title="關於 LINE101Chat"
-            description="LINE101Chat 專注於台灣中小企業、學校與組織可以實際落地的 RAG 知識助理。工程團隊來自 NTUT（國立台北科技大學 / 北科大），重視文件品質、資料安全、來源引用與可衡量的工作效率改善。"
+            description="LINE101Chat 專注於台灣中小企業、學校與組織可以實際落地的企業 AI 知識助理。工程團隊來自 NTUT（國立台北科技大學 / 北科大），重視文件品質、公司資料保密、來源引用、LINE 使用體驗與可衡量的工作效率改善。"
           />
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {[
@@ -41,7 +41,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="工程團隊"
             title="北科大工程背景，貼近台灣企業採購信任"
-            description="對台灣 SME 來說，AI 導入必須兼顧預算、時程、維護責任與資料安全。北科大工程背景讓我們更適合用務實方式把 RAG 做進既有工作流程。"
+            description="對台灣 SME 來說，AI 導入必須兼顧預算、時程、維護責任與資料安全。北科大工程背景讓我們更適合用務實方式把 AI 助理做進既有 LINE 與文件流程。"
           />
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {teamHighlights.map((item) => (
@@ -61,7 +61,7 @@ export default function AboutPage() {
             imageKey="about"
             label="品牌體驗"
             title="有人味的 AI 服務體驗"
-            body="我們希望 AI 服務不只是冷冰冰的技術工具，而是由清楚的導入流程、可信任的顧問角色與穩定的系統設計組成。網站中的品牌顧問形象，代表 LINE101Chat 希望帶給客戶的溫度與專業感。"
+            body="我們希望 AI 服務不只是冷冰冰的技術工具，而是由清楚的導入流程、可信任的顧問角色、可控的資料邊界與穩定的系統設計組成。網站中的品牌顧問形象，代表 LINE101Chat 希望帶給客戶的溫度與專業感。"
             actionLabel="預約需求評估"
             actionHref="/contact"
           />
