@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CalendarDays, Menu, MessageCircle } from "lucide-react";
 
 import { ButtonLink } from "@/components/button-link";
-import { navItems, primaryCtas, site } from "@/data/site";
+import { navItems, primaryCtas } from "@/data/site";
 
 export function Header() {
   return (
@@ -42,7 +42,6 @@ export function Header() {
             href={primaryCtas.line.href}
             icon={MessageCircle}
             variant="line"
-            external
           >
             {primaryCtas.line.label}
           </ButtonLink>
@@ -70,10 +69,9 @@ export function Header() {
                 {primaryCtas.demo.label}
               </ButtonLink>
               <ButtonLink
-                href={site.lineAddFriendUrl}
+                href={primaryCtas.line.href}
                 icon={MessageCircle}
                 variant="line"
-                external
               >
                 {primaryCtas.line.label}
               </ButtonLink>

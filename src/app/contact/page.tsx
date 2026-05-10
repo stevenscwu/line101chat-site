@@ -43,17 +43,17 @@ export default function ContactPage() {
                   <Mail className="h-4 w-4" aria-hidden="true" />
                   {site.email}
                 </a>
-                <a className="flex items-center gap-2 hover:text-emerald-700" href={site.lineAddFriendUrl} target="_blank" rel="noreferrer">
+                <a className="flex items-center gap-2 hover:text-emerald-700" href={site.linePageUrl}>
                   <MessageCircle className="h-4 w-4" aria-hidden="true" />
                   加入 LINE 詢問
                 </a>
               </div>
               <div className="mt-5 rounded-lg border border-emerald-100 bg-emerald-50 p-4">
                 <Image
-                  src="/line-qr.png"
+                  src={site.lineQrImage}
                   alt="加入 LINE101Chat LINE 官方帳號 QR Code"
-                  width={294}
-                  height={296}
+                  width={612}
+                  height={612}
                   className="mx-auto h-auto w-full max-w-[220px]"
                 />
               </div>

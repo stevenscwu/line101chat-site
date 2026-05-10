@@ -30,6 +30,7 @@ https://github.com/stevenscwu/line101chat-site
 - Tailwind CSS v4
 - Static pages suitable for Vercel
 - Local presenter images from `public/presenter`
+- LINE service QR code from `public/service.jpg`
 - `next/image` for local images
 
 ## Presenter Assets
@@ -120,10 +121,11 @@ https://vercel.com/line101chats-projects?repo=https://github.com/stevenscwu/line
 - `/case-studies`
 - `/pricing`
 - `/contact`
+- `/line`
 - `/about`
 - `/privacy`
 - `/mail` noindexed internal shortcut for Zoho Mail access
 
 ## Future Integrations
 
-The v1 site has no backend, database, CRM, email sender, booking system, or LINE official account API integration. The contact form is visually complete and includes source comments showing where future integrations can be connected. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.
+The contact form opens the visitor's email app with a prefilled message to `service@line101chat.com` and provides a copy fallback. The site has no backend, database, CRM, server-side email sender, booking system, or LINE official account API integration. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.

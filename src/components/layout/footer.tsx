@@ -31,7 +31,7 @@ export function Footer() {
               <Mail className="h-4 w-4" aria-hidden="true" />
               {site.email}
             </a>
-            <ButtonLink href={site.lineAddFriendUrl} icon={MessageCircle} variant="line" external>
+            <ButtonLink href={site.linePageUrl} icon={MessageCircle} variant="line">
               加入 LINE 詢問
             </ButtonLink>
           </div>

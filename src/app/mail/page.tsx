@@ -22,8 +22,8 @@ const setupItems = [
   },
   {
     title: "建立兩個 Zoho 使用者",
-    detail: "在 Zoho Mail Admin Console 建立 steven@line101chat.com 與 contact@line101chat.com，並要求首次登入更改密碼。",
-    status: "需在 Zoho Admin 確認",
+    detail: "Zoho Mail Admin Console 已顯示 service@line101chat.com 與 steven@line101chat.com。service 帳號仍需首次登入測試寄信。",
+    status: "已建立",
   },
   {
     title: "補齊 SPF / DKIM / DMARC",
@@ -72,7 +72,7 @@ export default function MailPage() {
                 團隊信箱登入
               </h1>
               <p className="mt-5 max-w-3xl text-lg leading-9 text-slate-300">
-                這裡是 LINE101Chat 內部信箱的快速入口。兩個信箱使用 Zoho Mail 登入；密碼與兩階段驗證請在 Zoho 帳號內管理，不會存放在網站中。
+                這裡是 LINE101Chat 內部信箱的快速入口。service@line101chat.com 與 steven@line101chat.com 使用 Zoho Mail 登入；密碼與兩階段驗證請在 Zoho 帳號內管理，不會存放在網站中。
               </p>
             </div>
             <div className="rounded-lg border border-white/10 bg-white/5 p-5">

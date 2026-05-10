@@ -24,11 +24,12 @@ import {
 export const site = {
   name: "LINE101Chat",
   url: "https://line101chat.com",
-  email: "contact@line101chat.com",
+  email: "service@line101chat.com",
   founderEmail: "steven@line101chat.com",
   mailLoginUrl: "https://mail.zoho.com",
   mailAdminUrl: "https://mailadmin.zoho.com",
-  lineAddFriendUrl: "https://line.me/R/ti/p/@539iuksp",
+  linePageUrl: "/line",
+  lineQrImage: "/service.jpg",
   title: "LINE101Chat｜企業 AI 知識助理與 LINE 文件查詢",
   description:
     "LINE101Chat 協助台灣中小企業把公司文件、SOP 與內部知識整理成可保密、可追溯來源、可透過 LINE 快速搜尋的企業 AI 助理。",
@@ -64,7 +65,7 @@ export const navItems = [
 export const primaryCtas = {
   demo: { label: "預約 AI 助理 Demo", href: "/contact" },
   poc: { label: "取得 AI 助理 PoC 評估", href: "/contact" },
-  line: { label: "加入 LINE 詢問", href: site.lineAddFriendUrl },
+  line: { label: "加入 LINE 詢問", href: site.linePageUrl },
   services: { label: "查看 AI 助理方案", href: "/services" },
 };
 
@@ -416,15 +417,15 @@ export const trustPoints = [
 
 export const emailAccounts = [
   {
+    address: site.email,
+    label: "Service",
+    purpose: "網站表單、LINE 詢問與客戶來信",
+    icon: Inbox,
+  },
+  {
     address: site.founderEmail,
     label: "Steven",
     purpose: "管理者與主要商務往來",
     icon: KeyRound,
-  },
-  {
-    address: site.email,
-    label: "Contact",
-    purpose: "網站表單、LINE 詢問與客戶來信",
-    icon: Inbox,
   },
 ];
