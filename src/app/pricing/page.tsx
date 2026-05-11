@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { ButtonLink } from "@/components/button-link";
 import { PricingCard } from "@/components/cards";
 import { FAQSection } from "@/components/faq-section";
 import { SectionHeading } from "@/components/section-heading";
@@ -16,6 +17,22 @@ export const metadata: Metadata = {
 export function PricingContent({ locale = "zh" }: { locale?: Locale } = {}) {
   const content = getSiteContent(locale);
   const pricing = content.pages.pricing;
+  const pilot =
+    locale === "en"
+      ? {
+          eyebrow: "Founding Customer Pilot",
+          title: "First 90 days: smaller pilot for fast feedback",
+          body: "For the first suitable customers, LINE101Chat can start with one use case, 20-30 pages, one LINE or web chatbot, and a 7-14 day validation window in exchange for clear feedback and a possible testimonial.",
+          price: "Suggested pilot range: NT$30,000-50,000",
+          label: "Discuss pilot fit",
+        }
+      : {
+          eyebrow: "Founding Customer Pilot",
+          title: "前 90 天：用小型 Pilot 快速換取回饋",
+          body: "針對適合的第一批客戶，可先用 1 個場景、20-30 頁文件、1 個 LINE 或網站 chatbot，在 7-14 天內驗證可行性，並換取明確回饋或案例推薦。",
+          price: "建議 pilot 範圍：NT$30,000-50,000",
+          label: "討論是否適合 Pilot",
+        };
 
   return (
     <main>
@@ -42,6 +59,15 @@ export function PricingContent({ locale = "zh" }: { locale?: Locale } = {}) {
             <p className="mt-3 text-base leading-8 text-slate-700">
               {pricing.maintenanceBody}
             </p>
+          </div>
+          <div className="mt-8 rounded-lg border border-emerald-200 bg-white p-5 shadow-sm">
+            <p className="text-sm font-black uppercase tracking-[0.08em] text-emerald-700">{pilot.eyebrow}</p>
+            <h2 className="mt-3 text-2xl font-black leading-tight text-slate-950">{pilot.title}</h2>
+            <p className="mt-3 text-base leading-8 text-slate-700">{pilot.body}</p>
+            <p className="mt-4 text-sm font-black text-emerald-700">{pilot.price}</p>
+            <ButtonLink href={locale === "en" ? "/en/book-demo" : "/book-demo"} className="mt-5">
+              {pilot.label}
+            </ButtonLink>
           </div>
         </div>
       </section>

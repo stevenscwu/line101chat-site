@@ -66,6 +66,12 @@ export function Footer() {
               <Link href={localizePath("/about", locale)} className="text-sm text-slate-300 hover:text-white">
                 {locale === "en" ? "About" : "關於我們"}
               </Link>
+              <Link href={localizePath("/blog", locale)} className="text-sm text-slate-300 hover:text-white">
+                {locale === "en" ? "Blog" : "實務文章"}
+              </Link>
+              <Link href={localizePath("/document-readiness-checklist", locale)} className="text-sm text-slate-300 hover:text-white">
+                {locale === "en" ? "Document checklist" : "文件準備檢查表"}
+              </Link>
               <Link href={localizePath("/privacy", locale)} className="text-sm text-slate-300 hover:text-white">
                 {labels.privacyPolicy}
               </Link>

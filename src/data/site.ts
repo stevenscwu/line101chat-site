@@ -63,7 +63,7 @@ export const navItems = [
 ];
 
 export const primaryCtas = {
-  demo: { label: "預約 AI 助理 Demo", href: "/contact" },
+  demo: { label: "預約 AI 助理 Demo", href: "/book-demo" },
   poc: { label: "取得 AI 助理 PoC 評估", href: "/contact" },
   line: { label: "加入 LINE 詢問", href: site.linePageUrl },
   services: { label: "查看 AI 助理方案", href: "/services" },
@@ -997,7 +997,7 @@ export const siteContent = {
       { label: "Contact", href: "/contact" },
     ],
     primaryCtas: {
-      demo: { label: "Book an AI Assistant Demo", href: "/contact" },
+      demo: { label: "Book an AI Assistant Demo", href: "/book-demo" },
       poc: { label: "Get an AI Assistant PoC Review", href: "/contact" },
       line: { label: "Ask on LINE", href: site.linePageUrl },
       services: { label: "View AI Assistant Plans", href: "/services" },

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, MessageCircle } from "lucide-react";
+import { CheckCircle2, Mail, MessageCircle } from "lucide-react";
 
 import { getSiteContent, localizePath, site as baseSite } from "@/data/site";
 import type { Locale } from "@/data/site";
@@ -16,6 +16,15 @@ export function LineContent({ locale = "zh" }: { locale?: Locale } = {}) {
   const content = getSiteContent(locale);
   const line = content.pages.line;
   const { site } = content;
+  const quickOptions =
+    locale === "en"
+      ? [
+          "RAG document Q&A assistant",
+          "LINE translation assistant",
+          "30-minute needs assessment",
+          "Document preparation checklist",
+        ]
+      : ["RAG 文件問答助理", "LINE 翻譯助理", "30 分鐘需求評估", "文件準備方式"];
 
   return (
     <main>
@@ -58,6 +67,33 @@ export function LineContent({ locale = "zh" }: { locale?: Locale } = {}) {
               priority
               className="h-auto w-full"
             />
+          </div>
+        </div>
+      </section>
+      <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.08em] text-emerald-700">
+              {locale === "en" ? "What to ask in LINE" : "LINE 詢問選項"}
+            </p>
+            <h2 className="mt-3 text-3xl font-black leading-tight tracking-[0] text-slate-950">
+              {locale === "en" ? "Start with one of four requests" : "可直接用四個選項開始"}
+            </h2>
+            <p className="mt-4 text-base leading-8 text-slate-600">
+              {locale === "en"
+                ? "These match the recommended LINE Official Account auto-reply flow, so prospects can move from QR scan to a concrete consultation topic."
+                : "這對應建議的 LINE 官方帳號自動回覆流程，讓訪客掃碼後可以直接進入明確諮詢主題。"}
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {quickOptions.map((item, index) => (
+              <div key={item} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" aria-hidden="true" />
+                <p className="text-sm font-bold leading-7 text-slate-700">
+                  {index + 1}. {item}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
