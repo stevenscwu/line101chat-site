@@ -3,6 +3,8 @@ import { CheckCircle2, Languages } from "lucide-react";
 
 import { PresenterCallout } from "@/components/presenter";
 import { SectionHeading } from "@/components/section-heading";
+import { getSiteContent } from "@/data/site";
+import type { Locale } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "翻譯選配模組｜LINE 印尼文繁體中文雙向翻譯",
@@ -11,44 +13,29 @@ export const metadata: Metadata = {
   alternates: { canonical: "/translation-chatbot" },
 };
 
-const translationFeatures = [
-  "定位為企業 AI 助理之後的選配模組",
-  "Indonesian ⇄ Traditional Chinese",
-  "直接在 LINE 裡使用",
-  "適合移工、看護、工廠、仲介與家庭",
-  "可評估本地端 / 私有化 LLM backend",
-  "可搭配使用量紀錄",
-  "可規劃額度與付費使用模式",
-];
+export function TranslationChatbotContent({ locale = "zh" }: { locale?: Locale } = {}) {
+  const translation = getSiteContent(locale).pages.translation;
 
-const conversation = [
-  { speaker: "User", text: "Saya akan tiba jam 8 pagi." },
-  { speaker: "Bot", text: "我早上 8 點會到。" },
-  { speaker: "User", text: "今天請記得帶健保卡。" },
-  { speaker: "Bot", text: "Hari ini jangan lupa membawa kartu asuransi kesehatan." },
-];
-
-export default function TranslationChatbotPage() {
   return (
     <main>
       <section className="bg-slate-50 px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_420px] lg:items-center">
           <div>
             <p className="inline-flex rounded-lg bg-sky-50 px-4 py-2 text-sm font-black text-sky-700">
-              Optional Add-on / LINE Translation Assistant
+              {translation.hero.eyebrow}
             </p>
             <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight tracking-[0] text-slate-950 sm:text-5xl">
-              翻譯選配模組：需要時再讓 LINE 支援印尼文繁體中文
+              {translation.hero.title}
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-9 text-slate-600">
-              LINE101Chat 的主服務是企業 AI 知識助理與 LINE 文件查詢；若你的現場還需要跨語言溝通，才加購印尼文與繁體中文雙向翻譯，讓雇主、移工、看護、工廠管理者、仲介與家庭用熟悉的 LINE 溝通。
+              {translation.hero.description}
             </p>
           </div>
           <PresenterCallout
             imageKey="translation"
-            label="適合日常使用"
-            title="先把核心 AI 助理做穩，再依需求加上翻譯"
-            body="適合已經有 LINE 使用流程、需要頻繁跨語言溝通，但又希望操作方式簡單的場景。"
+            label={translation.callout.label}
+            title={translation.callout.title}
+            body={translation.callout.body}
           />
         </div>
       </section>
@@ -56,12 +43,12 @@ export default function TranslationChatbotPage() {
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <SectionHeading
-            eyebrow="服務能力"
-            title="為台灣現場情境保留的選配能力"
-            description="翻譯助理不取代企業 AI 知識助理，而是在核心文件查詢流程完成後，補上日常句子、提醒、工作安排與照護溝通的跨語言需求。"
+            eyebrow={translation.featuresHeading.eyebrow}
+            title={translation.featuresHeading.title}
+            description={translation.featuresHeading.description}
           />
           <div className="grid gap-3 sm:grid-cols-2">
-            {translationFeatures.map((feature) => (
+            {translation.features.map((feature) => (
               <div key={feature} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" aria-hidden="true" />
                 <p className="text-sm font-bold leading-7 text-slate-700">{feature}</p>
@@ -76,15 +63,15 @@ export default function TranslationChatbotPage() {
           <div>
             <Languages className="h-10 w-10 text-sky-700" aria-hidden="true" />
             <h2 className="mt-4 text-3xl font-black leading-tight tracking-[0] text-slate-950">
-              LINE 對話示意
+              {translation.demo.title}
             </h2>
             <p className="mt-4 text-base leading-8 text-slate-600">
-              使用者只要把訊息貼到 LINE，bot 會回傳另一種語言的自然翻譯。正式導入時可接在既有 LINE chatbot 後方，並加上紀錄、額度與使用者管理。
+              {translation.demo.description}
             </p>
           </div>
           <div className="rounded-lg border border-sky-200 bg-white p-5 shadow-sm">
             <div className="grid gap-4">
-              {conversation.map((message, index) => (
+              {translation.demo.conversation.map((message, index) => (
                 <div
                   key={`${message.speaker}-${index}`}
                   className={`max-w-[86%] rounded-lg px-4 py-3 ${
@@ -103,4 +90,8 @@ export default function TranslationChatbotPage() {
       </section>
     </main>
   );
+}
+
+export default function TranslationChatbotPage() {
+  return <TranslationChatbotContent locale="zh" />;
 }

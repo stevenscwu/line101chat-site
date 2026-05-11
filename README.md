@@ -32,6 +32,8 @@ https://github.com/stevenscwu/line101chat-site
 - Local presenter images from `public/presenter`
 - LINE service QR code from `public/service.jpg`
 - `next/image` for local images
+- Traditional Chinese pages at the root routes with matching English pages under `/en`
+- Header language switcher that maps each page to its Chinese or English counterpart
 
 ## Presenter Assets
 
@@ -125,6 +127,7 @@ https://vercel.com/line101chats-projects?repo=https://github.com/stevenscwu/line
 - `/about`
 - `/privacy`
 - `/feiz` noindexed private shortcut for Zoho Mail access
+- English equivalents under `/en`, for example `/en/services`, `/en/pricing`, and `/en/contact`
 
 ## Future Integrations
 

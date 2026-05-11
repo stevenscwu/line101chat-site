@@ -5,31 +5,26 @@ import { HeroSection } from "@/components/hero-section";
 import { PresenterCTA } from "@/components/presenter";
 import { ProcessSteps } from "@/components/process-steps";
 import { SectionHeading } from "@/components/section-heading";
-import {
-  audienceSegments,
-  benefits,
-  coreServices,
-  problemCards,
-  processSteps,
-  securityPrinciples,
-  teamHighlights,
-  trustPoints,
-} from "@/data/site";
+import { getSiteContent, localizePath } from "@/data/site";
+import type { Locale } from "@/data/site";
 
-export default function Home() {
+export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
+  const content = getSiteContent(locale);
+  const home = content.pages.home;
+
   return (
     <main>
-      <HeroSection />
+      <HeroSection locale={locale} />
 
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            eyebrow="導入痛點"
-            title="我們解決的問題"
-            description="不是每個組織都需要大型 AI 平台。很多時候，先把文件整理好、把資料邊界定義清楚，讓同仁在 LINE 裡查得到答案，就能立即減少團隊壓力。"
+            eyebrow={home.sections.problems.eyebrow}
+            title={home.sections.problems.title}
+            description={home.sections.problems.description}
           />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {problemCards.map((item) => (
+            {content.problemCards.map((item) => (
               <BenefitCard
                 key={item.title}
                 title={item.title}
@@ -44,13 +39,18 @@ export default function Home() {
       <section className="bg-slate-50 px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            eyebrow="核心服務"
-            title="企業 AI 知識助理是主服務，翻譯只是選配"
-            description="先把正式文件變成能追溯來源、能在 LINE 快速查詢、能依資料敏感度部署的 AI 助理。確認成效後，再視現場需求加上翻譯或其他模組。"
+            eyebrow={home.sections.core.eyebrow}
+            title={home.sections.core.title}
+            description={home.sections.core.description}
           />
           <div className="mt-8 grid gap-5 lg:grid-cols-2">
-            {coreServices.map((service) => (
-              <ServiceCard key={service.title} {...service} />
+            {content.coreServices.map((service) => (
+              <ServiceCard
+                key={service.title}
+                {...service}
+                href={localizePath(service.href, locale)}
+                readMoreLabel={content.labels.readMore}
+              />
             ))}
           </div>
         </div>
@@ -59,12 +59,12 @@ export default function Home() {
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            eyebrow="資料保密"
-            title="讓公司資訊留在可控邊界，也能被 LINE 快速搜尋"
-            description="LINE101Chat 的重點不是把所有資料丟進公開模型，而是先界定資料範圍、部署方式與更新流程，讓公司知識變得好查、可追溯、可維護。"
+            eyebrow={home.sections.security.eyebrow}
+            title={home.sections.security.title}
+            description={home.sections.security.description}
           />
           <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {securityPrinciples.map((item) => (
+            {content.securityPrinciples.map((item) => (
               <BenefitCard key={item.title} title={item.title} description={item.description} icon={item.icon} />
             ))}
           </div>
@@ -74,12 +74,12 @@ export default function Home() {
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            eyebrow="台灣市場信任"
-            title="北科大工程背景，為台灣 SME 做務實導入"
-            description="導入 AI 不只是 demo 漂亮，更要符合台灣公司對預算、維護、資料安全與可追溯答案的要求。"
+            eyebrow={home.sections.trust.eyebrow}
+            title={home.sections.trust.title}
+            description={home.sections.trust.description}
           />
           <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {teamHighlights.map((item) => (
+            {content.teamHighlights.map((item) => (
               <BenefitCard key={item.title} title={item.title} description={item.description} icon={item.icon} />
             ))}
           </div>
@@ -90,12 +90,12 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <SectionHeading
-              eyebrow="適用對象"
-              title="適合誰使用？"
-              description="LINE101Chat 特別適合已經累積大量文件、表單、FAQ 或日常 LINE 溝通量的台灣組織。"
+              eyebrow={home.sections.audiences.eyebrow}
+              title={home.sections.audiences.title}
+              description={home.sections.audiences.description}
             />
             <div className="grid gap-3 sm:grid-cols-2">
-              {audienceSegments.map((segment) => (
+              {content.audienceSegments.map((segment) => (
                 <div key={segment.label} className="flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
                   <segment.icon className="h-5 w-5 text-emerald-700" aria-hidden="true" />
                   <p className="text-sm font-black text-slate-800">{segment.label}</p>
@@ -109,12 +109,12 @@ export default function Home() {
       <section className="bg-[#fff7ed] px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            eyebrow="導入流程"
-            title="導入流程"
-            description="先用小範圍 AI 助理 PoC 驗證文件品質、LINE 查詢體驗與效益，再依資料敏感度決定雲端、本地端或私有化部署。"
+            eyebrow={home.sections.process.eyebrow}
+            title={home.sections.process.title}
+            description={home.sections.process.description}
           />
           <div className="mt-8">
-            <ProcessSteps steps={processSteps} />
+            <ProcessSteps steps={content.processSteps} />
           </div>
         </div>
       </section>
@@ -122,12 +122,12 @@ export default function Home() {
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            eyebrow="可衡量效益"
-            title="可以帶來什麼效益？"
-            description="成效會依文件品質與問題量而不同。我們會以實際問題測試，避免只看展示效果。"
+            eyebrow={home.sections.benefits.eyebrow}
+            title={home.sections.benefits.title}
+            description={home.sections.benefits.description}
           />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {benefits.map((benefit) => (
+            {content.benefits.map((benefit) => (
               <div key={benefit} className="flex gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" aria-hidden="true" />
                 <p className="text-sm font-bold leading-7 text-slate-700">{benefit}</p>
@@ -140,12 +140,12 @@ export default function Home() {
       <section className="bg-slate-50 px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            eyebrow="信任與維護"
-            title="把 AI 導入做得務實、可追溯、可維護"
-            description="企業 AI 助理與 LINE chatbot 的價值不只在會聊天，而是在能否回答得準、能否追溯來源、能否保護資料邊界，並被團隊長期維護。"
+            eyebrow={home.sections.maintenance.eyebrow}
+            title={home.sections.maintenance.title}
+            description={home.sections.maintenance.description}
           />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-            {trustPoints.map((item) => (
+            {content.trustPoints.map((item) => (
               <BenefitCard key={item.title} title={item.title} description={item.description} icon={item.icon} />
             ))}
           </div>
@@ -153,10 +153,15 @@ export default function Home() {
       </section>
 
       <PresenterCTA
-        title="想知道你的公司適不適合導入 AI 聊天助理？"
-        body="先從 30 分鐘需求評估開始，我們會協助你確認文件狀況、適合的使用場景，以及 PoC 需要準備的資料。"
-        buttonLabel="預約 30 分鐘需求評估"
+        title={home.cta.title}
+        body={home.cta.body}
+        buttonLabel={home.cta.buttonLabel}
+        locale={locale}
       />
     </main>
   );
+}
+
+export default function Home() {
+  return <HomeContent locale="zh" />;
 }

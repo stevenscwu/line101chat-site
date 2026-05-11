@@ -23,9 +23,10 @@ type ServiceCardProps = {
   description: string;
   href: string;
   icon: LucideIcon;
+  readMoreLabel?: string;
 };
 
-export function ServiceCard({ title, description, href, icon: Icon }: ServiceCardProps) {
+export function ServiceCard({ title, description, href, icon: Icon, readMoreLabel = "了解更多" }: ServiceCardProps) {
   return (
     <Link
       href={href}
@@ -37,7 +38,7 @@ export function ServiceCard({ title, description, href, icon: Icon }: ServiceCar
       <h3 className="mt-5 text-2xl font-black text-slate-950">{title}</h3>
       <p className="mt-3 text-base leading-8 text-slate-600">{description}</p>
       <span className="mt-5 inline-flex text-sm font-black text-emerald-700 group-hover:text-emerald-800">
-        了解更多
+        {readMoreLabel}
       </span>
     </Link>
   );
@@ -51,6 +52,9 @@ type PricingCardProps = {
   highlighted?: boolean;
   timeline?: string;
   bestFor?: string;
+  recommendedLabel?: string;
+  timelineLabel?: string;
+  bestForLabel?: string;
 };
 
 export function PricingCard({
@@ -61,6 +65,9 @@ export function PricingCard({
   highlighted = false,
   timeline,
   bestFor,
+  recommendedLabel = "建議 PoC 起點",
+  timelineLabel = "時程：",
+  bestForLabel = "適合：",
 }: PricingCardProps) {
   return (
     <article
@@ -72,7 +79,7 @@ export function PricingCard({
     >
       {highlighted ? (
         <p className="mb-3 inline-flex rounded-lg bg-emerald-600 px-3 py-1 text-xs font-black text-white">
-          建議 PoC 起點
+          {recommendedLabel}
         </p>
       ) : null}
       <h3 className="text-xl font-black text-slate-950">{name}</h3>
@@ -82,13 +89,13 @@ export function PricingCard({
         <div className="mt-4 grid gap-2 rounded-lg border border-slate-200 bg-white/70 p-3 text-xs leading-5 text-slate-700">
           {timeline ? (
             <p>
-              <span className="font-black text-slate-950">時程：</span>
+              <span className="font-black text-slate-950">{timelineLabel}</span>
               {timeline}
             </p>
           ) : null}
           {bestFor ? (
             <p>
-              <span className="font-black text-slate-950">適合：</span>
+              <span className="font-black text-slate-950">{bestForLabel}</span>
               {bestFor}
             </p>
           ) : null}

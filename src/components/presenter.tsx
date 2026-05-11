@@ -3,7 +3,8 @@ import { MessageCircle } from "lucide-react";
 
 import { ButtonLink } from "@/components/button-link";
 import { presenterAlt, presenterImages } from "@/data/presenter";
-import { primaryCtas } from "@/data/site";
+import { getSiteContent, localizePath } from "@/data/site";
+import type { Locale } from "@/data/site";
 
 type PresenterKey = keyof typeof presenterImages;
 
@@ -128,30 +129,36 @@ type PresenterCTAProps = {
   body: string;
   buttonLabel?: string;
   buttonHref?: string;
+  locale?: Locale;
 };
 
 export function PresenterCTA({
   title,
   body,
-  buttonLabel = "預約 30 分鐘需求評估",
-  buttonHref = primaryCtas.demo.href,
+  buttonLabel,
+  buttonHref,
+  locale = "zh",
 }: PresenterCTAProps) {
+  const { labels, primaryCtas } = getSiteContent(locale);
+  const resolvedButtonLabel = buttonLabel ?? primaryCtas.demo.label;
+  const resolvedButtonHref = localizePath(buttonHref ?? primaryCtas.demo.href, locale);
+
   return (
     <section className="bg-slate-950 px-5 py-16 text-white sm:px-8 lg:px-10">
       <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1fr_360px] lg:items-center">
         <div>
           <p className="text-sm font-black uppercase tracking-[0.08em] text-emerald-300">
-            下一步
+            {labels.nextStep}
           </p>
           <h2 className="mt-3 max-w-3xl text-3xl font-black leading-tight tracking-[0] sm:text-4xl">
             {title}
           </h2>
           <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">{body}</p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href={buttonHref} variant="line" icon={MessageCircle}>
-              {buttonLabel}
+            <ButtonLink href={resolvedButtonHref} variant="line" icon={MessageCircle}>
+              {resolvedButtonLabel}
             </ButtonLink>
-            <ButtonLink href={primaryCtas.poc.href} variant="secondary">
+            <ButtonLink href={localizePath(primaryCtas.poc.href, locale)} variant="secondary">
               {primaryCtas.poc.label}
             </ButtonLink>
           </div>
@@ -159,7 +166,7 @@ export function PresenterCTA({
         <div className="relative">
           <PresenterFrame imageKey="cta" className="aspect-[4/5] min-h-[360px]" />
           <div className="absolute -bottom-4 left-4 right-4 rounded-lg border border-emerald-200 bg-white p-3 text-sm font-bold leading-6 text-slate-800 shadow-lg">
-            先釐清文件與場景，再決定是否值得做 PoC。
+            {labels.ctaBubble}
           </div>
         </div>
       </div>

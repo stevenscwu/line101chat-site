@@ -1,8 +1,11 @@
 import { CheckCircle2 } from "lucide-react";
 
-import { readinessScores } from "@/data/site";
+import { getSiteContent } from "@/data/site";
+import type { Locale } from "@/data/site";
 
-export function DataReadinessScore() {
+export function DataReadinessScore({ locale = "zh" }: { locale?: Locale }) {
+  const { readinessScores } = getSiteContent(locale);
+
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
       {readinessScores.map((item, index) => (
