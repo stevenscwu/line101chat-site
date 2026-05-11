@@ -7,7 +7,7 @@ import { site } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "加入 LINE 詢問｜LINE101Chat",
-  description: "掃描 LINE101Chat LINE 官方帳號 QR Code，或寄信至 service@line101chat.com 洽詢企業 AI 知識助理。",
+  description: `掃描 LINE101Chat LINE 官方帳號 QR Code，或寄信至 ${site.email} 洽詢企業 AI 知識助理。`,
   alternates: { canonical: "/line" },
 };
 

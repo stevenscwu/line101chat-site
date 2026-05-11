@@ -9,7 +9,6 @@ import {
   FileSearch,
   GraduationCap,
   Headphones,
-  Inbox,
   KeyRound,
   Languages,
   LineChart,
@@ -24,7 +23,7 @@ import {
 export const site = {
   name: "LINE101Chat",
   url: "https://line101chat.com",
-  email: "service@line101chat.com",
+  email: "steven@line101chat.com",
   founderEmail: "steven@line101chat.com",
   mailLoginUrl: "https://mail.zoho.com",
   mailAdminUrl: "https://mailadmin.zoho.com",
@@ -418,14 +417,8 @@ export const trustPoints = [
 export const emailAccounts = [
   {
     address: site.email,
-    label: "Service",
-    purpose: "網站表單、LINE 詢問與客戶來信",
-    icon: Inbox,
-  },
-  {
-    address: site.founderEmail,
     label: "Steven",
-    purpose: "管理者與主要商務往來",
+    purpose: "LINE101Chat 主要商務往來與網站詢問",
     icon: KeyRound,
   },
 ];

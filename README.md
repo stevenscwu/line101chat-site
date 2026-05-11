@@ -124,8 +124,8 @@ https://vercel.com/line101chats-projects?repo=https://github.com/stevenscwu/line
 - `/line`
 - `/about`
 - `/privacy`
-- `/mail` noindexed internal shortcut for Zoho Mail access
+- `/feiz` noindexed private shortcut for Zoho Mail access
 
 ## Future Integrations
 
-The contact form opens the visitor's email app with a prefilled message to `service@line101chat.com` and provides a copy fallback. The site has no backend, database, CRM, server-side email sender, booking system, or LINE official account API integration. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.
+The contact form opens the visitor's email app with a prefilled message to `steven@line101chat.com` and provides a copy fallback. The site has no backend, database, CRM, server-side email sender, booking system, or LINE official account API integration. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.

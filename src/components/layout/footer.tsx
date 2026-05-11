@@ -62,9 +62,6 @@ export function Footer() {
               <Link href="/privacy" className="text-sm text-slate-300 hover:text-white">
                 Privacy policy
               </Link>
-              <Link href="/mail" className="text-sm text-slate-300 hover:text-white">
-                信箱登入
-              </Link>
             </div>
           </div>
           <div>
