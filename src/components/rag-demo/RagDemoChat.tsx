@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
-import { AlertCircle, Bot, ExternalLink, Loader2, Send, UserRound } from "lucide-react";
+import { AlertCircle, Bot, ExternalLink, Loader2, MessageCircle, Send, UserRound } from "lucide-react";
 
 import { SuggestedQuestions } from "@/components/rag-demo/SuggestedQuestions";
 
@@ -13,6 +14,9 @@ const suggestedQuestions = [
   "半導體學程指導教授相關規定是什麼？",
   "人工智慧博士班資格考可以免考嗎？",
   "我要查詢英文畢業門檻",
+  "博士班最多可以念幾年？",
+  "資訊安全博士生新制資格考核需要在入學後幾年內完成？",
+  "人工智慧科技碩士申請學位考試要準備哪些資料？",
 ];
 
 const programOptions = [
@@ -34,13 +38,22 @@ type ChatMessage = {
   role: "user" | "assistant";
   content: string;
   sources?: RagSource[];
+  choices?: string[];
   isError?: boolean;
+  showLineQr?: boolean;
 };
 
 type RagDemoResponse = {
   answer?: unknown;
   error?: unknown;
   sources?: unknown;
+  needs_clarification?: unknown;
+  choices?: unknown;
+  demo_fallback?: unknown;
+};
+
+type PendingClarification = {
+  question: string;
 };
 
 function createId(prefix: string) {
@@ -118,11 +131,33 @@ function errorMessageFromPayload(payload: RagDemoResponse) {
   return stringValue(payload.error) || "目前無法取得回答，請稍後再試。";
 }
 
+function normalizeChoices(value: unknown) {
+  return Array.isArray(value) ? value.filter((choice): choice is string => typeof choice === "string") : [];
+}
+
+function programFromClarificationReply(value: string): RagProgram | null {
+  const normalized = value.replace(/\s+/g, "").toLowerCase();
+  const aliases: Array<[RagProgram, string[]]> = [
+    ["ai_program", ["ai", "人工智慧", "人工智慧科技", "人工智慧學程", "人工智慧科技學程"]],
+    ["security_program", ["security", "資安", "資訊安全", "資訊安全學程"]],
+    ["semi_program", ["semi", "半導體", "半導體科技", "半導體學程", "半導體科技學程"]],
+  ];
+
+  for (const [programValue, labels] of aliases) {
+    if (labels.some((label) => normalized === label.toLowerCase())) {
+      return programValue;
+    }
+  }
+
+  return null;
+}
+
 export function RagDemoChat() {
   const [program, setProgram] = useState<RagProgram>("auto");
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [pendingClarification, setPendingClarification] = useState<PendingClarification | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -149,6 +184,10 @@ export function RagDemoChat() {
       return;
     }
 
+    const clarificationProgram = pendingClarification ? programFromClarificationReply(question) : null;
+    const requestQuestion = clarificationProgram && pendingClarification ? pendingClarification.question : question;
+    const requestProgram = clarificationProgram ?? program;
+
     setMessages((current) => [
       ...current,
       {
@@ -166,7 +205,7 @@ export function RagDemoChat() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question, program }),
+        body: JSON.stringify({ question: requestQuestion, program: requestProgram }),
       });
       const payload = (await response.json().catch(() => ({}))) as RagDemoResponse;
 
@@ -175,6 +214,15 @@ export function RagDemoChat() {
       }
 
       const answer = stringValue(payload.answer);
+      const choices = normalizeChoices(payload.choices);
+      const needsClarification = payload.needs_clarification === true;
+      const showLineQr = payload.demo_fallback === true;
+
+      if (clarificationProgram) {
+        setProgram(clarificationProgram);
+      }
+
+      setPendingClarification(needsClarification ? { question: requestQuestion } : null);
       setMessages((current) => [
         ...current,
         {
@@ -182,6 +230,8 @@ export function RagDemoChat() {
           role: "assistant",
           content: answer || "目前沒有收到可顯示的回答，請稍後再試。",
           sources: normalizeSources(payload.sources),
+          choices,
+          showLineQr,
         },
       ]);
     } catch (error) {
@@ -282,6 +332,41 @@ export function RagDemoChat() {
                       AI 助理
                     </div>
                     <p className="whitespace-pre-wrap text-sm leading-7">{displayAnswer(message.content)}</p>
+                    {!message.isError && message.choices?.length ? (
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {message.choices.map((choice) => (
+                          <button
+                            key={choice}
+                            type="button"
+                            className="inline-flex min-h-9 items-center justify-center rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-xs font-black text-emerald-800 transition hover:border-emerald-500 hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-60"
+                            disabled={isLoading}
+                            onClick={() => void sendQuestion(choice)}
+                          >
+                            {choice}
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
+                    {!message.isError && message.showLineQr ? (
+                      <div className="mt-4 grid gap-3 border-t border-slate-200 pt-4 sm:grid-cols-[140px_1fr] sm:items-center">
+                        <div className="w-36 rounded-lg border border-slate-200 bg-white p-2">
+                          <Image
+                            src="/line-qr.png"
+                            alt="LINE101Chat LINE QR Code"
+                            width={250}
+                            height={250}
+                            className="h-auto w-full"
+                          />
+                        </div>
+                        <a
+                          href="/line"
+                          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-black text-white transition hover:bg-emerald-700"
+                        >
+                          <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                          加入 LINE 詢問
+                        </a>
+                      </div>
+                    ) : null}
                     {!message.isError && message.sources?.length ? (
                       <div className="mt-4 border-t border-slate-200 pt-4">
                         <p className="text-xs font-black uppercase tracking-[0.08em] text-emerald-700">

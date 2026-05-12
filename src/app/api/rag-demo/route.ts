@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 
 const MAX_QUESTION_LENGTH = 300;
 const REQUEST_TIMEOUT_MS = 30000;
+const DEMO_HANDOFF_ANSWER =
+  "這個網頁 Demo 只開放常見 iFIRST 文件問題的快速查詢，避免公開試用時等待本機模型長時間生成。\n\n若你想查詢更細節或更自由的問題，請加入 LINE101Chat 的 LINE chatbot 後再提問。";
 
 export const runtime = "nodejs";
 
@@ -65,6 +67,7 @@ function normalizeBackendResponse(value: unknown) {
   return {
     answer: stringValue(value.answer),
     needs_clarification: value.needs_clarification === true || stringValue(value.confidence) === "needs_clarification",
+    demo_fallback: value.demo_fallback === true || stringValue(value.confidence) === "demo_fallback",
     choices: Array.isArray(value.choices) ? value.choices.filter((choice): choice is string => typeof choice === "string") : [],
     collection: stringValue(value.collection) || stringValue(value.program) || null,
     department: stringValue(value.department) || null,
@@ -171,12 +174,15 @@ export async function POST(request: Request) {
 
     return NextResponse.json(normalized);
   } catch (error) {
-    const message =
-      error instanceof Error && error.name === "AbortError"
-        ? "RAG 後端回應逾時，請稍後再試。"
-        : "目前無法連線到 RAG 後端，請稍後再試。";
+    if (error instanceof Error && error.name === "AbortError") {
+      return NextResponse.json({
+        answer: DEMO_HANDOFF_ANSWER,
+        sources: [],
+        demo_fallback: true,
+      });
+    }
 
-    return NextResponse.json({ error: message }, { status: 503 });
+    return NextResponse.json({ error: "目前無法連線到 RAG 後端，請稍後再試。" }, { status: 503 });
   } finally {
     clearTimeout(timeout);
   }
