@@ -54,8 +54,13 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
             description={caseStudies.heading.description}
           />
           <div className="mt-8 grid gap-5 lg:grid-cols-2">
-            {content.demoCases.map((demo) => (
-              <DemoCard key={demo.title} {...demo} />
+            {content.demoCases.map((demo, index) => (
+              <DemoCard
+                key={demo.title}
+                {...demo}
+                actionHref={index === 0 ? "/demo/ifirst-rag" : undefined}
+                actionLabel={index === 0 ? (locale === "en" ? "Try Demo Online" : "線上試用 Demo") : undefined}
+              />
             ))}
           </div>
         </div>

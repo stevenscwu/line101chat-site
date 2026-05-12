@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 type CardProps = {
@@ -118,9 +118,11 @@ type DemoCardProps = {
   description: string;
   features: string[];
   icon: LucideIcon;
+  actionHref?: string;
+  actionLabel?: string;
 };
 
-export function DemoCard({ title, description, features, icon: Icon }: DemoCardProps) {
+export function DemoCard({ title, description, features, icon: Icon, actionHref, actionLabel }: DemoCardProps) {
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
       <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-sky-50 text-sky-700">
@@ -136,6 +138,15 @@ export function DemoCard({ title, description, features, icon: Icon }: DemoCardP
           </li>
         ))}
       </ul>
+      {actionHref && actionLabel ? (
+        <Link
+          href={actionHref}
+          className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-sm font-black text-white shadow-sm hover:bg-emerald-700"
+        >
+          {actionLabel}
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Link>
+      ) : null}
     </article>
   );
 }
