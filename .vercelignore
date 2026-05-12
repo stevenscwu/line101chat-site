@@ -1,0 +1,13 @@
+.git
+.next
+.verification
+node_modules
+
+.next-dev*.log
+*.tsbuildinfo
+next-env.d.ts
+
+proposal*.txt
+summary*.txt
+/QR.JPG
+/service.jpg

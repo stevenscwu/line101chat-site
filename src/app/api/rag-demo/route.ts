@@ -35,6 +35,12 @@ function backendChatUrl(rawUrl: string) {
   return url;
 }
 
+function forwardedClientIp(request: Request) {
+  const forwardedFor = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "";
+  const clientIp = forwardedFor.split(",", 1)[0]?.trim() || "";
+  return clientIp.length <= 128 ? clientIp : "";
+}
+
 function isWebDemoEndpoint(url: URL) {
   return url.pathname.replace(/\/+$/, "").endsWith("/web-demo/chat");
 }
@@ -120,6 +126,16 @@ export async function POST(request: Request) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   const backendPayload: { question: string; program?: string } = { question };
+  const clientIp = forwardedClientIp(request);
+  const backendHeaders: Record<string, string> = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    "X-Demo-Api-Key": apiKey,
+  };
+
+  if (clientIp) {
+    backendHeaders["X-Demo-Client-IP"] = clientIp;
+  }
 
   if (program !== "auto") {
     backendPayload.program = isWebDemoEndpoint(apiUrl) ? program : backendProgramMap[program];
@@ -128,11 +144,7 @@ export async function POST(request: Request) {
   try {
     const backendResponse = await fetch(apiUrl, {
       method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-Demo-Api-Key": apiKey,
-      },
+      headers: backendHeaders,
       body: JSON.stringify(backendPayload),
       cache: "no-store",
       signal: controller.signal,
