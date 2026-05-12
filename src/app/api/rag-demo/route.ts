@@ -30,9 +30,13 @@ function isAllowedProgram(value: string): value is RagDemoProgram {
 function backendChatUrl(rawUrl: string) {
   const url = new URL(rawUrl);
   if (url.pathname === "" || url.pathname === "/") {
-    url.pathname = "/chat";
+    url.pathname = "/web-demo/chat";
   }
   return url;
+}
+
+function isWebDemoEndpoint(url: URL) {
+  return url.pathname.replace(/\/+$/, "").endsWith("/web-demo/chat");
 }
 
 function normalizeSources(value: unknown) {
@@ -41,9 +45,9 @@ function normalizeSources(value: unknown) {
   }
 
   return value.filter(isRecord).map((source) => ({
-    source_file: stringValue(source.source_file),
-    heading: stringValue(source.heading),
-    source_url: stringValue(source.source_url),
+    source_file: stringValue(source.source_file) || stringValue(source.title),
+    heading: stringValue(source.heading) || stringValue(source.title),
+    source_url: stringValue(source.source_url) || stringValue(source.url),
   }));
 }
 
@@ -54,9 +58,9 @@ function normalizeBackendResponse(value: unknown) {
 
   return {
     answer: stringValue(value.answer),
-    needs_clarification: value.needs_clarification === true,
+    needs_clarification: value.needs_clarification === true || stringValue(value.confidence) === "needs_clarification",
     choices: Array.isArray(value.choices) ? value.choices.filter((choice): choice is string => typeof choice === "string") : [],
-    collection: stringValue(value.collection) || null,
+    collection: stringValue(value.collection) || stringValue(value.program) || null,
     department: stringValue(value.department) || null,
     sources: normalizeSources(value.sources),
   };
@@ -118,7 +122,7 @@ export async function POST(request: Request) {
   const backendPayload: { question: string; program?: string } = { question };
 
   if (program !== "auto") {
-    backendPayload.program = backendProgramMap[program];
+    backendPayload.program = isWebDemoEndpoint(apiUrl) ? program : backendProgramMap[program];
   }
 
   try {
