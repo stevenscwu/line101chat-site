@@ -511,7 +511,7 @@ export const siteContent = {
     hero: {
       features: ["企業 AI 助理", "LINE 快速查詢", "來源引用", "資料保密邊界"],
       eyebrow: "台灣中小企業 AI 助理 / 北科大工程團隊",
-      title: "LINE101Chat 企業 AI 知識助理，讓公司文件好查、答案有來源",
+      title: "LINE101Chat 企業 AI 知識助理，真人回答水準，公司機密資料不外流",
       description:
         "把 SOP、FAQ、規章、產品手冊與內部制度整理成可透過 LINE 或網站查詢的 AI 助理。回答時附上文件來源，並可依資料敏感度規劃雲端、本地端或私有雲部署。",
       speech:

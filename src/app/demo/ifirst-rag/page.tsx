@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { FileSearch, ShieldCheck } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { FileSearch, MessageCircle, ShieldCheck } from "lucide-react";
 
 import { CTASection } from "@/components/cards";
 import { RagDemoChat } from "@/components/rag-demo/RagDemoChat";
@@ -12,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 const disclaimer =
-  "本 Demo 僅使用公開資料進行展示，回答結果僅供參考。正式規定仍應以北科大創新前瞻科技學院官方公告與辦公室回覆為準。";
+  "本網頁是純 Demo：建議問題皆使用預先準備的示意回答，不會呼叫 RAG 後端。若要測試真實查詢速度、自由提問與完整回答品質，請掃描 QR code 加入 LINE chatbot。正式規定仍以北科大創新前瞻科技學院官方公告與辦公室回覆為準。";
 
 export default function IfirstRagDemoPage() {
   return (
@@ -37,6 +39,30 @@ export default function IfirstRagDemoPage() {
               <ShieldCheck className="h-8 w-8 text-amber-700" aria-hidden="true" />
               <h2 className="mt-4 text-xl font-black text-slate-950">Demo 使用提醒</h2>
               <p className="mt-3 text-sm font-semibold leading-7 text-slate-700">{disclaimer}</p>
+              <div className="mt-5 grid gap-4 rounded-lg border border-amber-200 bg-white/80 p-4 sm:grid-cols-[132px_1fr] sm:items-center lg:grid-cols-1 xl:grid-cols-[132px_1fr]">
+                <div className="w-32 rounded-lg border border-slate-200 bg-white p-2">
+                  <Image
+                    src="/line-qr.png"
+                    alt="LINE101Chat LINE QR Code"
+                    width={250}
+                    height={250}
+                    className="h-auto w-full"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm font-black leading-6 text-slate-950">真實效能請用 LINE chatbot</p>
+                  <p className="mt-2 text-xs font-semibold leading-6 text-slate-600">
+                    網頁版只展示預先回答；LINE chatbot 才是實際查詢體驗。
+                  </p>
+                  <Link
+                    href="/line"
+                    className="mt-3 inline-flex min-h-10 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-emerald-600 px-4 py-2 text-xs font-black text-white transition hover:bg-emerald-700"
+                  >
+                    <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                    加入 LINE chatbot
+                  </Link>
+                </div>
+              </div>
             </aside>
           </div>
 
