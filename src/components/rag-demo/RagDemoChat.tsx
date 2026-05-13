@@ -153,7 +153,7 @@ function LineQrBlock({ compact = false }: { compact?: boolean }) {
     <div className={`grid gap-3 ${compact ? "" : "border-t border-slate-200 pt-4"} sm:grid-cols-[140px_1fr] sm:items-center`}>
       <div className="w-36 rounded-lg border border-slate-200 bg-white p-2">
         <Image
-          src="/line-qr.png"
+          src="/line101chat-qr.png"
           alt="LINE101Chat LINE QR Code"
           width={250}
           height={250}
