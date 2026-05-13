@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { PlayCircle } from "lucide-react";
+import { MessageCircle, PlayCircle } from "lucide-react";
 
 import { CTASection, DemoCard } from "@/components/cards";
 import { SectionHeading } from "@/components/section-heading";
@@ -69,6 +70,34 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
                   ? "Use it to check how source-grounded answers, knowledge collections, and Traditional Chinese responses feel before preparing your own PoC documents."
                   : "可先看 AI 如何根據公開文件回答、切換知識集合、附上資料來源，以及繁體中文回答的實際體驗。"}
               </p>
+              <div className="mt-5 grid gap-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4 sm:grid-cols-[132px_1fr] sm:items-center lg:grid-cols-1 xl:grid-cols-[132px_1fr]">
+                <div className="w-32 rounded-lg border border-emerald-100 bg-white p-2">
+                  <Image
+                    src="/line-qr.png"
+                    alt="LINE101Chat LINE QR Code"
+                    width={250}
+                    height={250}
+                    className="h-auto w-full"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm font-black leading-6 text-slate-950">
+                    {locale === "en" ? "Try real performance in LINE" : "掃描 QR code 測試 LINE chatbot"}
+                  </p>
+                  <p className="mt-2 text-xs font-semibold leading-6 text-slate-600">
+                    {locale === "en"
+                      ? "The web demo is a preview. Scan the QR code to test the LINE chatbot experience."
+                      : "網頁 Demo 先看流程；真實查詢速度、自由提問與完整回答品質請以 LINE chatbot 為準。"}
+                  </p>
+                  <Link
+                    href={localizePath(content.primaryCtas.line.href, locale)}
+                    className="mt-3 inline-flex min-h-10 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-emerald-600 px-4 py-2 text-xs font-black text-white transition hover:bg-emerald-700"
+                  >
+                    <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                    {content.primaryCtas.line.label}
+                  </Link>
+                </div>
+              </div>
               <p className="mt-5 rounded-lg bg-slate-50 p-4 text-xs font-bold leading-6 text-slate-500">
                 {caseStudies.secondaryNote}
               </p>
