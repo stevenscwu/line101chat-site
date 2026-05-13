@@ -10,7 +10,25 @@ import { getLocaleFromPathname, getSiteContent, localizePath } from "@/data/site
 export function Footer() {
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname);
-  const { labels, navItems, site } = getSiteContent(locale);
+  const { labels, navItems, primaryCtas, site } = getSiteContent(locale);
+  const resourceLinks =
+    locale === "en"
+      ? [
+          { label: "Free Assessment", href: "/free-assessment" },
+          { label: "Document checklist", href: "/document-readiness-checklist" },
+          { label: "Demo", href: "/case-studies" },
+          { label: "Privacy policy", href: "/privacy" },
+          { label: "Contact", href: "/contact" },
+          { label: "PoC cost notes", href: "/free-assessment#poc-pricing", muted: true },
+        ]
+      : [
+          { label: "免費評估", href: "/free-assessment" },
+          { label: "文件準備檢查表", href: "/document-readiness-checklist" },
+          { label: "Demo", href: "/case-studies" },
+          { label: "隱私政策", href: "/privacy" },
+          { label: "聯絡我們", href: "/contact" },
+          { label: "PoC 費用說明", href: "/free-assessment#poc-pricing", muted: true },
+        ];
 
   return (
     <footer className="border-t border-slate-200 bg-slate-950 text-white">
@@ -48,7 +66,7 @@ export function Footer() {
           <div>
             <h2 className="text-sm font-black text-white">{labels.websiteNav}</h2>
             <div className="mt-4 grid gap-2">
-              {navItems.slice(0, 4).map((item) => (
+              {navItems.map((item) => (
                 <Link key={item.href} href={localizePath(item.href, locale)} className="text-sm text-slate-300 hover:text-white">
                   {item.label}
                 </Link>
@@ -58,23 +76,15 @@ export function Footer() {
           <div>
             <h2 className="text-sm font-black text-white">{labels.resources}</h2>
             <div className="mt-4 grid gap-2">
-              {navItems.slice(4).map((item) => (
-                <Link key={item.href} href={localizePath(item.href, locale)} className="text-sm text-slate-300 hover:text-white">
+              {resourceLinks.map((item) => (
+                <Link
+                  key={`${item.href}-${item.label}`}
+                  href={localizePath(item.href, locale)}
+                  className={`text-sm hover:text-white ${item.muted ? "text-slate-500" : "text-slate-300"}`}
+                >
                   {item.label}
                 </Link>
               ))}
-              <Link href={localizePath("/about", locale)} className="text-sm text-slate-300 hover:text-white">
-                {locale === "en" ? "About" : "關於我們"}
-              </Link>
-              <Link href={localizePath("/blog", locale)} className="text-sm text-slate-300 hover:text-white">
-                {locale === "en" ? "Blog" : "實務文章"}
-              </Link>
-              <Link href={localizePath("/document-readiness-checklist", locale)} className="text-sm text-slate-300 hover:text-white">
-                {locale === "en" ? "Document checklist" : "文件準備檢查表"}
-              </Link>
-              <Link href={localizePath("/privacy", locale)} className="text-sm text-slate-300 hover:text-white">
-                {labels.privacyPolicy}
-              </Link>
             </div>
           </div>
           <div>
@@ -84,6 +94,11 @@ export function Footer() {
               <br />
               {site.email}
             </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <ButtonLink href={localizePath(primaryCtas.assessment.href, locale)} variant="secondary">
+                {primaryCtas.assessment.label}
+              </ButtonLink>
+            </div>
             <p className="mt-4 text-xs leading-6 text-slate-500">
               Copyright © {new Date().getFullYear()} LINE101Chat. All rights reserved.
             </p>

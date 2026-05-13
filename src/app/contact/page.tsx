@@ -9,9 +9,9 @@ import { getSiteContent, localizePath } from "@/data/site";
 import type { Locale } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "聯絡我們｜預約 Demo 與 PoC 評估",
+  title: "聯絡我們｜免費 AI 知識助理文件評估",
   description:
-    "聯絡 LINE101Chat，預約 30 分鐘企業 AI 知識助理需求評估、LINE 文件查詢 Demo、資料保密部署或本地端私有化部署討論。",
+    "聯絡 LINE101Chat，免費評估 FAQ、SOP、規章與內部文件是否適合做 AI 知識助理、LINE 文件問答、雲端或本地端部署。",
   alternates: { canonical: "/contact" },
 };
 

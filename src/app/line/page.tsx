@@ -19,12 +19,12 @@ export function LineContent({ locale = "zh" }: { locale?: Locale } = {}) {
   const quickOptions =
     locale === "en"
       ? [
-          "RAG document Q&A assistant",
-          "LINE translation assistant",
-          "30-minute needs assessment",
+          "AI knowledge assistant",
+          "LINE document Q&A",
+          "Free document assessment",
           "Document preparation checklist",
         ]
-      : ["RAG 文件問答助理", "LINE 翻譯助理", "30 分鐘需求評估", "文件準備方式"];
+      : ["AI 知識助理", "LINE 文件問答", "免費文件評估", "文件準備方式"];
 
   return (
     <main>

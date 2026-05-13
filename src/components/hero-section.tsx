@@ -1,4 +1,4 @@
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, MessageCircle } from "lucide-react";
 
 import { ButtonLink } from "@/components/button-link";
 import { PresenterHero } from "@/components/presenter";
@@ -22,11 +22,14 @@ export function HeroSection({ locale = "zh" }: { locale?: Locale }) {
             {hero.description}
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href={localizePath(primaryCtas.demo.href, locale)} icon={CalendarDays}>
-              {primaryCtas.demo.label}
+            <ButtonLink href={localizePath(primaryCtas.assessment.href, locale)}>
+              {primaryCtas.assessment.label}
             </ButtonLink>
-            <ButtonLink href={localizePath(primaryCtas.services.href, locale)} variant="secondary">
-              {primaryCtas.services.label}
+            <ButtonLink href={localizePath(primaryCtas.demoPage.href, locale)} icon={CalendarDays} variant="secondary">
+              {primaryCtas.demoPage.label}
+            </ButtonLink>
+            <ButtonLink href={localizePath(primaryCtas.line.href, locale)} icon={MessageCircle} variant="line">
+              {primaryCtas.line.label}
             </ButtonLink>
           </div>
         </div>

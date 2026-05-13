@@ -1,8 +1,5 @@
-import { PricingContent } from "@/app/pricing/page";
-import { localizedMetadata } from "@/lib/metadata";
+import { permanentRedirect } from "next/navigation";
 
-export const metadata = localizedMetadata("en", "pricing");
-
-export default function EnglishPricingPage() {
-  return <PricingContent locale="en" />;
+export default function EnglishPricingRedirectPage() {
+  permanentRedirect("/en/free-assessment");
 }
