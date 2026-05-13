@@ -26,7 +26,7 @@ export const site = {
   mailLoginUrl: "https://mail.zoho.com",
   mailAdminUrl: "https://mailadmin.zoho.com",
   linePageUrl: "/line",
-  lineQrImage: "/line-qr.png",
+  lineQrImage: "/line101chat-qr.png",
   title: "LINE101Chat｜企業 AI 知識助理與 LINE 文件問答",
   description:
     "LINE101Chat 協助台灣中小企業、學校與組織，把 FAQ、SOP、規章與內部文件轉換成可在 LINE 或網站查詢的 AI 知識助理，支援來源引用、文件整理、雲端與本地端部署評估。",

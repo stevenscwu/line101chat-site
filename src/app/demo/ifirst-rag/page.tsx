@@ -42,7 +42,7 @@ export default function IfirstRagDemoPage() {
               <div className="mt-5 grid gap-4 rounded-lg border border-amber-200 bg-white/80 p-4 sm:grid-cols-[132px_1fr] sm:items-center lg:grid-cols-1 xl:grid-cols-[132px_1fr]">
                 <div className="w-32 rounded-lg border border-slate-200 bg-white p-2">
                   <Image
-                    src="/line-qr.png"
+                    src="/line101chat-qr.png"
                     alt="LINE101Chat LINE QR Code"
                     width={250}
                     height={250}
