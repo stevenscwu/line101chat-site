@@ -1,8 +1,5 @@
-import { TranslationChatbotContent } from "@/app/translation-chatbot/page";
-import { localizedMetadata } from "@/lib/metadata";
+import { permanentRedirect } from "next/navigation";
 
-export const metadata = localizedMetadata("en", "translation");
-
-export default function EnglishTranslationChatbotPage() {
-  return <TranslationChatbotContent locale="en" />;
+export default function EnglishTranslationChatbotRedirectPage() {
+  permanentRedirect("/en/services");
 }

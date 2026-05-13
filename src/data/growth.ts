@@ -49,14 +49,14 @@ export const growthContent = {
     },
     checklist: {
       metadata: {
-        title: "AI Chatbot 文件準備檢查表｜LINE101Chat",
+        title: "AI 知識助理文件準備檢查表｜LINE101Chat",
         description:
-          "下載或列印 LINE101Chat AI Chatbot 文件準備檢查表，確認 RAG PoC 前需要整理的文件、問題與資料邊界。",
+          "下載或列印 LINE101Chat AI 知識助理文件準備檢查表，確認 PoC 前需要整理的文件、問題與資料邊界。",
       },
       eyebrow: "Document Readiness Checklist",
-      title: "AI Chatbot 文件準備檢查表",
+      title: "AI 知識助理文件準備檢查表",
       description:
-        "這份檢查表可以幫你判斷資料是否適合進入 RAG / LINE AI 助理 PoC。整理得越清楚，PoC 越容易在 1-2 週內看出成效。",
+        "這份檢查表可以幫你判斷資料是否適合進入 LINE AI 知識助理 PoC。整理得越清楚，PoC 越容易在 2-3 週內看出成效。",
       printLabel: "列印 / 另存 PDF",
       bookLabel: "預約文件健檢",
       sections: [
@@ -124,16 +124,16 @@ export const growthContent = {
     },
     blog: {
       metadata: {
-        title: "LINE101Chat Blog｜RAG 聊天機器人與 LINE AI 助理",
-        description: "LINE101Chat 分享台灣中小企業導入 RAG 聊天機器人、LINE AI 助理與文件準備的實務文章。",
+        title: "LINE101Chat Blog｜AI 知識助理與 LINE 文件問答",
+        description: "LINE101Chat 分享台灣中小企業導入 AI 知識助理、LINE 文件問答與文件準備的實務文章。",
       },
       eyebrow: "Blog",
-      title: "RAG 聊天機器人與 LINE AI 助理實務文章",
+      title: "AI 知識助理與 LINE 文件問答實務文章",
       description:
         "每篇文章聚焦一個導入問題，協助台灣 SME、學校與客服團隊用較低風險評估 AI 知識助理。",
       posts: [
         {
-          title: "中小企業導入 RAG 聊天機器人前，需要準備哪些文件？",
+          title: "中小企業導入 AI 知識助理前，需要準備哪些文件？",
           href: "/blog/rag-chatbot-document-preparation",
           description:
             "第一篇 SEO 文章，說明 PoC 前要準備的文件、真實問題、資料邊界與成效衡量方式。",
@@ -143,18 +143,18 @@ export const growthContent = {
     },
     article: {
       metadata: {
-        title: "中小企業導入 RAG 聊天機器人前，需要準備哪些文件？",
+        title: "中小企業導入 AI 知識助理前，需要準備哪些文件？",
         description:
-          "台灣中小企業導入 RAG 聊天機器人前，需要先準備哪些 FAQ、SOP、產品文件、真實問題與資料邊界。",
+          "台灣中小企業導入 AI 知識助理前，需要先準備哪些 FAQ、SOP、產品文件、真實問題與資料邊界。",
       },
       eyebrow: "RAG 文件準備",
-      title: "中小企業導入 RAG 聊天機器人前，需要準備哪些文件？",
+      title: "中小企業導入 AI 知識助理前，需要準備哪些文件？",
       description:
         "不用一開始就做大型 AI 系統。先拿 20-30 頁最常被問的正式文件，用 1-2 週做 LINE AI 問答 PoC，通常就能判斷是否值得擴大。",
       sections: [
         {
           title: "先選一個高重複場景",
-          body: "RAG 聊天機器人最適合 FAQ、SOP、招生規章、產品手冊、客服知識庫與內部 HR / IT 問答。第一版不要放所有文件，先選一個最常被問、最容易衡量的場景。",
+          body: "AI 知識助理最適合 FAQ、SOP、招生規章、產品手冊、客服知識庫與內部 HR / IT 問答。第一版不要放所有文件，先選一個最常被問、最容易衡量的場景。",
         },
         {
           title: "準備 20-40 頁乾淨文件",
@@ -222,12 +222,12 @@ export const growthContent = {
     },
     checklist: {
       metadata: {
-        title: "AI Chatbot Document Readiness Checklist | LINE101Chat",
+        title: "AI Knowledge Assistant Document Readiness Checklist | LINE101Chat",
         description:
-          "Download or print LINE101Chat's AI Chatbot Document Readiness Checklist for RAG PoC document, question, and data-boundary preparation.",
+          "Download or print LINE101Chat's AI Knowledge Assistant Document Readiness Checklist for PoC document, question, and data-boundary preparation.",
       },
       eyebrow: "Document Readiness Checklist",
-      title: "AI Chatbot Document Readiness Checklist",
+      title: "AI Knowledge Assistant Document Readiness Checklist",
       description:
         "Use this checklist to judge whether your documents are ready for a RAG / LINE AI assistant PoC. Cleaner preparation makes it easier to see value within 1-2 weeks.",
       printLabel: "Print / Save as PDF",
@@ -297,16 +297,16 @@ export const growthContent = {
     },
     blog: {
       metadata: {
-        title: "LINE101Chat Blog | RAG Chatbots and LINE AI Assistants",
-        description: "Practical articles on RAG chatbots, LINE AI assistants, and document preparation for Taiwan SMEs.",
+        title: "LINE101Chat Blog | AI Knowledge Assistants and LINE Document Q&A",
+        description: "Practical articles on AI knowledge assistants, LINE document Q&A, and document preparation for Taiwan SMEs.",
       },
       eyebrow: "Blog",
-      title: "Practical Articles on RAG Chatbots and LINE AI Assistants",
+      title: "Practical Articles on AI Knowledge Assistants and LINE Document Q&A",
       description:
         "Each article focuses on one implementation question so Taiwan SMEs, schools, and support teams can evaluate AI knowledge assistants with lower risk.",
       posts: [
         {
-          title: "What documents should SMEs prepare before adopting a RAG chatbot?",
+          title: "What documents should SMEs prepare before adopting an AI knowledge assistant?",
           href: "/blog/rag-chatbot-document-preparation",
           description:
             "The first SEO article covering documents, real questions, data boundaries, and success measurement before a PoC.",
@@ -316,18 +316,18 @@ export const growthContent = {
     },
     article: {
       metadata: {
-        title: "What documents should SMEs prepare before adopting a RAG chatbot?",
+        title: "What documents should SMEs prepare before adopting an AI knowledge assistant?",
         description:
-          "A practical guide for Taiwan SMEs preparing FAQs, SOPs, product documents, real questions, and data boundaries before a RAG chatbot PoC.",
+          "A practical guide for Taiwan SMEs preparing FAQs, SOPs, product documents, real questions, and data boundaries before an AI knowledge assistant PoC.",
       },
       eyebrow: "RAG Document Preparation",
-      title: "What documents should SMEs prepare before adopting a RAG chatbot?",
+      title: "What documents should SMEs prepare before adopting an AI knowledge assistant?",
       description:
         "You do not need a large AI system first. Start with 20-30 pages of frequently asked official documents and use a 1-2 week LINE AI Q&A PoC to judge whether expansion is worthwhile.",
       sections: [
         {
           title: "Choose one high-repetition scenario first",
-          body: "RAG chatbots work best for FAQs, SOPs, admissions rules, product manuals, support knowledge bases, and internal HR / IT Q&A. Do not put every document into version one; start with one measurable scenario.",
+          body: "AI knowledge assistants work best for FAQs, SOPs, admissions rules, product manuals, support knowledge bases, and internal HR / IT Q&A. Do not put every document into version one; start with one measurable scenario.",
         },
         {
           title: "Prepare 20-40 clean pages",

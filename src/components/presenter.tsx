@@ -140,8 +140,8 @@ export function PresenterCTA({
   locale = "zh",
 }: PresenterCTAProps) {
   const { labels, primaryCtas } = getSiteContent(locale);
-  const resolvedButtonLabel = buttonLabel ?? primaryCtas.demo.label;
-  const resolvedButtonHref = localizePath(buttonHref ?? primaryCtas.demo.href, locale);
+  const resolvedButtonLabel = buttonLabel ?? primaryCtas.assessment.label;
+  const resolvedButtonHref = localizePath(buttonHref ?? primaryCtas.assessment.href, locale);
 
   return (
     <section className="bg-slate-950 px-5 py-16 text-white sm:px-8 lg:px-10">
@@ -155,11 +155,14 @@ export function PresenterCTA({
           </h2>
           <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">{body}</p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href={resolvedButtonHref} variant="line" icon={MessageCircle}>
+            <ButtonLink href={resolvedButtonHref}>
               {resolvedButtonLabel}
             </ButtonLink>
-            <ButtonLink href={localizePath(primaryCtas.poc.href, locale)} variant="secondary">
-              {primaryCtas.poc.label}
+            <ButtonLink href={localizePath(primaryCtas.demo.href, locale)} variant="secondary">
+              {primaryCtas.demo.label}
+            </ButtonLink>
+            <ButtonLink href={localizePath(primaryCtas.line.href, locale)} variant="line" icon={MessageCircle}>
+              {primaryCtas.line.label}
             </ButtonLink>
           </div>
         </div>

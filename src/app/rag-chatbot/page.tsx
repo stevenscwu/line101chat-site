@@ -8,7 +8,7 @@ import { getSiteContent } from "@/data/site";
 import type { Locale } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "企業 AI 知識助理｜LINE 文件查詢、資料保密與來源引用",
+  title: "AI 知識助理｜LINE 文件問答、來源引用與部署評估",
   description:
     "LINE101Chat 企業 AI 知識助理可將 FAQ、SOP、規章、產品手冊與內部文件轉為 LINE 或網站 AI 問答助理，支援來源引用、資料保密邊界、雲端代管與本地端部署。",
   alternates: { canonical: "/rag-chatbot" },

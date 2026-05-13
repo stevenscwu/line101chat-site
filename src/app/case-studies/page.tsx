@@ -10,7 +10,7 @@ import type { Locale } from "@/data/site";
 export const metadata: Metadata = {
   title: "成功案例 / Demo｜LINE101Chat",
   description:
-    "查看 LINE101Chat 的核心企業 AI 文件問答助理 Demo，以及可選配的 Indonesian ⇄ Traditional Chinese 翻譯模組 Demo。",
+    "查看 LINE101Chat 的北科大 iFIRST AI 文件問答 Demo，了解如何用公開文件建立可查詢、可引用來源的 AI 知識助理。",
   alternates: { canonical: "/case-studies" },
 };
 
@@ -21,24 +21,22 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
     locale === "en"
       ? {
           eyebrow: "Demo Videos",
-          title: "Two demo walkthroughs to support buyer trust",
+          title: "Demo walkthrough for the AI document Q&A assistant",
           description:
-            "The video slots are ready for the RAG assistant and translation module recordings. Until the public clips are uploaded, visitors can request the same walkthrough in a live demo.",
+            "The video slot is ready for the RAG assistant walkthrough. Until the public clip is uploaded, visitors can request the same walkthrough in a live demo.",
           videos: [
-            ["NTUT iFIRST RAG chatbot demo", "Document retrieval, source citations, and LINE Q&A flow."],
-            ["Indonesian ⇄ Traditional Chinese translation demo", "LINE text translation flow, usage records, and add-on positioning."],
+            ["NTUT iFIRST AI document Q&A demo", "Document retrieval, source citations, and LINE Q&A flow."],
           ],
           request: "Request walkthrough",
           caseStudy: "Read the NTUT case study",
         }
       : {
           eyebrow: "Demo 影片",
-          title: "兩支 Demo 影片區塊，補強客戶信任",
+          title: "AI 文件問答 Demo 影片區塊",
           description:
-            "RAG 文件問答與翻譯模組的影片位置已放上網站；正式公開影片上傳前，訪客可先預約同樣流程的 live demo。",
+            "RAG 文件問答的影片位置已放上網站；正式公開影片上傳前，訪客可先預約同樣流程的 live demo。",
           videos: [
-            ["北科大 iFIRST RAG chatbot demo", "文件檢索、來源引用與 LINE 問答流程。"],
-            ["印尼文 ⇄ 繁中 translation chatbot demo", "LINE 文字翻譯流程、使用紀錄與選配定位。"],
+            ["北科大 iFIRST AI 文件問答 Demo", "文件檢索、來源引用與 LINE 問答流程。"],
           ],
           request: "預約 walkthrough",
           caseStudy: "閱讀北科大案例",
@@ -53,7 +51,7 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
             title={caseStudies.heading.title}
             description={caseStudies.heading.description}
           />
-          <div className="mt-8 grid gap-5 lg:grid-cols-2">
+          <div className="mt-8 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
             {content.demoCases.map((demo, index) => (
               <DemoCard
                 key={demo.title}
@@ -62,6 +60,19 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
                 actionLabel={index === 0 ? (locale === "en" ? "Try Demo Online" : "線上試用 Demo") : undefined}
               />
             ))}
+            <aside className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="text-xl font-black text-slate-950">
+                {locale === "en" ? "How to use this demo" : "這個 Demo 可以看什麼"}
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                {locale === "en"
+                  ? "Use it to check how source-grounded answers, knowledge collections, and Traditional Chinese responses feel before preparing your own PoC documents."
+                  : "可先看 AI 如何根據公開文件回答、切換知識集合、附上資料來源，以及繁體中文回答的實際體驗。"}
+              </p>
+              <p className="mt-5 rounded-lg bg-slate-50 p-4 text-xs font-bold leading-6 text-slate-500">
+                {caseStudies.secondaryNote}
+              </p>
+            </aside>
           </div>
         </div>
       </section>
@@ -73,7 +84,7 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
             title={videoHeading.title}
             description={videoHeading.description}
           />
-          <div className="mt-8 grid gap-5 lg:grid-cols-2">
+          <div className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,720px)]">
             {videoHeading.videos.map(([title, body]) => (
               <article key={title} className="rounded-lg border border-slate-200 bg-slate-50 p-5 shadow-sm">
                 <div className="flex aspect-video items-center justify-center rounded-lg border border-slate-200 bg-slate-950 text-white">
@@ -117,7 +128,7 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
         title={caseStudies.cta.title}
         body={caseStudies.cta.body}
         label={caseStudies.cta.label}
-        href={localizePath("/book-demo", locale)}
+        href={localizePath(content.primaryCtas.assessment.href, locale)}
       />
     </main>
   );

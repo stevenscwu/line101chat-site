@@ -1,16 +1,13 @@
 import {
-  Bot,
   Building2,
   CalendarDays,
   CheckCircle2,
   ClipboardCheck,
-  DatabaseZap,
   Factory,
   FileSearch,
   GraduationCap,
   Headphones,
   KeyRound,
-  Languages,
   LineChart,
   LockKeyhole,
   LogOut,
@@ -30,43 +27,39 @@ export const site = {
   mailAdminUrl: "https://mailadmin.zoho.com",
   linePageUrl: "/line",
   lineQrImage: "/service.jpg",
-  title: "LINE101Chat｜企業 AI 知識助理與 LINE 文件查詢",
+  title: "LINE101Chat｜企業 AI 知識助理與 LINE 文件問答",
   description:
-    "LINE101Chat 協助台灣中小企業把公司文件、SOP 與內部知識整理成可保密、可追溯來源、可透過 LINE 快速搜尋的企業 AI 助理。",
+    "LINE101Chat 協助台灣中小企業、學校與組織，把 FAQ、SOP、規章與內部文件轉換成可在 LINE 或網站查詢的 AI 知識助理，支援來源引用、文件整理、雲端與本地端部署評估。",
   keywords: [
-    "AI 聊天機器人",
-    "LINE chatbot",
-    "企業 AI 助理",
+    "AI 知識助理",
+    "LINE AI 助理",
+    "文件問答",
     "RAG",
-    "知識助理",
-    "公司資料保密",
-    "台灣中小企業",
-    "北科大",
-    "NTUT",
-    "SOP chatbot",
+    "企業知識庫",
+    "SOP 問答",
     "招生 FAQ",
-    "本地端部署",
-    "雲端部署",
-    "印尼文翻譯",
-    "Ollama",
+    "台灣中小企業 AI",
     "本地端 LLM",
+    "LINE chatbot",
   ],
 };
 
 export const navItems = [
   { label: "首頁", href: "/" },
-  { label: "服務項目", href: "/services" },
-  { label: "AI 知識助理", href: "/rag-chatbot" },
-  { label: "成功案例 / Demo", href: "/case-studies" },
-  { label: "價格方案", href: "/pricing" },
+  { label: "服務說明", href: "/services" },
+  { label: "AI 助理", href: "/rag-chatbot" },
+  { label: "Demo", href: "/case-studies" },
+  { label: "免費評估", href: "/free-assessment" },
   { label: "聯絡我們", href: "/contact" },
 ];
 
 export const primaryCtas = {
+  assessment: { label: "免費評估", href: "/free-assessment" },
   demo: { label: "預約 AI 助理 Demo", href: "/book-demo" },
-  poc: { label: "取得 AI 助理 PoC 評估", href: "/contact" },
+  demoPage: { label: "看 Demo", href: "/case-studies" },
+  poc: { label: "免費評估", href: "/free-assessment" },
   line: { label: "加入 LINE 詢問", href: site.linePageUrl },
-  services: { label: "查看 AI 助理方案", href: "/services" },
+  services: { label: "服務說明", href: "/services" },
 };
 
 export const problemCards = [
@@ -80,18 +73,32 @@ export const problemCards = [
 
 export const coreServices = [
   {
-    title: "企業 AI 知識助理（核心服務）",
+    title: "文件問答助理",
     href: "/rag-chatbot",
-    icon: DatabaseZap,
+    icon: FileSearch,
     description:
-      "將 FAQ、SOP、規章、產品手冊與內部文件轉換成可透過 LINE 查詢、可追溯來源、可依資料敏感度規劃保密邊界的 AI 助理。",
+      "將 PDF、Word、網頁、FAQ、SOP 轉成可查詢知識庫。",
   },
   {
-    title: "LINE 翻譯選配模組",
-    href: "/translation-chatbot",
-    icon: Languages,
+    title: "LINE AI 助理",
+    href: "/line",
+    icon: MessageCircle,
     description:
-      "若 AI 知識助理上線後仍有跨語言現場溝通需求，可再加上印尼文與繁體中文雙向翻譯；它不是主服務，而是選配模組。",
+      "讓員工、學生或客戶直接在 LINE 裡查詢常見問題。",
+  },
+  {
+    title: "來源引用與修正流程",
+    href: "/rag-chatbot",
+    icon: SearchCheck,
+    description:
+      "每次回答盡量附上來源，方便追查、修正與更新文件。",
+  },
+  {
+    title: "雲端 / 本地端部署",
+    href: "/rag-chatbot",
+    icon: ServerCog,
+    description:
+      "依資料敏感度選擇快速雲端 PoC、本地端或私有雲部署。",
   },
 ];
 
@@ -119,11 +126,10 @@ export const teamHighlights = [
 export const audienceSegments = [
   { label: "學校 / 系所 / 研究所", icon: GraduationCap },
   { label: "補習班與教育機構", icon: ClipboardCheck },
-  { label: "製造業中小企業", icon: Factory },
+  { label: "中小企業", icon: Building2 },
+  { label: "製造業", icon: Factory },
   { label: "電商與客服團隊", icon: Headphones },
   { label: "HR / 行政 / IT 內部支援", icon: Building2 },
-  { label: "移工仲介與雇主", icon: UsersRound },
-  { label: "長照與看護家庭", icon: MessageCircle },
 ];
 
 export const processSteps = [
@@ -131,20 +137,20 @@ export const processSteps = [
   "文件盤點",
   "資料整理",
   "建立 AI 知識庫",
-  "LINE / Web Chatbot 串接",
+  "LINE / Web 入口串接",
   "測試與修正",
   "上線與維護",
 ];
 
 export const benefits = [
-  "降低 30-70% 重複查詢工作量",
+  "減少重複問答與文件搜尋時間",
   "讓同仁在 LINE 裡快速查公司知識",
   "提升回覆速度",
-  "減少新人訓練時間",
+  "降低新人查制度與問流程的負擔",
   "保留組織知識",
-  "讓員工專注處理高價值任務",
-  "讓客服與行政團隊不用立刻增聘人力",
-  "讓使用者可以 24/7 查詢資訊",
+  "讓行政、客服與窗口少做重複查找",
+  "讓常見問題有一致的文件依據",
+  "讓使用者在非上班時間也能先查詢公開或授權資訊",
   "先用雲端快速驗證，再依敏感度評估本地端部署",
 ];
 
@@ -174,7 +180,7 @@ export const securityPrinciples = [
 export const packages = [
   {
     title: "AI Assistant Starter PoC",
-    price: "NT$50,000-90,000",
+    price: "NT$50,000-100,000",
     description: "用一個明確場景驗證 LINE 查詢體驗、文件品質、問答準確度與資料邊界。",
     items: ["2-3 週", "1 個服務場景", "20-40 頁乾淨文件", "LINE 或網站介面", "基礎準確度檢查"],
     highlighted: true,
@@ -204,7 +210,7 @@ export const pricingPlans = [
   },
   {
     name: "AI Assistant Starter PoC",
-    price: "NT$50,000-90,000",
+    price: "NT$50,000-100,000",
     summary: "用最小範圍驗證 LINE AI 助理是否真的能降低重複問答與文件查找成本。",
     timeline: "2-3 週",
     bestFor: "第一次導入 AI 知識助理的中小企業",
@@ -248,17 +254,17 @@ export const pricingPlans = [
     ],
   },
   {
-    name: "Translation Optional Module",
-    price: "NT$30,000-80,000",
-    summary: "在既有 LINE chatbot 或企業 AI 助理導入後，加上印尼文繁體中文雙向翻譯。",
-    timeline: "1-2 週",
-    bestFor: "已有 LINE 使用流程，另需跨語言溝通的現場團隊",
+    name: "PoC 後正式導入",
+    price: "需求評估後報價",
+    summary: "依文件量、LINE / Web 串接、權限、部署方式與維護需求規劃。",
+    timeline: "約 4-10 週",
+    bestFor: "PoC 已確認適合擴大的組織",
     includes: [
-      "Indonesian ⇄ Traditional Chinese",
-      "LINE 文字訊息翻譯",
-      "使用量紀錄",
-      "額度或付費模式規劃",
-      "可接在 AI 助理或 LINE chatbot 後方",
+      "多分類知識庫",
+      "LINE / Web 整合",
+      "管理者更新流程",
+      "使用紀錄與問題回顧",
+      "雲端、本地端或私有雲部署評估",
     ],
   },
 ];
@@ -301,9 +307,9 @@ export const smeRolloutSchedule = [
   },
   {
     phase: "Phase 3",
-    title: "私有化或加值服務",
+    title: "正式導入與維護",
     duration: "依範圍評估",
-    detail: "依資料敏感度升級本地端 / 私有雲，或加購翻譯、權限、稽核與系統整合。",
+    detail: "依資料敏感度規劃雲端、本地端或私有雲，並建立更新、修正、權限與維護流程。",
   },
 ];
 
@@ -321,7 +327,7 @@ export const faqItems = [
   {
     question: "可以接 LINE 嗎？",
     answer:
-      "可以。LINE101Chat 可規劃 LINE chatbot 或網站聊天介面，PoC 階段通常會先選一個最常用的入口，避免一開始整合範圍過大。",
+      "可以。LINE101Chat 可規劃 LINE AI 助理或網站聊天介面，PoC 階段通常會先選一個最常用的入口，避免一開始整合範圍過大。",
   },
   {
     question: "可以部署在本地端嗎？",
@@ -341,22 +347,22 @@ export const faqItems = [
   {
     question: "可以取代員工嗎？",
     answer:
-      "初期通常不是完全取代員工，而是先減少重複問答、文件查找與新人訓練工作。當問題量夠大、文件品質夠好時，可節省約 0.3-1.5 人力等值的工作量。",
+      "不建議用取代員工作為初期目標。比較務實的做法，是先減少重複問答、文件查找與新人訓練工作，讓同仁把時間用在需要判斷與服務品質的工作上。",
   },
   {
     question: "文件內容會不會外洩？",
     answer:
-      "客戶文件只會用於約定的聊天機器人開發、測試與維護。敏感資料建議另外簽訂資料處理與保密約定，也可評估本地端或私有化部署。",
+      "客戶文件只會用於約定的 AI 助理開發、測試與維護。敏感資料建議另外簽訂資料處理與保密約定，也可評估本地端或私有化部署。",
   },
   {
-    question: "可以支援英文、印尼文或日文嗎？",
+    question: "可以擴充其他模組嗎？",
     answer:
-      "可以依使用場景評估。企業 AI 知識助理會先以文件問答為主；印尼文與繁體中文雙向翻譯則定位為選配模組，可在核心 LINE 查詢流程穩定後加購。",
+      "可以依使用場景評估，但 LINE101Chat 的主服務仍是 AI 知識助理與文件問答系統。如有跨語言現場溝通需求，可另行評估翻譯模組。",
   },
   {
     question: "價格怎麼計算？",
     answer:
-      "主要依文件量、使用場景數、LINE 或 Web 整合、部署位置、使用量紀錄、權限控管與維護頻率計算。台灣中小企業建議先從免費需求評估或 NT$50,000-90,000 的 AI Assistant Starter PoC 開始。",
+      "主要依文件量、使用場景數、LINE 或 Web 整合、部署位置、使用量紀錄、權限控管與維護頻率計算。台灣中小企業建議先從免費評估或 NT$50,000-100,000 的 Starter PoC 開始。",
   },
   {
     question: "為什麼強調北科大工程背景？",
@@ -386,24 +392,18 @@ export const readinessScores = [
 
 export const demoCases = [
   {
-    title: "北科大創新前瞻科技學院 iFIRST AI 文件問答",
+    title: "北科大創新前瞻科技學院 iFIRST AI 文件問答 Demo",
     description:
-      "使用北科大創新前瞻科技學院公開文件建立的 LINE AI 文件問答助理，可依照人工智慧、資訊安全、半導體三個學程分類回答問題，並附上資料來源。",
+      "使用公開文件建立的 AI 知識助理 Demo，可查詢人工智慧、資訊安全與半導體學程的部分規章、表單與修業資訊，並附上資料來源。",
     features: [
       "Official document retrieval",
       "Three knowledge collections",
       "Source citations",
-      "Traditional Chinese LINE answers",
-      "Local Ollama LLM backend",
+      "Traditional Chinese answers",
+      "LINE / Web demo ready",
+      "Local Ollama backend option",
     ],
     icon: SearchCheck,
-  },
-  {
-    title: "LINE 翻譯選配模組 Demo",
-    description:
-      "一個可在核心 LINE AI 助理上線後選配的翻譯模組，支援印尼文與繁體中文雙向翻譯，可搭配使用量紀錄與額度管理。",
-    features: ["Text-only translation", "LINE webhook", "Local Ollama model", "Usage records", "Quota and paid user support"],
-    icon: Bot,
   },
 ];
 
@@ -501,7 +501,7 @@ export const siteContent = {
       contact: "聯絡",
       footerDescription:
         "北科大工程背景團隊，協助台灣中小企業、學校與組織，把公司文件整理成可透過 LINE 查詢、可追溯來源、可依資料敏感度部署的企業 AI 知識助理。",
-      privacyPolicy: "Privacy policy",
+      privacyPolicy: "隱私政策",
       contactPlan: "AI 助理 PoC / 雲端或本地端部署：",
       addLine: "加入 LINE 詢問",
       directContact: "直接聯絡",
@@ -511,14 +511,14 @@ export const siteContent = {
     hero: {
       features: ["企業 AI 助理", "LINE 快速查詢", "來源引用", "資料保密邊界"],
       eyebrow: "台灣中小企業 AI 助理 / 北科大工程團隊",
-      title: "LINE101Chat 企業 AI 助理，讓公司知識保密又好查",
+      title: "LINE101Chat 企業 AI 知識助理，讓公司文件好查、答案有來源",
       description:
-        "把 SOP、合約摘要、產品手冊、FAQ 與內部制度整理成可透過 LINE 搜尋的 AI 助理。依資料敏感度規劃雲端、本地端或私有雲部署，讓答案好找，也讓公司資訊留在可控範圍。",
+        "把 SOP、FAQ、規章、產品手冊與內部制度整理成可透過 LINE 或網站查詢的 AI 助理。回答時附上文件來源，並可依資料敏感度規劃雲端、本地端或私有雲部署。",
       speech:
-        "我是 LINE101Chat 的 AI 解決方案顧問，會先協助你盤點文件敏感度與查詢場景，再規劃 LINE 入口、來源引用與部署方式。",
+        "我是 LINE101Chat 的 AI 解決方案顧問，會先協助你盤點文件、常見問題與查詢場景，再評估是否適合做 AI 知識助理 PoC。",
       stats: [
-        ["30 分鐘", "先做需求評估"],
-        ["2-3 週", "AI 助理 Starter PoC"],
+        ["20-30 頁", "先用正式文件評估"],
+        ["2-3 週", "小範圍 Starter PoC"],
         ["雲端 / 本地端", "依資料敏感度部署"],
       ],
     },
@@ -538,9 +538,9 @@ export const siteContent = {
           },
           core: {
             eyebrow: "核心服務",
-            title: "企業 AI 知識助理是主服務，翻譯只是選配",
+            title: "我們專注做一件事：讓公司文件變成可靠的 AI 知識助理",
             description:
-              "先把正式文件變成能追溯來源、能在 LINE 快速查詢、能依資料敏感度部署的 AI 助理。確認成效後，再視現場需求加上翻譯或其他模組。",
+              "不是做一個會聊天的玩具，而是把正式文件、FAQ、SOP 與內部規章整理成可查詢、可追溯、可維護的 AI 問答系統。",
           },
           security: {
             eyebrow: "資料保密",
@@ -574,75 +574,111 @@ export const siteContent = {
             eyebrow: "信任與維護",
             title: "把 AI 導入做得務實、可追溯、可維護",
             description:
-              "企業 AI 助理與 LINE chatbot 的價值不只在會聊天，而是在能否回答得準、能否追溯來源、能否保護資料邊界，並被團隊長期維護。",
+              "企業 AI 知識助理的價值不只在會回答，而是在能否回答得準、能否追溯來源、能否保護資料邊界，並被團隊長期維護。",
           },
         },
         cta: {
-          title: "想知道你的公司適不適合導入 AI 聊天助理？",
-          body: "先從 30 分鐘需求評估開始，我們會協助你確認文件狀況、適合的使用場景，以及 PoC 需要準備的資料。",
-          buttonLabel: "預約 30 分鐘需求評估",
+          title: "想知道你的文件適不適合做 AI 知識助理？",
+          body: "先用 20-30 頁正式文件做免費評估，我們會協助判斷文件品質、使用場景、LINE 或網站入口，以及是否值得做 PoC。",
+          buttonLabel: "免費評估",
         },
       },
       services: {
         metadata: {
-          title: "服務項目｜企業 AI 知識助理與 LINE 文件查詢",
+          title: "服務說明｜企業 AI 知識助理與 LINE 文件問答",
           description:
-            "了解 LINE101Chat 的企業 AI 知識助理、LINE 文件查詢、資料保密部署、SME Cloud RAG、Local / Private RAG 與翻譯選配模組。",
+            "了解 LINE101Chat 如何協助台灣中小企業、學校與組織，把 FAQ、SOP、規章、產品手冊與內部文件導入成可引用來源的 AI 知識助理。",
           canonical: "/services",
         },
         hero: {
-          eyebrow: "服務項目",
-          title: "服務項目",
+          eyebrow: "服務說明",
+          title: "服務說明",
           description:
-            "LINE101Chat 的主軸是企業 AI 知識助理：讓 AI 根據正式文件回答問題、附上來源、透過 LINE 快速搜尋，並依資料敏感度規劃雲端、本地端或私有雲。翻譯 chatbot 僅作為選配模組。",
+            "LINE101Chat 專注於 AI 知識助理與文件問答系統。AI 會先從你的文件中找資料，再根據文件內容回答，適合用在 SOP、FAQ、規章、產品手冊、表單與內部支援。",
         },
         bullets: [
-          "從需求評估開始，先確認是否真的適合導入。",
-          "AI 助理 PoC 範圍明確，避免一開始投入過大。",
-          "重視文件品質、來源引用、權限邊界與資料保密。",
-          "可依場景選擇 LINE、網站、雲端、本地端或私有雲部署。",
+          "把正式文件整理成可查詢、可追溯來源的 AI 問答系統。",
+          "先用 20-30 頁文件評估，再決定是否做 2-3 週 PoC。",
+          "讓員工、學生或客戶可在 LINE 或網站查詢常見問題。",
+          "依資料敏感度評估雲端、本地端或私有雲部署。",
         ],
         presenterQuote:
           "不確定該做雲端還是本地端？可以先從 AI 助理需求評估開始，我們會協助你用文件敏感度、預算與維運能力判斷導入路徑。",
-        comparison: {
-          eyebrow: "服務比較",
-          title: "先讓公司知識變好查，再看是否需要翻譯選配",
-          description:
-            "如果問題主要來自公司文件查找、重複問答與資訊保密，企業 AI 知識助理是第一優先；如果上線後還有跨語言日常溝通，再加上 LINE 翻譯模組。",
-          headers: ["項目", "企業 AI 知識助理", "LINE 翻譯選配模組"],
-          rows: [
-            ["定位", "核心導入服務", "企業 AI 助理或 LINE chatbot 上線後的選配模組"],
-            ["適合對象", "學校、系所、SME、客服、HR、IT、製造業", "已有跨語言 LINE 溝通量的團隊"],
-            ["主要解決問題", "公司知識查找、重複問答、來源追溯、內部知識保存、資料保密邊界", "印尼文與繁體中文日常溝通、現場指示、照護與工作對話"],
-            ["使用資料", "FAQ、SOP、規章、產品手冊、招生資訊、內部文件", "LINE 文字訊息、翻譯紀錄、額度與使用量設定"],
-            ["部署方式", "LINE chatbot、網站 chatbot、雲端、本地端或私有雲", "LINE chatbot、本地端或私有化 LLM backend"],
-            ["收費模式", "AI 助理 PoC、建置費、維護費、客製整合", "選配建置費、月費、使用量或額度制"],
-            ["最適合的第一步", "準備 20-40 頁正式文件與真實問題做 AI Assistant Starter PoC", "先確認是否已有 LINE 使用流程與實際翻譯量"],
-          ],
-        },
-        plans: {
-          eyebrow: "導入方案",
-          title: "台灣 SME 導入方案",
-          description:
-            "以中小企業可承擔的節奏安排：先用 Starter PoC 驗證 LINE 查詢體驗、來源引用與資料邊界，再依敏感度選擇 SME Cloud RAG 或 Local / Private RAG。",
-          noteBefore: "詳細價格請參考",
-          noteLink: "價格方案",
-          noteAfter: "，或寄信至",
-          noteBook: "預約",
+        sections: [
+          {
+            title: "服務核心",
+            items: [
+              "盤點文件、FAQ、SOP、規章與產品手冊。",
+              "建立可查詢的知識庫與問答流程。",
+              "回答時盡量附上來源，方便追查與修正。",
+            ],
+          },
+          {
+            title: "適合場景",
+            items: [
+              "招生 FAQ、系所規章與表單查詢。",
+              "客服常見問題與產品手冊查詢。",
+              "HR、行政、IT 內部支援與新人查詢。",
+            ],
+          },
+          {
+            title: "文件準備",
+            items: [
+              "先準備 20-30 頁正式、最新、可選取文字的文件。",
+              "整理 30-50 個真實常見問題。",
+              "指定文件負責人確認答案與後續修正。",
+            ],
+          },
+          {
+            title: "LINE / Web 入口",
+            items: [
+              "台灣使用者熟悉 LINE，適合員工、學生與客戶快速提問。",
+              "也可提供網站聊天入口，方便放在官網或內部入口。",
+              "PoC 階段通常先選一個主要入口，避免範圍過大。",
+            ],
+          },
+          {
+            title: "部署方式",
+            items: [
+              "一般資料可先用雲端快速驗證。",
+              "敏感資料可評估本地端或私有雲部署。",
+              "依需求規劃權限、紀錄與資料處理邊界。",
+            ],
+          },
+          {
+            title: "PoC 導入流程",
+            items: [
+              "免費評估文件與使用場景。",
+              "用 2-3 週建立小範圍 PoC。",
+              "以真實問題測試回答品質、來源引用與使用體驗。",
+            ],
+          },
+          {
+            title: "後續維護",
+            items: [
+              "建立文件更新與答案修正流程。",
+              "定期回顧常見問題與未命中問題。",
+              "依使用量與資料敏感度調整部署與維護方式。",
+            ],
+          },
+        ],
+        optionalModule: {
+          title: "可客製擴充模組",
+          body: "如有跨語言現場溝通需求，可另行評估翻譯模組。但 LINE101Chat 的主服務仍是 AI 知識助理與文件問答系統。",
         },
       },
       rag: {
         metadata: {
-          title: "企業 AI 知識助理｜LINE 文件查詢、資料保密與來源引用",
+          title: "AI 知識助理｜LINE 文件問答、來源引用與部署評估",
           description:
             "LINE101Chat 企業 AI 知識助理可將 FAQ、SOP、規章、產品手冊與內部文件轉為 LINE 或網站 AI 問答助理，支援來源引用、資料保密邊界、雲端代管與本地端部署。",
           canonical: "/rag-chatbot",
         },
         hero: {
           eyebrow: "Core Service / Enterprise AI Knowledge Assistant",
-          title: "企業 AI 知識助理：公司資料保密，也能在 LINE 一問就找到",
+          title: "AI 知識助理",
           description:
-            "LINE101Chat 不是讓 AI 憑空回答，而是先從你的文件中找出相關內容，再根據這些內容產生答案。企業可以依資料敏感度規劃雲端、本地端或私有雲，讓同仁用熟悉的 LINE 快速查 SOP、產品手冊、內部制度與客服知識庫。",
+            "AI 會先從你的文件中找資料，再根據文件內容回答。這種做法適合把 SOP、FAQ、規章、產品手冊與內部知識做成可在 LINE 或網站查詢、能附來源的 AI 知識助理。",
         },
         callout: {
           label: "顧問提醒",
@@ -692,114 +728,103 @@ export const siteContent = {
           description: "用可控範圍快速驗證 LINE 查詢體驗、來源引用與資料邊界，再把預算花在確定有價值的正式導入與維護。",
         },
       },
-      translation: {
-        metadata: {
-          title: "翻譯選配模組｜LINE 印尼文繁體中文雙向翻譯",
-          description:
-            "LINE101Chat 翻譯選配模組支援 Indonesian ⇄ Traditional Chinese，可在企業 AI 知識助理或 LINE chatbot 上線後視需求加購。",
-          canonical: "/translation-chatbot",
-        },
-        hero: {
-          eyebrow: "Optional Add-on / LINE Translation Assistant",
-          title: "翻譯選配模組：需要時再讓 LINE 支援印尼文繁體中文",
-          description:
-            "LINE101Chat 的主服務是企業 AI 知識助理與 LINE 文件查詢；若你的現場還需要跨語言溝通，才加購印尼文與繁體中文雙向翻譯，讓雇主、移工、看護、工廠管理者、仲介與家庭用熟悉的 LINE 溝通。",
-        },
-        callout: {
-          label: "適合日常使用",
-          title: "先把核心 AI 助理做穩，再依需求加上翻譯",
-          body: "適合已經有 LINE 使用流程、需要頻繁跨語言溝通，但又希望操作方式簡單的場景。",
-        },
-        featuresHeading: {
-          eyebrow: "服務能力",
-          title: "為台灣現場情境保留的選配能力",
-          description:
-            "翻譯助理不取代企業 AI 知識助理，而是在核心文件查詢流程完成後，補上日常句子、提醒、工作安排與照護溝通的跨語言需求。",
-        },
-        features: [
-          "定位為企業 AI 助理之後的選配模組",
-          "Indonesian ⇄ Traditional Chinese",
-          "直接在 LINE 裡使用",
-          "適合移工、看護、工廠、仲介與家庭",
-          "可評估本地端 / 私有化 LLM backend",
-          "可搭配使用量紀錄",
-          "可規劃額度與付費使用模式",
-        ],
-        demo: {
-          title: "LINE 對話示意",
-          description:
-            "使用者只要把訊息貼到 LINE，bot 會回傳另一種語言的自然翻譯。正式導入時可接在既有 LINE chatbot 後方，並加上紀錄、額度與使用者管理。",
-          conversation: [
-            { speaker: "User", text: "Saya akan tiba jam 8 pagi." },
-            { speaker: "Bot", text: "我早上 8 點會到。" },
-            { speaker: "User", text: "今天請記得帶健保卡。" },
-            { speaker: "Bot", text: "Hari ini jangan lupa membawa kartu asuransi kesehatan." },
-          ],
-        },
-      },
       caseStudies: {
         metadata: {
           title: "成功案例 / Demo｜LINE101Chat",
           description:
-            "查看 LINE101Chat 的核心企業 AI 文件問答助理 Demo，以及可選配的 Indonesian ⇄ Traditional Chinese 翻譯模組 Demo。",
+            "查看 LINE101Chat 的北科大 iFIRST AI 文件問答 Demo，了解如何用公開文件建立可查詢、可引用來源的 AI 知識助理。",
           canonical: "/case-studies",
         },
         heading: {
           eyebrow: "成功案例 / Demo",
           title: "成功案例 / Demo",
           description:
-            "目前展示重點是能引用來源、可透過 LINE 查詢的企業 AI 文件問答助理；印尼文繁體中文翻譯則只作為選配模組 Demo。",
+            "目前主展示為北科大創新前瞻科技學院 iFIRST AI 文件問答 Demo，可查詢部分公開規章、表單與修業資訊，並附上資料來源。",
         },
         cards: [
-          ["PoC 重點", "先選一個可衡量的場景，例如招生 FAQ、SOP 查詢或跨語言溝通。"],
+          ["PoC 重點", "先選一個可衡量的場景，例如招生 FAQ、SOP 查詢或客服知識庫。"],
           ["驗證方式", "使用真實問題測試回答準確度、來源引用、LINE 使用體驗、資料邊界與維護流程。"],
           ["下一步", "若 AI 助理 PoC 成效明確，再擴充文件、使用者、權限、雲端或本地端部署。"],
         ],
+        secondaryNote: "其他技術展示：LINE 翻譯模組可依需求客製。",
         cta: {
           title: "想用你的文件做第一個 Demo？",
           body: "準備一份乾淨文件與真實問題，我們可以協助判斷是否適合做企業 AI 助理 Starter PoC。",
-          label: "取得 AI 助理 PoC 評估",
+          label: "免費評估",
         },
       },
       pricing: {
         metadata: {
-          title: "價格方案｜LINE101Chat",
+          title: "免費 AI 知識助理導入評估｜LINE101Chat",
           description:
-            "LINE101Chat 提供企業 AI 知識助理 Starter PoC、SME Cloud RAG、Local / Private RAG 與翻譯選配模組，適合台灣中小企業導入 LINE 文件查詢。",
-          canonical: "/pricing",
+            "先用 20-30 頁正式文件，讓 LINE101Chat 協助判斷是否適合做 AI 知識助理 PoC，並取得文件整理、導入範圍、時程與費用區間建議。",
+          canonical: "/free-assessment",
         },
         heading: {
-          eyebrow: "價格方案",
-          title: "符合台灣 SME 節奏的企業 AI 助理價格方案",
+          eyebrow: "免費評估",
+          title: "免費 AI 知識助理導入評估",
           description:
-            "先用小額 PoC 驗證 LINE 查詢體驗、來源引用與資料保密邊界，再決定正式導入、雲端代管或本地端私有化。翻譯 chatbot 不是主方案，而是可在 LINE 流程成熟後選配。",
+            "先不用急著做大型系統。你可以先用 20-30 頁正式文件，讓我們協助判斷是否適合做 AI 知識助理 PoC。",
         },
-        maintenanceTitle: "月維護費",
-        maintenanceBody:
-          "維護費依文件更新頻率、使用量、部署位置與整合複雜度而定。雲端代管通常從 NT$12,000-35,000 / 月起；本地端或私有雲因需維運、資安與效能調校，通常從 NT$35,000-90,000 / 月起。",
-        scheduleHeading: {
-          eyebrow: "導入時程",
-          title: "從 30 分鐘評估到正式上線",
-          description: "台灣中小企業通常需要先看到可驗證成果，再逐步擴大預算與導入範圍。",
-        },
-        deploymentHeading: {
-          eyebrow: "部署選擇",
-          title: "AI 助理可以雲端代管，也可以本地端 / 私有雲",
-          description: "部署方式會直接影響價格、時程、維護責任與資料安全邊界。",
+        sections: [
+          {
+            title: "適合誰申請免費評估？",
+            items: [
+              "學校 / 系所 / 研究所",
+              "補習班與教育機構",
+              "中小企業",
+              "製造業",
+              "電商與客服團隊",
+              "HR / 行政 / IT 內部支援",
+            ],
+          },
+          {
+            title: "免費評估會看什麼？",
+            items: [
+              "文件是否清楚、最新",
+              "是否有重複問題",
+              "是否適合用 LINE 或網站查詢",
+              "是否需要資料保密或本地端部署",
+              "是否適合先做 2-3 週 PoC",
+            ],
+          },
+          {
+            title: "你需要準備什麼？",
+            items: [
+              "20-30 頁正式文件",
+              "30-50 個常見問題",
+              "一個明確使用場景",
+              "文件負責人或可確認答案的人",
+            ],
+          },
+          {
+            title: "評估後你會得到什麼？",
+            items: [
+              "適不適合做 AI 知識助理",
+              "建議的 PoC 範圍",
+              "文件整理建議",
+              "大約導入時間",
+              "大約費用區間",
+            ],
+          },
+        ],
+        pricingNote: {
+          title: "如果評估後適合，再進入 PoC",
+          body: "Starter PoC 通常從 NT$50,000-100,000 起，依文件數量、是否需要 LINE 串接、是否需要本地端部署而調整。正式導入與維護費用會在需求評估後再報價。",
         },
       },
       contact: {
         metadata: {
-          title: "聯絡我們｜預約 Demo 與 PoC 評估",
+          title: "聯絡我們｜免費 AI 知識助理文件評估",
           description:
-            "聯絡 LINE101Chat，預約 30 分鐘企業 AI 知識助理需求評估、LINE 文件查詢 Demo、資料保密部署或本地端私有化部署討論。",
+            "聯絡 LINE101Chat，免費評估 FAQ、SOP、規章與內部文件是否適合做 AI 知識助理、LINE 文件問答、雲端或本地端部署。",
           canonical: "/contact",
         },
         heading: {
           eyebrow: "聯絡我們",
           title: "聯絡我們",
           description:
-            "如果你正在評估企業 AI 知識助理、LINE 文件查詢、雲端代管或本地端部署，歡迎先用一封信描述目前的文件、使用場景與資料敏感度。",
+            "如果你正在評估 AI 知識助理、LINE 文件問答、雲端代管或本地端部署，歡迎先描述目前的文件、重複問題與資料敏感度。",
         },
         callout: {
           label: "30 分鐘需求評估",
@@ -824,7 +849,7 @@ export const siteContent = {
         values: [
           ["務實", "先確認場景、資料與效益，再決定導入範圍。"],
           ["可信任", "回答需要能追溯來源，敏感資料需要明確處理方式。"],
-          ["可維護", "AI chatbot 必須能隨文件更新與組織流程長期調整。"],
+          ["可維護", "AI 助理必須能隨文件更新與組織流程長期調整。"],
         ],
         teamHeading: {
           eyebrow: "工程團隊",
@@ -860,7 +885,7 @@ export const siteContent = {
         },
         eyebrow: "隱私權",
         title: "LINE101Chat 隱私權政策",
-        intro: "本政策說明 LINE101Chat 在網站聯絡、需求評估、PoC 與 chatbot 服務過程中，如何處理客戶提供的資料與文件。",
+        intro: "本政策說明 LINE101Chat 在網站聯絡、需求評估、PoC 與 AI 助理服務過程中，如何處理客戶提供的資料與文件。",
         sections: [
           {
             title: "1. 我們收集的資料",
@@ -868,7 +893,7 @@ export const siteContent = {
           },
           {
             title: "2. 客戶文件使用方式",
-            body: "客戶提供的文件只會用於約定的 chatbot 開發、測試、調整與維護。文件可能包含 FAQ、SOP、規章、產品手冊、招生資訊或內部知識資料。",
+            body: "客戶提供的文件只會用於約定的 AI 助理開發、測試、調整與維護。文件可能包含 FAQ、SOP、規章、產品手冊、招生資訊或內部知識資料。",
           },
           {
             title: "3. 敏感文件",
@@ -880,7 +905,7 @@ export const siteContent = {
           },
           {
             title: "5. LINE 訊息與使用紀錄",
-            body: "當客戶啟用 chatbot 服務時，LINE 訊息可能會在客戶同意的範圍內被記錄，用於除錯、使用量分析、服務改善、額度管理或客戶支援。",
+            body: "當客戶啟用 AI 助理服務時，LINE 訊息可能會在客戶同意的範圍內被記錄，用於除錯、使用量分析、服務改善或客戶支援。",
           },
           {
             title: "6. 資料刪除請求",
@@ -934,34 +959,37 @@ export const siteContent = {
       copyIdle: "複製信件內容",
       copySuccess: "已複製",
       copyError: "複製失敗",
-      emailHeader: "LINE101Chat 需求評估",
+      emailHeader: "LINE101Chat 免費 AI 知識助理導入評估",
       fallbackSubjectName: "網站詢問",
-      subjectPrefix: "LINE101Chat 需求評估",
+      subjectPrefix: "LINE101Chat 免費評估",
       labels: {
-        name: "Name",
-        organization: "Company / Organization",
+        name: "姓名",
+        organization: "公司 / 單位",
         email: "Email",
-        phone: "Phone / LINE ID",
-        service: "Service interest",
-        message: "Message",
+        phone: "LINE ID / 電話",
+        problem: "想解決的問題",
+        documentPages: "文件大約幾頁？",
+        hasFaq: "是否已經有 FAQ / SOP / 規章？",
+        needsLine: "是否需要 LINE 串接？",
+        confidentiality: "是否有資料保密需求？",
+        message: "留言",
       },
       placeholders: {
         name: "王小明",
         organization: "公司、學校或單位名稱",
         email: "name@example.com",
         phone: "手機或 LINE ID",
-        service: "請選擇感興趣的服務",
-        message: "請簡單描述你的文件類型、使用對象、希望接 LINE 或網站、資料是否敏感，以及目前遇到的問題。",
+        problem: "例如：客服重複問答、SOP 難找、新人訓練、招生 FAQ、內部制度查詢...",
+        documentPages: "例如：20-30 頁、50 頁以上、還不確定",
+        hasFaq: "請選擇",
+        needsLine: "請選擇",
+        confidentiality: "請選擇",
+        message: "可補充文件類型、使用對象、目前流程、希望接 LINE 或網站，以及預計導入時程。",
       },
-      serviceOptions: [
-        "企業 AI 助理 Starter PoC",
-        "SME Cloud RAG",
-        "Local / Private RAG",
-        "翻譯選配模組",
-        "還不確定，需要先評估",
-      ],
+      yesNoOptions: ["是", "否", "不確定，需要先評估"],
+      confidentialityOptions: ["有，需評估本地端或私有雲", "有，但可先討論資料範圍", "沒有明顯保密需求", "不確定，需要先評估"],
       recipientLabel: "收件信箱：",
-      submitLabel: "開啟 Email 送出",
+      submitLabel: "免費評估我的文件是否適合做 AI 知識助理",
     },
   },
   en: {
@@ -969,38 +997,35 @@ export const siteContent = {
       ...site,
       title: "LINE101Chat | Enterprise AI Knowledge Assistant and LINE Document Search",
       description:
-        "LINE101Chat helps Taiwan SMEs turn company documents, SOPs, and internal knowledge into a confidential, source-grounded AI assistant that employees can search through LINE.",
+        "LINE101Chat helps Taiwan SMEs, schools, and organizations turn FAQs, SOPs, policies, and internal documents into a LINE or web AI knowledge assistant with source citations and cloud or local deployment assessment.",
       keywords: [
-        "AI chatbot",
-        "LINE chatbot",
-        "enterprise AI assistant",
+        "AI knowledge assistant",
+        "LINE AI assistant",
+        "document Q&A",
         "RAG",
-        "knowledge assistant",
-        "company data confidentiality",
-        "Taiwan SMEs",
-        "NTUT",
-        "SOP chatbot",
+        "enterprise knowledge base",
+        "SOP Q&A",
         "admissions FAQ",
-        "local deployment",
-        "cloud deployment",
-        "Indonesian translation",
-        "Ollama",
+        "Taiwan SME AI",
         "local LLM",
+        "LINE chatbot",
       ],
     },
     navItems: [
       { label: "Home", href: "/" },
       { label: "Services", href: "/services" },
-      { label: "AI Knowledge Assistant", href: "/rag-chatbot" },
-      { label: "Case Studies / Demo", href: "/case-studies" },
-      { label: "Pricing", href: "/pricing" },
+      { label: "AI Assistant", href: "/rag-chatbot" },
+      { label: "Demo", href: "/case-studies" },
+      { label: "Free Assessment", href: "/free-assessment" },
       { label: "Contact", href: "/contact" },
     ],
     primaryCtas: {
+      assessment: { label: "Free Assessment", href: "/free-assessment" },
       demo: { label: "Book an AI Assistant Demo", href: "/book-demo" },
-      poc: { label: "Get an AI Assistant PoC Review", href: "/contact" },
+      demoPage: { label: "View Demo", href: "/case-studies" },
+      poc: { label: "Free Assessment", href: "/free-assessment" },
       line: { label: "Ask on LINE", href: site.linePageUrl },
-      services: { label: "View AI Assistant Plans", href: "/services" },
+      services: { label: "Services", href: "/services" },
     },
     problemCards: [
       { title: "Too many repeated questions", description: "Admin, support, and frontline teams answer the same questions every day, fragmenting their time.", icon: MessageCircle },
@@ -1012,18 +1037,32 @@ export const siteContent = {
     ],
     coreServices: [
       {
-        title: "Enterprise AI Knowledge Assistant (Core Service)",
+        title: "Document Q&A Assistant",
         href: "/rag-chatbot",
-        icon: DatabaseZap,
+        icon: FileSearch,
         description:
-          "Turn FAQs, SOPs, policies, product manuals, and internal documents into an AI assistant searchable through LINE, with source citations and deployment boundaries planned around data sensitivity.",
+          "Turn PDFs, Word files, web pages, FAQs, and SOPs into a searchable knowledge base.",
       },
       {
-        title: "LINE Translation Add-on Module",
-        href: "/translation-chatbot",
-        icon: Languages,
+        title: "LINE AI Assistant",
+        href: "/line",
+        icon: MessageCircle,
         description:
-          "If cross-language field communication is still needed after the AI knowledge assistant goes live, add Indonesian and Traditional Chinese two-way translation as an optional module.",
+          "Let employees, students, or customers ask common questions directly inside LINE.",
+      },
+      {
+        title: "Source Citations and Correction Flow",
+        href: "/rag-chatbot",
+        icon: SearchCheck,
+        description:
+          "Attach sources where possible so teams can trace, correct, and update documents.",
+      },
+      {
+        title: "Cloud / Local Deployment",
+        href: "/rag-chatbot",
+        icon: ServerCog,
+        description:
+          "Choose a fast cloud PoC, local deployment, or private cloud based on data sensitivity.",
       },
     ],
     teamHighlights: [
@@ -1049,30 +1088,29 @@ export const siteContent = {
     audienceSegments: [
       { label: "Schools / departments / graduate programs", icon: GraduationCap },
       { label: "Cram schools and education providers", icon: ClipboardCheck },
-      { label: "Manufacturing SMEs", icon: Factory },
+      { label: "SMEs", icon: Building2 },
+      { label: "Manufacturing", icon: Factory },
       { label: "E-commerce and support teams", icon: Headphones },
       { label: "HR / admin / IT support", icon: Building2 },
-      { label: "Migrant worker agencies and employers", icon: UsersRound },
-      { label: "Long-term care and caregiver families", icon: MessageCircle },
     ],
     processSteps: [
       "Discovery interview",
       "Document inventory",
       "Data cleanup",
       "Build AI knowledge base",
-      "Connect LINE / web chatbot",
+      "Connect LINE / web entry",
       "Test and refine",
       "Launch and maintain",
     ],
     benefits: [
-      "Reduce repeated inquiry workload by 30-70%",
+      "Reduce repeated Q&A and document search time",
       "Let teammates search company knowledge inside LINE",
       "Improve response speed",
-      "Reduce new employee training time",
+      "Reduce onboarding questions about rules and workflows",
       "Preserve organizational knowledge",
-      "Help staff focus on higher-value work",
-      "Avoid immediate headcount increases for support and admin teams",
-      "Let users find information 24/7",
+      "Help admin and support teams spend less time searching",
+      "Ground common answers in the same document source",
+      "Let users first check authorized information outside office hours",
       "Validate quickly in the cloud, then assess local deployment for sensitive data",
     ],
     securityPrinciples: [
@@ -1100,7 +1138,7 @@ export const siteContent = {
     packages: [
       {
         title: "AI Assistant Starter PoC",
-        price: "NT$50,000-90,000",
+        price: "NT$50,000-100,000",
         description: "Validate LINE search experience, document quality, answer accuracy, and data boundaries with one clear scenario.",
         items: ["2-3 weeks", "1 service scenario", "20-40 clean pages", "LINE or website interface", "Basic accuracy check"],
         highlighted: true,
@@ -1129,7 +1167,7 @@ export const siteContent = {
       },
       {
         name: "AI Assistant Starter PoC",
-        price: "NT$50,000-90,000",
+        price: "NT$50,000-100,000",
         summary: "Validate in a small scope whether a LINE AI assistant can reduce repeated Q&A and document lookup work.",
         timeline: "2-3 weeks",
         bestFor: "SMEs adopting an AI knowledge assistant for the first time",
@@ -1173,17 +1211,17 @@ export const siteContent = {
         ],
       },
       {
-        name: "Translation Optional Module",
-        price: "NT$30,000-80,000",
-        summary: "Add Indonesian and Traditional Chinese two-way translation after a LINE chatbot or enterprise AI assistant is in place.",
-        timeline: "1-2 weeks",
-        bestFor: "Field teams that already use LINE and need cross-language communication",
+        name: "Production Rollout After PoC",
+        price: "Quoted after assessment",
+        summary: "Planned by document volume, LINE / web integration, permissions, deployment model, and maintenance needs.",
+        timeline: "About 4-10 weeks",
+        bestFor: "Organizations whose PoC is ready to expand",
         includes: [
-          "Indonesian ⇄ Traditional Chinese",
-          "LINE text message translation",
-          "Usage records",
-          "Quota or paid-use planning",
-          "Can sit behind the AI assistant or LINE chatbot",
+          "Multi-category knowledge base",
+          "LINE / web integration",
+          "Admin update workflow",
+          "Usage records and question review",
+          "Cloud, local, or private-cloud deployment assessment",
         ],
       },
     ],
@@ -1224,9 +1262,9 @@ export const siteContent = {
       },
       {
         phase: "Phase 3",
-        title: "Private deployment or add-ons",
+        title: "Production rollout and maintenance",
         duration: "Scope-based",
-        detail: "Upgrade to local / private cloud by data sensitivity, or add translation, permissions, audit logs, and system integration.",
+        detail: "Plan cloud, local, or private-cloud deployment by data sensitivity, then establish update, correction, permission, and maintenance workflows.",
       },
     ],
     faqItems: [
@@ -1243,7 +1281,7 @@ export const siteContent = {
       {
         question: "Can it connect to LINE?",
         answer:
-          "Yes. LINE101Chat can plan a LINE chatbot or website chat interface. In the PoC stage, we usually choose one primary entry point to keep the first scope focused.",
+          "Yes. LINE101Chat can plan a LINE AI assistant or website chat interface. In the PoC stage, we usually choose one primary entry point to keep the first scope focused.",
       },
       {
         question: "Can it be deployed locally?",
@@ -1263,22 +1301,22 @@ export const siteContent = {
       {
         question: "Will this replace employees?",
         answer:
-          "Early adoption usually reduces repeated Q&A, document lookup, and training work rather than fully replacing staff. With enough question volume and good documents, it can save roughly 0.3-1.5 FTE-equivalent workload.",
+          "Replacement is not the right first goal. A practical rollout reduces repeated Q&A, document lookup, and onboarding work so staff can spend more time on judgment and service quality.",
       },
       {
         question: "Will document content leak?",
         answer:
-          "Customer documents are used only for the agreed chatbot development, testing, and maintenance. Sensitive data should be covered by separate data-processing and confidentiality agreements, and local or private deployment can be assessed.",
+          "Customer documents are used only for the agreed AI assistant development, testing, and maintenance. Sensitive data should be covered by separate data-processing and confidentiality agreements, and local or private deployment can be assessed.",
       },
       {
-        question: "Can it support English, Indonesian, or Japanese?",
+        question: "Can other modules be added later?",
         answer:
-          "Yes, depending on the use case. The enterprise AI knowledge assistant focuses first on document Q&A; Indonesian and Traditional Chinese translation is positioned as an optional add-on after the core LINE search flow is stable.",
+          "Yes, depending on the use case, but LINE101Chat's main service remains the AI knowledge assistant and document Q&A system. If cross-language field communication is needed, a translation module can be assessed separately.",
       },
       {
         question: "How is pricing calculated?",
         answer:
-          "Pricing depends on document volume, number of use cases, LINE or web integration, deployment location, usage records, permission controls, and maintenance frequency. Taiwan SMEs are encouraged to start with the free assessment or the NT$50,000-90,000 Starter PoC.",
+          "Pricing depends on document volume, number of use cases, LINE or web integration, deployment location, usage records, permission controls, and maintenance frequency. Taiwan SMEs are encouraged to start with the free assessment or the NT$50,000-100,000 Starter PoC.",
       },
       {
         question: "Why emphasize the NTUT engineering background?",
@@ -1304,24 +1342,18 @@ export const siteContent = {
     ],
     demoCases: [
       {
-        title: "NTUT iFIRST AI Document Q&A",
+        title: "NTUT iFIRST AI Document Q&A Demo",
         description:
-          "A LINE AI document Q&A assistant built from public documents from NTUT's College of Innovation and Frontier Technology. It answers by Artificial Intelligence, Information Security, and Semiconductor program categories with source citations.",
+          "An AI knowledge assistant demo built from public documents. It can answer selected questions about Artificial Intelligence, Information Security, and Semiconductor program rules, forms, and study information with source citations.",
         features: [
           "Official document retrieval",
           "Three knowledge collections",
           "Source citations",
-          "Traditional Chinese LINE answers",
-          "Local Ollama LLM backend",
+          "Traditional Chinese answers",
+          "LINE / Web demo ready",
+          "Local Ollama backend option",
         ],
         icon: SearchCheck,
-      },
-      {
-        title: "LINE Translation Add-on Demo",
-        description:
-          "An optional translation module that can be added after the core LINE AI assistant is live, supporting Indonesian and Traditional Chinese two-way translation with usage records and quota management.",
-        features: ["Text-only translation", "LINE webhook", "Local Ollama model", "Usage records", "Quota and paid user support"],
-        icon: Bot,
       },
     ],
     trustPoints: [
@@ -1368,14 +1400,14 @@ export const siteContent = {
     hero: {
       features: ["Enterprise AI assistant", "Fast LINE search", "Source citations", "Data boundaries"],
       eyebrow: "AI assistant for Taiwan SMEs / NTUT engineering team",
-      title: "LINE101Chat keeps company knowledge confidential and easy to find",
+      title: "LINE101Chat turns company documents into a source-grounded AI knowledge assistant",
       description:
-        "Turn SOPs, contract summaries, product manuals, FAQs, and internal policies into an AI assistant searchable through LINE. Plan cloud, local, or private-cloud deployment by data sensitivity so answers are easy to find while company information stays controlled.",
+        "Turn SOPs, FAQs, policies, product manuals, and internal rules into an AI assistant searchable through LINE or a website. Answers can include document sources, with cloud, local, or private-cloud deployment assessed by data sensitivity.",
       speech:
-        "I am LINE101Chat's AI solution consultant. I help you assess document sensitivity and search scenarios before planning the LINE entry point, source citations, and deployment model.",
+        "I am LINE101Chat's AI solution consultant. I help assess documents, repeated questions, and search scenarios before recommending whether an AI knowledge assistant PoC makes sense.",
       stats: [
-        ["30 minutes", "Start with needs assessment"],
-        ["2-3 weeks", "AI Assistant Starter PoC"],
+        ["20-30 pages", "Start with official documents"],
+        ["2-3 weeks", "Focused Starter PoC"],
         ["Cloud / local", "Deploy by data sensitivity"],
       ],
     },
@@ -1396,9 +1428,9 @@ export const siteContent = {
           },
           core: {
             eyebrow: "Core Service",
-            title: "The enterprise AI knowledge assistant is the core service; translation is optional",
+            title: "We focus on one thing: turning company documents into a reliable AI knowledge assistant",
             description:
-              "First, turn official documents into a source-grounded AI assistant that can be searched quickly in LINE and deployed according to data sensitivity. Add translation or other modules only after the core flow proves useful.",
+              "This is not a toy chatbot. It organizes official documents, FAQs, SOPs, and internal rules into a searchable, traceable, maintainable AI Q&A system.",
           },
           security: {
             eyebrow: "Data Confidentiality",
@@ -1436,57 +1468,93 @@ export const siteContent = {
           },
         },
         cta: {
-          title: "Want to know whether your company is ready for an AI chat assistant?",
-          body: "Start with a 30-minute needs assessment. We will help confirm document status, suitable use cases, and the data needed for a PoC.",
-          buttonLabel: "Book a 30-minute needs assessment",
+          title: "Want to know whether your documents are suitable for an AI knowledge assistant?",
+          body: "Start with 20-30 pages of official documents. We will assess document quality, use cases, LINE or web entry points, and whether a PoC is worthwhile.",
+          buttonLabel: "Free Assessment",
         },
       },
       services: {
         metadata: {
           title: "Services | Enterprise AI Knowledge Assistant and LINE Document Search",
           description:
-            "Learn about LINE101Chat's enterprise AI knowledge assistant, LINE document search, confidential deployment planning, SME Cloud RAG, Local / Private RAG, and optional translation module.",
+            "Learn how LINE101Chat helps Taiwan SMEs, schools, and organizations turn FAQs, SOPs, policies, product manuals, and internal documents into source-grounded AI knowledge assistants.",
           canonical: "/en/services",
         },
         hero: {
           eyebrow: "Services",
           title: "Services",
           description:
-            "LINE101Chat centers on the enterprise AI knowledge assistant: AI answers from official documents, cites sources, searches quickly through LINE, and plans cloud, local, or private-cloud deployment according to data sensitivity. Translation is only an optional add-on.",
+            "LINE101Chat focuses on AI knowledge assistants and document Q&A systems. The AI first searches your documents, then answers based on that content.",
         },
         bullets: [
-          "Start with needs assessment to confirm whether adoption is truly worthwhile.",
-          "Keep the AI assistant PoC focused so the first investment stays controlled.",
-          "Prioritize document quality, source citations, permission boundaries, and confidentiality.",
-          "Choose LINE, web, cloud, local, or private-cloud deployment based on the scenario.",
+          "Turn official documents into searchable, source-grounded AI Q&A.",
+          "Start with 20-30 pages before deciding on a 2-3 week PoC.",
+          "Let employees, students, or customers ask questions in LINE or on the web.",
+          "Assess cloud, local, or private-cloud deployment based on data sensitivity.",
         ],
         presenterQuote:
           "Not sure whether to choose cloud or local deployment? Start with an AI assistant needs assessment; we will use document sensitivity, budget, and operations capacity to recommend a rollout path.",
-        comparison: {
-          eyebrow: "Service Comparison",
-          title: "Make company knowledge searchable first, then decide whether translation is needed",
-          description:
-            "If the main problem is document lookup, repeated Q&A, and information confidentiality, the enterprise AI knowledge assistant comes first. If cross-language daily communication remains after launch, add the LINE translation module.",
-          headers: ["Item", "Enterprise AI Knowledge Assistant", "LINE Translation Add-on Module"],
-          rows: [
-            ["Positioning", "Core implementation service", "Optional module after the enterprise AI assistant or LINE chatbot is live"],
-            ["Best for", "Schools, departments, SMEs, support, HR, IT, manufacturing", "Teams that already have cross-language LINE communication volume"],
-            ["Main problems solved", "Company knowledge lookup, repeated Q&A, source traceability, organizational knowledge preservation, data boundaries", "Indonesian and Traditional Chinese daily communication, field instructions, care and work conversations"],
-            ["Data used", "FAQs, SOPs, policies, product manuals, admissions information, internal documents", "LINE text messages, translation logs, quota and usage settings"],
-            ["Deployment", "LINE chatbot, website chatbot, cloud, local, or private cloud", "LINE chatbot, local or private LLM backend"],
-            ["Pricing model", "AI assistant PoC, build fee, maintenance fee, custom integration", "Optional build fee, monthly fee, usage or quota model"],
-            ["Best first step", "Prepare 20-40 pages of official documents and real questions for an AI Assistant Starter PoC", "Confirm whether a LINE workflow and real translation volume already exist"],
-          ],
-        },
-        plans: {
-          eyebrow: "Implementation Plans",
-          title: "Rollout Plans for Taiwan SMEs",
-          description:
-            "Use a pace that SMEs can manage: validate LINE search experience, source citations, and data boundaries with a Starter PoC, then choose SME Cloud RAG or Local / Private RAG based on sensitivity.",
-          noteBefore: "For detailed pricing, see",
-          noteLink: "Pricing",
-          noteAfter: ", or email",
-          noteBook: "to book",
+        sections: [
+          {
+            title: "Service Core",
+            items: [
+              "Inventory documents, FAQs, SOPs, policies, and product manuals.",
+              "Build a searchable knowledge base and Q&A flow.",
+              "Attach sources where possible so answers can be traced and corrected.",
+            ],
+          },
+          {
+            title: "Suitable Scenarios",
+            items: [
+              "Admissions FAQs, department rules, and form lookup.",
+              "Support FAQs and product manual lookup.",
+              "HR, admin, IT support, and onboarding questions.",
+            ],
+          },
+          {
+            title: "Document Preparation",
+            items: [
+              "Start with 20-30 pages of official, current, selectable-text documents.",
+              "Prepare 30-50 real common questions.",
+              "Assign a document owner to confirm answers and corrections.",
+            ],
+          },
+          {
+            title: "LINE / Web Entry",
+            items: [
+              "LINE fits Taiwan employees, students, and customers who need quick answers.",
+              "A web chat entry can also sit on a website or internal portal.",
+              "The PoC usually starts with one main entry point to keep scope focused.",
+            ],
+          },
+          {
+            title: "Deployment Model",
+            items: [
+              "Use cloud deployment for a fast first validation.",
+              "Assess local or private-cloud deployment for sensitive documents.",
+              "Plan permissions, records, and data-processing boundaries as needed.",
+            ],
+          },
+          {
+            title: "PoC Rollout",
+            items: [
+              "Assess documents and use case fit first.",
+              "Build a focused 2-3 week PoC.",
+              "Test answer quality, source citations, and user experience with real questions.",
+            ],
+          },
+          {
+            title: "Maintenance",
+            items: [
+              "Set up document updates and answer correction workflows.",
+              "Review common questions and missed questions regularly.",
+              "Adjust deployment and maintenance based on usage and data sensitivity.",
+            ],
+          },
+        ],
+        optionalModule: {
+          title: "Custom Add-on Modules",
+          body: "If cross-language field communication is needed, a translation module can be assessed separately. LINE101Chat's main service remains the AI knowledge assistant and document Q&A system.",
         },
       },
       rag: {
@@ -1550,107 +1618,96 @@ export const siteContent = {
           description: "Validate LINE search experience, source citations, and data boundaries in a controlled scope before spending budget on production rollout and maintenance.",
         },
       },
-      translation: {
-        metadata: {
-          title: "Translation Add-on Module | LINE Indonesian and Traditional Chinese Translation",
-          description:
-            "LINE101Chat's optional translation module supports Indonesian ⇄ Traditional Chinese and can be added after an enterprise AI knowledge assistant or LINE chatbot is live.",
-          canonical: "/en/translation-chatbot",
-        },
-        hero: {
-          eyebrow: "Optional Add-on / LINE Translation Assistant",
-          title: "Translation Add-on: add Indonesian and Traditional Chinese support to LINE when needed",
-          description:
-            "LINE101Chat's core service is the enterprise AI knowledge assistant and LINE document search. If your field workflow also needs cross-language communication, add Indonesian and Traditional Chinese two-way translation so employers, migrant workers, caregivers, factory managers, agencies, and families can communicate in familiar LINE conversations.",
-        },
-        callout: {
-          label: "Built for Daily Use",
-          title: "Stabilize the core AI assistant first, then add translation as needed",
-          body: "This fits scenarios that already use LINE, need frequent cross-language communication, and require a simple operating model.",
-        },
-        featuresHeading: {
-          eyebrow: "Capabilities",
-          title: "Optional capability for Taiwan field communication",
-          description:
-            "The translation assistant does not replace the enterprise AI knowledge assistant. It adds cross-language support for daily sentences, reminders, work instructions, and care communication after the core document-search flow is ready.",
-        },
-        features: [
-          "Positioned as an add-on after the enterprise AI assistant",
-          "Indonesian ⇄ Traditional Chinese",
-          "Used directly inside LINE",
-          "Suitable for migrant workers, caregivers, factories, agencies, and families",
-          "Local / private LLM backend can be assessed",
-          "Can include usage records",
-          "Quota and paid-use models can be planned",
-        ],
-        demo: {
-          title: "LINE Conversation Example",
-          description:
-            "Users paste a message into LINE and the bot returns a natural translation in the other language. In production, it can sit behind an existing LINE chatbot and include logs, quotas, and user management.",
-          conversation: [
-            { speaker: "User", text: "Saya akan tiba jam 8 pagi." },
-            { speaker: "Bot", text: "I will arrive at 8 a.m." },
-            { speaker: "User", text: "Please remember to bring your health insurance card today." },
-            { speaker: "Bot", text: "Hari ini jangan lupa membawa kartu asuransi kesehatan." },
-          ],
-        },
-      },
       caseStudies: {
         metadata: {
           title: "Case Studies / Demo | LINE101Chat",
           description:
-            "See LINE101Chat's core enterprise AI document Q&A assistant demo and the optional Indonesian ⇄ Traditional Chinese translation module demo.",
+            "See LINE101Chat's NTUT iFIRST AI document Q&A demo and how public documents can become a source-grounded AI knowledge assistant.",
           canonical: "/en/case-studies",
         },
         heading: {
           eyebrow: "Case Studies / Demo",
           title: "Case Studies / Demo",
           description:
-            "The current focus is an enterprise AI document Q&A assistant that cites sources and can be searched through LINE. Indonesian and Traditional Chinese translation is shown only as an optional module demo.",
+            "The main demo is the NTUT iFIRST AI document Q&A assistant, built from selected public rules, forms, and study information with source citations.",
         },
         cards: [
-          ["PoC focus", "Choose one measurable scenario first, such as admissions FAQs, SOP lookup, or cross-language communication."],
+          ["PoC focus", "Choose one measurable scenario first, such as admissions FAQs, SOP lookup, or support knowledge base."],
           ["Validation method", "Test with real questions to check answer accuracy, source citations, LINE experience, data boundaries, and maintenance workflow."],
           ["Next step", "If the AI assistant PoC shows clear value, expand documents, users, permissions, cloud hosting, or local deployment."],
         ],
+        secondaryNote: "Other technical demo: a LINE translation module can be customized when needed.",
         cta: {
           title: "Want to build the first demo with your own documents?",
           body: "Prepare one clean document and real questions. We can help judge whether it is a good fit for an enterprise AI Assistant Starter PoC.",
-          label: "Get an AI Assistant PoC Review",
+          label: "Free Assessment",
         },
       },
       pricing: {
         metadata: {
-          title: "Pricing | LINE101Chat",
+          title: "Free AI Knowledge Assistant Assessment | LINE101Chat",
           description:
-            "LINE101Chat offers Enterprise AI Knowledge Assistant Starter PoC, SME Cloud RAG, Local / Private RAG, and optional translation modules for Taiwan SMEs adopting LINE document search.",
-          canonical: "/en/pricing",
+            "Use 20-30 pages of official documents so LINE101Chat can assess whether your organization is a good fit for an AI knowledge assistant PoC.",
+          canonical: "/en/free-assessment",
         },
         heading: {
-          eyebrow: "Pricing",
-          title: "Enterprise AI assistant pricing that fits Taiwan SME rollout pace",
+          eyebrow: "Free Assessment",
+          title: "Free AI Knowledge Assistant Implementation Assessment",
           description:
-            "Validate LINE search experience, source citations, and confidentiality boundaries with a small PoC before deciding on production rollout, cloud hosting, or local/private deployment. Translation is an optional module after the LINE workflow matures.",
+            "You do not need to start with a large system. Start with 20-30 pages of official documents and let us assess whether an AI knowledge assistant PoC makes sense.",
         },
-        maintenanceTitle: "Monthly Maintenance",
-        maintenanceBody:
-          "Maintenance fees depend on document update frequency, usage, deployment location, and integration complexity. Cloud hosting usually starts at NT$12,000-35,000 / month; local or private cloud usually starts at NT$35,000-90,000 / month because it includes operations, security, and performance tuning.",
-        scheduleHeading: {
-          eyebrow: "Rollout Timeline",
-          title: "From a 30-minute assessment to production launch",
-          description: "Taiwan SMEs usually need verifiable results first, then gradually expand budget and implementation scope.",
-        },
-        deploymentHeading: {
-          eyebrow: "Deployment Choice",
-          title: "AI assistants can be cloud-hosted or deployed locally / privately",
-          description: "Deployment model directly affects price, timeline, maintenance responsibility, and data-security boundaries.",
+        sections: [
+          {
+            title: "Who should apply?",
+            items: [
+              "Schools / departments / graduate programs",
+              "Cram schools and education providers",
+              "SMEs",
+              "Manufacturing",
+              "E-commerce and support teams",
+              "HR / admin / IT support",
+            ],
+          },
+          {
+            title: "What will we assess?",
+            items: [
+              "Whether documents are clear and current",
+              "Whether repeated questions exist",
+              "Whether LINE or web search fits the workflow",
+              "Whether confidentiality or local deployment matters",
+              "Whether a 2-3 week PoC is a good next step",
+            ],
+          },
+          {
+            title: "What should you prepare?",
+            items: [
+              "20-30 pages of official documents",
+              "30-50 common questions",
+              "One clear use case",
+              "A document owner who can confirm answers",
+            ],
+          },
+          {
+            title: "What will you get?",
+            items: [
+              "Whether an AI knowledge assistant is a good fit",
+              "Recommended PoC scope",
+              "Document cleanup suggestions",
+              "Rough implementation timeline",
+              "Rough cost range",
+            ],
+          },
+        ],
+        pricingNote: {
+          title: "If the assessment fits, move into a PoC",
+          body: "Starter PoCs usually begin from NT$50,000-100,000, adjusted by document volume, LINE integration, and whether local deployment is needed. Production rollout and maintenance fees are quoted after the needs assessment.",
         },
       },
       contact: {
         metadata: {
-          title: "Contact | Book a Demo and PoC Review",
+          title: "Contact | Free AI Knowledge Assistant Document Assessment",
           description:
-            "Contact LINE101Chat to book a 30-minute enterprise AI knowledge assistant needs assessment, LINE document search demo, confidential deployment discussion, or local/private deployment review.",
+            "Contact LINE101Chat for a free assessment of whether your FAQs, SOPs, policies, and internal documents fit an AI knowledge assistant, LINE document Q&A, cloud, or local deployment.",
           canonical: "/en/contact",
         },
         heading: {
@@ -1682,7 +1739,7 @@ export const siteContent = {
         values: [
           ["Practical", "Confirm scenario, data, and expected value before deciding implementation scope."],
           ["Trustworthy", "Answers must be traceable to sources, and sensitive data needs a clear handling model."],
-          ["Maintainable", "An AI chatbot must evolve with document updates and organizational workflows."],
+          ["Maintainable", "An AI assistant must evolve with document updates and organizational workflows."],
         ],
         teamHeading: {
           eyebrow: "Engineering Team",
@@ -1719,7 +1776,7 @@ export const siteContent = {
         },
         eyebrow: "Privacy",
         title: "LINE101Chat Privacy Policy",
-        intro: "This policy explains how LINE101Chat handles information and documents provided during website contact, needs assessment, PoC, and chatbot service work.",
+        intro: "This policy explains how LINE101Chat handles information and documents provided during website contact, needs assessment, PoC, and AI assistant service work.",
         sections: [
           {
             title: "1. Information We Collect",
@@ -1727,7 +1784,7 @@ export const siteContent = {
           },
           {
             title: "2. How Customer Documents Are Used",
-            body: "Customer documents are used only for the agreed chatbot development, testing, adjustment, and maintenance. Documents may include FAQs, SOPs, policies, product manuals, admissions information, or internal knowledge materials.",
+            body: "Customer documents are used only for the agreed AI assistant development, testing, adjustment, and maintenance. Documents may include FAQs, SOPs, policies, product manuals, admissions information, or internal knowledge materials.",
           },
           {
             title: "3. Sensitive Documents",
@@ -1739,7 +1796,7 @@ export const siteContent = {
           },
           {
             title: "5. LINE Messages and Usage Records",
-            body: "When customers enable chatbot services, LINE messages may be recorded within the customer's agreed scope for debugging, usage analysis, service improvement, quota management, or customer support.",
+            body: "When customers enable AI assistant services, LINE messages may be recorded within the customer's agreed scope for debugging, usage analysis, service improvement, or customer support.",
           },
           {
             title: "6. Data Deletion Requests",
@@ -1801,7 +1858,11 @@ export const siteContent = {
         organization: "Company / Organization",
         email: "Email",
         phone: "Phone / LINE ID",
-        service: "Service interest",
+        problem: "Problem to solve",
+        documentPages: "Approximate document pages",
+        hasFaq: "Do you already have FAQs / SOPs / policies?",
+        needsLine: "Need LINE integration?",
+        confidentiality: "Any data confidentiality needs?",
         message: "Message",
       },
       placeholders: {
@@ -1809,18 +1870,17 @@ export const siteContent = {
         organization: "Company, school, or organization",
         email: "name@example.com",
         phone: "Phone or LINE ID",
-        service: "Choose the service you are interested in",
-        message: "Briefly describe your document types, target users, LINE or website needs, data sensitivity, and current pain points.",
+        problem: "Repeated support questions, hard-to-find SOPs, onboarding, admissions FAQs, internal policy lookup...",
+        documentPages: "Example: 20-30 pages, 50+ pages, not sure yet",
+        hasFaq: "Choose one",
+        needsLine: "Choose one",
+        confidentiality: "Choose one",
+        message: "Add document types, target users, current workflow, LINE or web needs, and expected timeline.",
       },
-      serviceOptions: [
-        "Enterprise AI Assistant Starter PoC",
-        "SME Cloud RAG",
-        "Local / Private RAG",
-        "Translation optional module",
-        "Not sure yet; need an assessment first",
-      ],
+      yesNoOptions: ["Yes", "No", "Not sure; need assessment"],
+      confidentialityOptions: ["Yes, local or private cloud may be needed", "Yes, but the scope can be discussed first", "No obvious confidentiality needs", "Not sure; need assessment"],
       recipientLabel: "Recipient: ",
-      submitLabel: "Open email app",
+      submitLabel: "Assess whether my documents fit an AI knowledge assistant",
     },
   },
 };

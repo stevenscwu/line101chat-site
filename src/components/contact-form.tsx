@@ -15,7 +15,11 @@ const initialForm = {
   organization: "",
   email: "",
   phone: "",
-  service: "",
+  problem: "",
+  documentPages: "",
+  hasFaq: "",
+  needsLine: "",
+  confidentiality: "",
   message: "",
 };
 
@@ -27,13 +31,17 @@ export function ContactForm({ locale = "zh" }: { locale?: Locale }) {
   const emailBody = [
     copy.emailHeader,
     "",
-    `Name: ${form.name}`,
-    `Company / Organization: ${form.organization}`,
-    `Email: ${form.email}`,
-    `Phone / LINE ID: ${form.phone}`,
-    `Service interest: ${form.service}`,
+    `${copy.labels.name}: ${form.name}`,
+    `${copy.labels.organization}: ${form.organization}`,
+    `${copy.labels.email}: ${form.email}`,
+    `${copy.labels.phone}: ${form.phone}`,
+    `${copy.labels.problem}: ${form.problem}`,
+    `${copy.labels.documentPages}: ${form.documentPages}`,
+    `${copy.labels.hasFaq}: ${form.hasFaq}`,
+    `${copy.labels.needsLine}: ${form.needsLine}`,
+    `${copy.labels.confidentiality}: ${form.confidentiality}`,
     "",
-    "Message:",
+    `${copy.labels.message}:`,
     form.message,
   ].join("\n");
 
@@ -105,17 +113,69 @@ export function ContactForm({ locale = "zh" }: { locale?: Locale }) {
           />
         </label>
         <label className="text-sm font-bold text-slate-800 sm:col-span-2">
-          {copy.labels.service}
+          {copy.labels.problem}
+          <textarea
+            className={`${fieldClass} min-h-28 resize-y`}
+            name="problem"
+            placeholder={copy.placeholders.problem}
+            value={form.problem}
+            onChange={(event) => updateField("problem", event.target.value)}
+          />
+        </label>
+        <label className="text-sm font-bold text-slate-800">
+          {copy.labels.documentPages}
+          <input
+            className={fieldClass}
+            name="documentPages"
+            placeholder={copy.placeholders.documentPages}
+            value={form.documentPages}
+            onChange={(event) => updateField("documentPages", event.target.value)}
+          />
+        </label>
+        <label className="text-sm font-bold text-slate-800">
+          {copy.labels.hasFaq}
           <select
             className={fieldClass}
-            name="service"
-            value={form.service}
-            onChange={(event) => updateField("service", event.target.value)}
+            name="hasFaq"
+            value={form.hasFaq}
+            onChange={(event) => updateField("hasFaq", event.target.value)}
           >
             <option value="" disabled>
-              {copy.placeholders.service}
+              {copy.placeholders.hasFaq}
             </option>
-            {copy.serviceOptions.map((option) => (
+            {copy.yesNoOptions.map((option) => (
+              <option key={option}>{option}</option>
+            ))}
+          </select>
+        </label>
+        <label className="text-sm font-bold text-slate-800">
+          {copy.labels.needsLine}
+          <select
+            className={fieldClass}
+            name="needsLine"
+            value={form.needsLine}
+            onChange={(event) => updateField("needsLine", event.target.value)}
+          >
+            <option value="" disabled>
+              {copy.placeholders.needsLine}
+            </option>
+            {copy.yesNoOptions.map((option) => (
+              <option key={option}>{option}</option>
+            ))}
+          </select>
+        </label>
+        <label className="text-sm font-bold text-slate-800">
+          {copy.labels.confidentiality}
+          <select
+            className={fieldClass}
+            name="confidentiality"
+            value={form.confidentiality}
+            onChange={(event) => updateField("confidentiality", event.target.value)}
+          >
+            <option value="" disabled>
+              {copy.placeholders.confidentiality}
+            </option>
+            {copy.confidentialityOptions.map((option) => (
               <option key={option}>{option}</option>
             ))}
           </select>
