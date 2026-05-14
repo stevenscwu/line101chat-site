@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { MessageCircle, PlayCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
 import { CTASection, DemoCard } from "@/components/cards";
+import { ChatbotQrGuide } from "@/components/case-studies/ChatbotQrGuide";
+import { DemoVideoSection } from "@/components/case-studies/DemoVideoSection";
 import { SectionHeading } from "@/components/section-heading";
 import { getSiteContent, localizePath } from "@/data/site";
 import type { Locale } from "@/data/site";
@@ -18,30 +20,6 @@ export const metadata: Metadata = {
 export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) {
   const content = getSiteContent(locale);
   const caseStudies = content.pages.caseStudies;
-  const videoHeading =
-    locale === "en"
-      ? {
-          eyebrow: "Demo Videos",
-          title: "Demo walkthrough for the AI document Q&A assistant",
-          description:
-            "The video slot is ready for the RAG assistant walkthrough. Until the public clip is uploaded, visitors can request the same walkthrough in a live demo.",
-          videos: [
-            ["NTUT iFIRST AI document Q&A demo", "Document retrieval, source citations, and LINE Q&A flow."],
-          ],
-          request: "Request walkthrough",
-          caseStudy: "Read the NTUT case study",
-        }
-      : {
-          eyebrow: "Demo 影片",
-          title: "AI 文件問答 Demo 影片區塊",
-          description:
-            "RAG 文件問答的影片位置已放上網站；正式公開影片上傳前，訪客可先預約同樣流程的 live demo。",
-          videos: [
-            ["北科大 iFIRST AI 文件問答 Demo", "文件檢索、來源引用與 LINE 問答流程。"],
-          ],
-          request: "預約 walkthrough",
-          caseStudy: "閱讀北科大案例",
-        };
 
   return (
     <main>
@@ -63,12 +41,12 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
             ))}
             <aside className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-black text-slate-950">
-                {locale === "en" ? "How to use this demo" : "這個 Demo 可以看什麼"}
+                {locale === "en" ? "What this demo proves" : "這個 Demo 對客戶代表什麼"}
               </h2>
               <p className="mt-3 text-sm leading-7 text-slate-600">
                 {locale === "en"
-                  ? "Use it to check how source-grounded answers, knowledge collections, and Traditional Chinese responses feel before preparing your own PoC documents."
-                  : "可先看 AI 如何根據公開文件回答、切換知識集合、附上資料來源，以及繁體中文回答的實際體驗。"}
+                  ? "The NTUT iFIRST demo is a proof of capability: official documents can become a source-grounded assistant that users can query in LINE or on the web."
+                  : "北科大 iFIRST Demo 是能力證明：正式文件可以變成可在 LINE 或網站查詢、能附來源的 AI 知識助理。"}
               </p>
               <div className="mt-5 grid gap-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4 sm:grid-cols-[132px_1fr] sm:items-center lg:grid-cols-1 xl:grid-cols-[132px_1fr]">
                 <div className="w-32 rounded-lg border border-emerald-100 bg-white p-2">
@@ -100,46 +78,29 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
               <p className="mt-5 rounded-lg bg-slate-50 p-4 text-xs font-bold leading-6 text-slate-500">
                 {caseStudies.secondaryNote}
               </p>
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+                <Link
+                  href={localizePath(content.primaryCtas.assessment.href, locale)}
+                  className="inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-600 px-5 py-3 text-sm font-black text-white hover:bg-emerald-700"
+                >
+                  {locale === "en" ? "Book Free Assessment" : "預約免費評估"}
+                </Link>
+                <Link
+                  href={localizePath(content.primaryCtas.line.href, locale)}
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-black text-slate-800 hover:border-emerald-500 hover:text-emerald-700"
+                >
+                  <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                  {locale === "en" ? "Ask About Services" : "詢問導入方式"}
+                </Link>
+              </div>
             </aside>
           </div>
         </div>
       </section>
 
-      <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <SectionHeading
-            eyebrow={videoHeading.eyebrow}
-            title={videoHeading.title}
-            description={videoHeading.description}
-          />
-          <div className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,720px)]">
-            {videoHeading.videos.map(([title, body]) => (
-              <article key={title} className="rounded-lg border border-slate-200 bg-slate-50 p-5 shadow-sm">
-                <div className="flex aspect-video items-center justify-center rounded-lg border border-slate-200 bg-slate-950 text-white">
-                  <div className="text-center">
-                    <PlayCircle className="mx-auto h-12 w-12 text-emerald-300" aria-hidden="true" />
-                    <p className="mt-3 text-sm font-black uppercase tracking-[0.08em] text-slate-300">Demo video</p>
-                  </div>
-                </div>
-                <h2 className="mt-5 text-xl font-black text-slate-950">{title}</h2>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{body}</p>
-                <Link
-                  href={localizePath("/book-demo", locale)}
-                  className="mt-5 inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-600 px-5 py-3 text-sm font-black text-white hover:bg-emerald-700"
-                >
-                  {videoHeading.request}
-                </Link>
-              </article>
-            ))}
-          </div>
-          <Link
-            href={localizePath("/case-studies/ntut-ifirst-rag", locale)}
-            className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-black text-slate-800 hover:border-emerald-500 hover:text-emerald-700"
-          >
-            {videoHeading.caseStudy}
-          </Link>
-        </div>
-      </section>
+      <DemoVideoSection locale={locale} />
+
+      <ChatbotQrGuide locale={locale} />
 
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-5 md:grid-cols-3">

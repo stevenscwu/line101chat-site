@@ -397,14 +397,14 @@ export const demoCases = [
   {
     title: "北科大創新前瞻科技學院 iFIRST AI 文件問答 Demo",
     description:
-      "使用公開文件建立的 AI 知識助理 Demo，可查詢人工智慧、資訊安全與半導體學程的部分規章、表單與修業資訊，並附上資料來源。",
+      "這不是單純的學校專案，而是一個可複製到學校、SME 與組織內部知識的 AI 知識助理案例。Demo 使用公開文件建立，可依照人工智慧、資訊安全與半導體三個學程分類回答部分規章、表單與修業資訊，並附上資料來源。",
     features: [
-      "Official document retrieval",
-      "Three knowledge collections",
-      "Source citations",
-      "Traditional Chinese answers",
-      "LINE / Web demo ready",
-      "Local Ollama backend option",
+      "官方公開文件檢索",
+      "三個知識分類",
+      "回答附資料來源",
+      "繁體中文問答",
+      "可接 LINE 或網站",
+      "本地端 Ollama 後端選項",
     ],
     icon: SearchCheck,
   },
@@ -733,27 +733,27 @@ export const siteContent = {
       },
       caseStudies: {
         metadata: {
-          title: "成功案例 / Demo｜LINE101Chat",
+          title: "AI 知識助理案例 Demo｜LINE101Chat",
           description:
-            "查看 LINE101Chat 的北科大 iFIRST AI 文件問答 Demo，了解如何用公開文件建立可查詢、可引用來源的 AI 知識助理。",
+            "查看北科大 iFIRST AI 文件問答 Demo，了解 LINE101Chat 如何把正式文件變成可在 LINE 查詢、能附來源的 AI 知識助理。",
           canonical: "/case-studies",
         },
         heading: {
-          eyebrow: "成功案例 / Demo",
-          title: "成功案例 / Demo",
+          eyebrow: "AI 知識助理案例 / Demo",
+          title: "從北科大 iFIRST Demo，看文件如何變成 LINE AI 知識助理",
           description:
-            "目前主展示為北科大創新前瞻科技學院 iFIRST AI 文件問答 Demo，可查詢部分公開規章、表單與修業資訊，並附上資料來源。",
+            "這個 Demo 使用北科大創新前瞻科技學院公開文件建立。它證明同樣的方法也能用在學校、系所、中小企業、製造業、客服與內部 SOP：讓使用者在 LINE 或網站提問，AI 先查文件，再附來源回答。",
         },
         cards: [
-          ["PoC 重點", "先選一個可衡量的場景，例如招生 FAQ、SOP 查詢或客服知識庫。"],
-          ["驗證方式", "使用真實問題測試回答準確度、來源引用、LINE 使用體驗、資料邊界與維護流程。"],
-          ["下一步", "若 AI 助理 PoC 成效明確，再擴充文件、使用者、權限、雲端或本地端部署。"],
+          ["這個 Demo 證明什麼", "正式文件可以被整理成可查詢、可引用來源、可在 LINE 使用的 AI 知識助理。"],
+          ["可以複製到哪裡", "招生 FAQ、SOP 查詢、產品手冊、內部制度、表單流程、客服知識庫與教育行政問答。"],
+          ["下一步怎麼開始", "先用 20-30 頁正式文件與 30-50 個常見問題做免費評估，再決定是否進入 Starter PoC。"],
         ],
-        secondaryNote: "這個案例是能力展示；若要導入到你的文件，建議先從免費評估確認文件品質與 PoC 範圍。",
+        secondaryNote: "本 Demo 僅供技術展示與商業案例說明，正式學校規定仍以官方公告與辦公室回覆為準。",
         cta: {
-          title: "想用你的文件做第一個 Demo？",
-          body: "準備一份乾淨文件與真實問題，我們可以協助判斷是否適合做企業 AI 助理 Starter PoC。",
-          label: "免費評估",
+          title: "想為你的學校或公司建立類似的 AI 知識助理？",
+          body: "先用 20-30 頁正式文件做免費評估，確認文件品質、使用場景、來源引用需求與 PoC 範圍。",
+          label: "預約免費評估",
         },
       },
       pricing: {
@@ -1347,7 +1347,7 @@ export const siteContent = {
       {
         title: "NTUT iFIRST AI Document Q&A Demo",
         description:
-          "An AI knowledge assistant demo built from public documents. It can answer selected questions about Artificial Intelligence, Information Security, and Semiconductor program rules, forms, and study information with source citations.",
+          "This is not just a school project. It is a repeatable AI knowledge assistant case for schools, SMEs, and organizations. The demo is built from public documents and can answer selected questions about Artificial Intelligence, Information Security, and Semiconductor program rules, forms, and study information with source citations.",
         features: [
           "Official document retrieval",
           "Three knowledge collections",
@@ -1623,27 +1623,27 @@ export const siteContent = {
       },
       caseStudies: {
         metadata: {
-          title: "Case Studies / Demo | LINE101Chat",
+          title: "AI Knowledge Assistant Case Demo | LINE101Chat",
           description:
-            "See LINE101Chat's NTUT iFIRST AI document Q&A demo and how public documents can become a source-grounded AI knowledge assistant.",
+            "See how the NTUT iFIRST demo proves LINE101Chat can turn official documents into a LINE-searchable AI knowledge assistant with source citations.",
           canonical: "/en/case-studies",
         },
         heading: {
-          eyebrow: "Case Studies / Demo",
-          title: "Case Studies / Demo",
+          eyebrow: "AI Knowledge Assistant Case / Demo",
+          title: "From the NTUT iFIRST demo to your own LINE AI knowledge assistant",
           description:
-            "The main demo is the NTUT iFIRST AI document Q&A assistant, built from selected public rules, forms, and study information with source citations.",
+            "This demo is built from public NTUT iFIRST documents. It proves the same method can work for schools, departments, SMEs, manufacturers, support teams, and internal SOPs: users ask in LINE or on the web, and the AI answers from documents with sources.",
         },
         cards: [
-          ["PoC focus", "Choose one measurable scenario first, such as admissions FAQs, SOP lookup, or support knowledge base."],
-          ["Validation method", "Test with real questions to check answer accuracy, source citations, LINE experience, data boundaries, and maintenance workflow."],
-          ["Next step", "If the AI assistant PoC shows clear value, expand documents, users, permissions, cloud hosting, or local deployment."],
+          ["What the demo proves", "Official documents can become a LINE-searchable AI knowledge assistant with source citations."],
+          ["Where this applies", "Admissions FAQs, SOPs, product manuals, internal policies, form workflows, support knowledge bases, and school admin Q&A."],
+          ["How to start", "Use 20-30 pages of official documents and 30-50 common questions for a free assessment before deciding on a Starter PoC."],
         ],
-        secondaryNote: "This case is a capability demo. For your own documents, start with a free assessment to confirm document quality and PoC scope.",
+        secondaryNote: "This demo is for technical demonstration and business case-study purposes. Official school rules should still be confirmed through official announcements and office replies.",
         cta: {
-          title: "Want to build the first demo with your own documents?",
-          body: "Prepare one clean document and real questions. We can help judge whether it is a good fit for an enterprise AI Assistant Starter PoC.",
-          label: "Free Assessment",
+          title: "Want to build a similar AI knowledge assistant for your school or company?",
+          body: "Start with a free assessment using 20-30 pages of official documents to confirm document quality, source-citation needs, use case, and PoC scope.",
+          label: "Book Free Assessment",
         },
       },
       pricing: {
