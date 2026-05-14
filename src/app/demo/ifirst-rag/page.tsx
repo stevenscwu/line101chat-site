@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { FileSearch, MessageCircle, ShieldCheck } from "lucide-react";
 
 import { CTASection } from "@/components/cards";
 import { RagDemoChat } from "@/components/rag-demo/RagDemoChat";
+import { site } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "北科大 iFIRST RAG 問答 Demo",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 const disclaimer =
-  "本網頁是純 Demo：建議問題皆使用預先準備的示意回答，不會呼叫 RAG 後端。若要測試真實查詢速度、自由提問與完整回答品質，請掃描 QR code 加入 LINE chatbot。正式規定仍以北科大創新前瞻科技學院官方公告與辦公室回覆為準。";
+  `本 Demo 使用北科大創新前瞻科技學院公開資料建立，回答僅供展示與參考，正式規定仍以學校官方公告與辦公室回覆為準。網頁版目前只展示預先準備的示意回答；若要測試真實自由提問，請使用北科大創新學院 Demo chatbot（Channel ${site.ntutDemoLineChannelId}）。`;
 
 export default function IfirstRagDemoPage() {
   return (
@@ -42,25 +42,25 @@ export default function IfirstRagDemoPage() {
               <div className="mt-5 grid gap-4 rounded-lg border border-amber-200 bg-white/80 p-4 sm:grid-cols-[132px_1fr] sm:items-center lg:grid-cols-1 xl:grid-cols-[132px_1fr]">
                 <div className="w-32 rounded-lg border border-slate-200 bg-white p-2">
                   <Image
-                    src="/line101chat-qr.png"
-                    alt="LINE101Chat LINE QR Code"
+                    src={site.ntutDemoQrImage}
+                    alt="北科大創新學院文件問答 Demo chatbot QR Code"
                     width={250}
                     height={250}
                     className="h-auto w-full"
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-black leading-6 text-slate-950">真實效能請用 LINE chatbot</p>
+                  <p className="text-sm font-black leading-6 text-slate-950">試用北科大創新學院文件問答 Demo</p>
                   <p className="mt-2 text-xs font-semibold leading-6 text-slate-600">
-                    網頁版只展示預先回答；LINE chatbot 才是實際查詢體驗。
+                    此 QR Code 僅供北科大創新學院 RAG Demo 使用；LINE101Chat 服務詢問請使用另一個商務帳號。
                   </p>
-                  <Link
-                    href="/line"
-                    className="mt-3 inline-flex min-h-10 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-emerald-600 px-4 py-2 text-xs font-black text-white transition hover:bg-emerald-700"
+                  <div
+                    className="mt-3 inline-flex min-h-10 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-emerald-50 px-4 py-2 text-xs font-black text-emerald-800"
+                    aria-label={`北科大創新學院 Demo chatbot channel ${site.ntutDemoLineChannelId}`}
                   >
                     <MessageCircle className="h-4 w-4" aria-hidden="true" />
-                    加入 LINE chatbot
-                  </Link>
+                    Demo Channel {site.ntutDemoLineChannelId}
+                  </div>
                 </div>
               </div>
             </aside>
@@ -75,8 +75,8 @@ export default function IfirstRagDemoPage() {
       <CTASection
         title="想為你的學校、系所或公司建立類似的 AI 知識助理？"
         body="LINE101Chat 可以協助你把 FAQ、SOP、招生資訊、規章與內部文件，轉換成可在 LINE 或網站使用的 AI 問答助理。"
-        label="預約 30 分鐘需求評估"
-        href="/contact"
+        label="免費評估"
+        href="/free-assessment"
       />
     </main>
   );

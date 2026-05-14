@@ -73,8 +73,8 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
               <div className="mt-5 grid gap-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4 sm:grid-cols-[132px_1fr] sm:items-center lg:grid-cols-1 xl:grid-cols-[132px_1fr]">
                 <div className="w-32 rounded-lg border border-emerald-100 bg-white p-2">
                   <Image
-                    src="/line101chat-qr.png"
-                    alt="LINE101Chat LINE QR Code"
+                    src={content.site.ntutDemoQrImage}
+                    alt={locale === "en" ? "NTUT iFIRST demo chatbot QR Code" : "北科大創新學院文件問答 Demo chatbot QR Code"}
                     width={250}
                     height={250}
                     className="h-auto w-full"
@@ -82,20 +82,19 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
                 </div>
                 <div>
                   <p className="text-sm font-black leading-6 text-slate-950">
-                    {locale === "en" ? "Try real performance in LINE" : "掃描 QR code 測試 LINE chatbot"}
+                    {locale === "en" ? "Try the NTUT iFIRST demo chatbot" : "試用北科大創新學院文件問答 Demo"}
                   </p>
                   <p className="mt-2 text-xs font-semibold leading-6 text-slate-600">
                     {locale === "en"
-                      ? "The web demo is a preview. Scan the QR code to test the LINE chatbot experience."
-                      : "網頁 Demo 先看流程；真實查詢速度、自由提問與完整回答品質請以 LINE chatbot 為準。"}
+                      ? `This QR Code is for the NTUT iFIRST RAG demo only. Business inquiries use the separate LINE101Chat service account, channel ${content.site.businessLineChannelId}.`
+                      : `此 QR Code 僅供北科大創新學院 RAG Demo 使用。LINE101Chat 服務詢問請使用另一個商務帳號，Channel ${content.site.businessLineChannelId}。`}
                   </p>
-                  <Link
-                    href={localizePath(content.primaryCtas.line.href, locale)}
-                    className="mt-3 inline-flex min-h-10 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-emerald-600 px-4 py-2 text-xs font-black text-white transition hover:bg-emerald-700"
-                  >
+                  <div className="mt-3 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-black text-white">
                     <MessageCircle className="h-4 w-4" aria-hidden="true" />
-                    {content.primaryCtas.line.label}
-                  </Link>
+                    {locale === "en"
+                      ? `Demo channel ${content.site.ntutDemoLineChannelId}`
+                      : `Demo Channel ${content.site.ntutDemoLineChannelId}`}
+                  </div>
                 </div>
               </div>
               <p className="mt-5 rounded-lg bg-slate-50 p-4 text-xs font-bold leading-6 text-slate-500">

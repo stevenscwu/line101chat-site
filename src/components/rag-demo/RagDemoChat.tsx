@@ -5,6 +5,7 @@ import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { AlertCircle, Bot, ExternalLink, MessageCircle, Send, UserRound } from "lucide-react";
 
 import { SuggestedQuestions } from "@/components/rag-demo/SuggestedQuestions";
+import { site } from "@/data/site";
 
 const MAX_QUESTION_LENGTH = 300;
 
@@ -20,7 +21,7 @@ const suggestedQuestions = [
 ];
 
 const lineReminder =
-  "網頁版是純 Demo，這則回答是預先準備的示意內容，沒有呼叫 RAG 後端。若要測試真實查詢速度、自由提問與完整回答品質，請掃描 QR code 加入 LINE chatbot。";
+  `網頁版是純 Demo，這則回答是預先準備的示意內容，沒有呼叫 RAG 後端。若要測試真實查詢速度、自由提問與完整回答品質，請使用北科大創新學院 Demo chatbot（Channel ${site.ntutDemoLineChannelId}）。`;
 
 const formalRulesReminder = "正式規定仍以北科大創新前瞻科技學院官方公告與辦公室回覆為準。";
 
@@ -105,7 +106,7 @@ const preparedAnswers: Record<string, PreparedAnswer> = {
   },
   "博士班最多可以念幾年？": {
     content: [
-      "示意回答：博士班修業年限需要同時確認校級學則與學程修業規定。此網頁 Demo 不做正式年限判定；正式 LINE chatbot 會回查文件後列出適用條文。",
+      "示意回答：博士班修業年限需要同時確認校級學則與學程修業規定。此網頁 Demo 不做正式年限判定；北科大創新學院 Demo chatbot 會回查文件後列出適用條文。",
       formalRulesReminder,
       lineReminder,
     ].join("\n\n"),
@@ -113,7 +114,7 @@ const preparedAnswers: Record<string, PreparedAnswer> = {
   },
   "資訊安全博士生新制資格考核需要在入學後幾年內完成？": {
     content: [
-      "示意回答：資訊安全博士生新制資格考核的完成期限需以最新公開公告為準。正式查詢建議用 LINE chatbot，由系統回查公告內容與資料來源後回答。",
+      "示意回答：資訊安全博士生新制資格考核的完成期限需以最新公開公告為準。正式查詢建議用北科大創新學院 Demo chatbot，由系統回查公告內容與資料來源後回答。",
       formalRulesReminder,
       lineReminder,
     ].join("\n\n"),
@@ -142,7 +143,7 @@ function fallbackAnswer(question: string): PreparedAnswer {
     content: [
       `你輸入的是：「${question}」`,
       "這個網頁版是純 Demo，只準備了右側「建議問題」的示意回答，沒有呼叫 RAG 後端，也不會對自由輸入做正式查詢。",
-      "若要測試真實查詢速度、自由提問與完整回答品質，請掃描 QR code 加入 LINE chatbot。",
+      `若要測試真實查詢速度、自由提問與完整回答品質，請使用北科大創新學院 Demo chatbot（Channel ${site.ntutDemoLineChannelId}）。`,
     ].join("\n\n"),
     sources: [],
   };
@@ -153,25 +154,25 @@ function LineQrBlock({ compact = false }: { compact?: boolean }) {
     <div className={`grid gap-3 ${compact ? "" : "border-t border-slate-200 pt-4"} sm:grid-cols-[140px_1fr] sm:items-center`}>
       <div className="w-36 rounded-lg border border-slate-200 bg-white p-2">
         <Image
-          src="/line101chat-qr.png"
-          alt="LINE101Chat LINE QR Code"
+          src={site.ntutDemoQrImage}
+          alt="北科大創新學院文件問答 Demo chatbot QR Code"
           width={250}
           height={250}
           className="h-auto w-full"
         />
       </div>
       <div>
-        <p className="text-sm font-black leading-6 text-slate-950">真實效能請用 LINE chatbot</p>
+        <p className="text-sm font-black leading-6 text-slate-950">試用北科大創新學院文件問答 Demo</p>
         <p className="mt-1 text-xs font-semibold leading-6 text-slate-600">
-          網頁版只展示預先回答；LINE chatbot 才是實際查詢體驗。
+          此 QR Code 僅供北科大創新學院 RAG Demo 使用；LINE101Chat 服務詢問請使用商務帳號 Channel {site.businessLineChannelId}。
         </p>
-        <a
-          href="/line"
-          className="mt-3 inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-emerald-600 px-4 py-3 text-sm font-black text-white transition hover:bg-emerald-700"
+        <div
+          className="mt-3 inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-emerald-50 px-4 py-3 text-sm font-black text-emerald-800"
+          aria-label={`北科大創新學院 Demo chatbot channel ${site.ntutDemoLineChannelId}`}
         >
           <MessageCircle className="h-4 w-4" aria-hidden="true" />
-          加入 LINE chatbot
-        </a>
+          Demo Channel {site.ntutDemoLineChannelId}
+        </div>
       </div>
     </div>
   );
@@ -199,7 +200,7 @@ export function RagDemoChat() {
         {
           id: createId("error"),
           role: "assistant",
-          content: `問題最多 ${MAX_QUESTION_LENGTH} 個字，請縮短後再送出。若要測試真實查詢，請掃描 QR code 加入 LINE chatbot。`,
+          content: `問題最多 ${MAX_QUESTION_LENGTH} 個字，請縮短後再送出。若要測試真實查詢，請使用北科大創新學院 Demo chatbot（Channel ${site.ntutDemoLineChannelId}）。`,
           isError: true,
         },
       ]);
@@ -249,7 +250,7 @@ export function RagDemoChat() {
             </p>
           </div>
           <div className="rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-sm font-bold leading-7 text-emerald-900">
-            真實查詢速度、自由提問與完整回答品質，請掃描 QR code 加入 LINE chatbot 測試。
+            真實查詢速度、自由提問與完整回答品質，請使用北科大創新學院 Demo chatbot 測試。
           </div>
         </div>
       </div>
@@ -263,7 +264,7 @@ export function RagDemoChat() {
                   <Bot className="mx-auto h-10 w-10 text-emerald-700" aria-hidden="true" />
                   <p className="mt-4 text-base font-black text-slate-950">請先點選右側建議問題</p>
                   <p className="mt-2 text-sm leading-7 text-slate-600">
-                    網頁版只展示預先準備的示意回答，不呼叫 RAG 後端。真實效能請掃描 QR code 加入 LINE chatbot。
+                    網頁版只展示預先準備的示意回答，不呼叫 RAG 後端。真實效能請使用北科大創新學院 Demo chatbot。
                   </p>
                 </div>
               </div>
@@ -340,7 +341,7 @@ export function RagDemoChat() {
               id="rag-demo-question"
               className="min-h-24 w-full resize-none rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm leading-7 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
               maxLength={MAX_QUESTION_LENGTH}
-              placeholder="可輸入問題；網頁版會提醒你改用 LINE chatbot 測試真實效能。"
+              placeholder="可輸入問題；網頁版會提醒你改用北科大 Demo chatbot 測試真實效能。"
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
               onKeyDown={handleTextareaKeyDown}

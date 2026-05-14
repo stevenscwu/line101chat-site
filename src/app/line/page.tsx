@@ -7,8 +7,8 @@ import { getSiteContent, localizePath, site as baseSite } from "@/data/site";
 import type { Locale } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "加入 LINE 詢問｜LINE101Chat",
-  description: `掃描 LINE101Chat LINE 官方帳號 QR Code，或寄信至 ${baseSite.email} 洽詢企業 AI 知識助理。`,
+  title: "詢問 LINE101Chat 服務｜AI 知識助理免費評估",
+  description: `掃描 LINE101Chat 服務詢問 QR Code，或寄信至 ${baseSite.email} 洽詢企業 AI 知識助理、PoC 與免費評估。`,
   alternates: { canonical: "/line" },
 };
 
@@ -24,7 +24,7 @@ export function LineContent({ locale = "zh" }: { locale?: Locale } = {}) {
           "Free document assessment",
           "Document preparation checklist",
         ]
-      : ["AI 知識助理", "LINE 文件問答", "免費文件評估", "文件準備方式"];
+      : ["AI 知識助理", "LINE 文件問答", "免費評估", "文件準備方式"];
 
   return (
     <main>
@@ -67,6 +67,11 @@ export function LineContent({ locale = "zh" }: { locale?: Locale } = {}) {
               priority
               className="h-auto w-full"
             />
+            <p className="mt-3 rounded-lg bg-slate-50 px-3 py-2 text-center text-xs font-black leading-5 text-slate-700">
+              {locale === "en"
+                ? `Business inquiry chatbot · Channel ${site.businessLineChannelId}`
+                : `LINE101Chat 服務詢問 · Channel ${site.businessLineChannelId}`}
+            </p>
           </div>
         </div>
       </section>

@@ -26,7 +26,10 @@ export const site = {
   mailLoginUrl: "https://mail.zoho.com",
   mailAdminUrl: "https://mailadmin.zoho.com",
   linePageUrl: "/line",
-  lineQrImage: "/line101chat-qr.png",
+  lineQrImage: "/line101-business-qr.png",
+  businessLineChannelId: "2007691019",
+  ntutDemoLineChannelId: "2007782998",
+  ntutDemoQrImage: "/ntut-ifirst-demo-qr.png",
   title: "LINE101Chat｜企業 AI 知識助理與 LINE 文件問答",
   description:
     "LINE101Chat 協助台灣中小企業、學校與組織，把 FAQ、SOP、規章與內部文件轉換成可在 LINE 或網站查詢的 AI 知識助理，支援來源引用、文件整理、雲端與本地端部署評估。",
@@ -40,25 +43,25 @@ export const site = {
     "招生 FAQ",
     "台灣中小企業 AI",
     "本地端 LLM",
-    "LINE chatbot",
+    "LINE AI 助理",
   ],
 };
 
 export const navItems = [
   { label: "首頁", href: "/" },
   { label: "服務說明", href: "/services" },
-  { label: "AI 助理", href: "/rag-chatbot" },
-  { label: "Demo", href: "/case-studies" },
+  { label: "AI 知識助理", href: "/rag-chatbot" },
+  { label: "案例 / Demo", href: "/case-studies" },
   { label: "免費評估", href: "/free-assessment" },
   { label: "聯絡我們", href: "/contact" },
 ];
 
 export const primaryCtas = {
   assessment: { label: "免費評估", href: "/free-assessment" },
-  demo: { label: "預約 AI 助理 Demo", href: "/book-demo" },
+  demo: { label: "預約 Demo", href: "/book-demo" },
   demoPage: { label: "看 Demo", href: "/case-studies" },
   poc: { label: "免費評估", href: "/free-assessment" },
-  line: { label: "加入 LINE 詢問", href: site.linePageUrl },
+  line: { label: "LINE 詢問服務", href: site.linePageUrl },
   services: { label: "服務說明", href: "/services" },
 };
 
@@ -503,7 +506,7 @@ export const siteContent = {
         "北科大工程背景團隊，協助台灣中小企業、學校與組織，把公司文件整理成可透過 LINE 查詢、可追溯來源、可依資料敏感度部署的企業 AI 知識助理。",
       privacyPolicy: "隱私政策",
       contactPlan: "AI 助理 PoC / 雲端或本地端部署：",
-      addLine: "加入 LINE 詢問",
+      addLine: "LINE 詢問服務",
       directContact: "直接聯絡",
       pros: "優點",
       cons: "限制",
@@ -746,7 +749,7 @@ export const siteContent = {
           ["驗證方式", "使用真實問題測試回答準確度、來源引用、LINE 使用體驗、資料邊界與維護流程。"],
           ["下一步", "若 AI 助理 PoC 成效明確，再擴充文件、使用者、權限、雲端或本地端部署。"],
         ],
-        secondaryNote: "其他技術展示：LINE 翻譯模組可依需求客製。",
+        secondaryNote: "這個案例是能力展示；若要導入到你的文件，建議先從免費評估確認文件品質與 PoC 範圍。",
         cta: {
           title: "想用你的文件做第一個 Demo？",
           body: "準備一份乾淨文件與真實問題，我們可以協助判斷是否適合做企業 AI 助理 Starter PoC。",
@@ -866,16 +869,16 @@ export const siteContent = {
       },
       line: {
         metadata: {
-          title: "加入 LINE 詢問｜LINE101Chat",
-          description: `掃描 LINE101Chat LINE 官方帳號 QR Code，或寄信至 ${site.email} 洽詢企業 AI 知識助理。`,
+          title: "詢問 LINE101Chat 服務｜AI 知識助理免費評估",
+          description: `掃描 LINE101Chat 服務詢問 QR Code，或寄信至 ${site.email} 洽詢企業 AI 知識助理、文件問答、PoC 與免費評估。`,
           canonical: "/line",
         },
-        eyebrow: "LINE101Chat Official LINE",
-        title: "加入 LINE 詢問",
-        description: "掃描 QR Code，詢問企業 AI 知識助理、LINE 文件查詢、資料保密部署或 PoC 評估。",
+        eyebrow: "LINE101Chat 服務詢問 LINE",
+        title: "詢問 LINE101Chat 服務",
+        description: "這是 LINE101Chat 的商務詢問帳號，用來詢問 AI 知識助理、LINE 文件查詢、資料保密部署、PoC 與免費評估。",
         contactLabel: "聯絡我們",
         subject: "LINE101Chat 需求評估",
-        qrAlt: "加入 LINE101Chat LINE 官方帳號 QR Code",
+        qrAlt: "LINE101Chat 服務詢問 LINE QR Code",
       },
       privacy: {
         metadata: {
@@ -1008,23 +1011,23 @@ export const siteContent = {
         "admissions FAQ",
         "Taiwan SME AI",
         "local LLM",
-        "LINE chatbot",
+        "LINE AI assistant",
       ],
     },
     navItems: [
       { label: "Home", href: "/" },
       { label: "Services", href: "/services" },
-      { label: "AI Assistant", href: "/rag-chatbot" },
-      { label: "Demo", href: "/case-studies" },
+      { label: "AI Knowledge Assistant", href: "/rag-chatbot" },
+      { label: "Case / Demo", href: "/case-studies" },
       { label: "Free Assessment", href: "/free-assessment" },
       { label: "Contact", href: "/contact" },
     ],
     primaryCtas: {
       assessment: { label: "Free Assessment", href: "/free-assessment" },
-      demo: { label: "Book an AI Assistant Demo", href: "/book-demo" },
+      demo: { label: "Book Demo", href: "/book-demo" },
       demoPage: { label: "View Demo", href: "/case-studies" },
       poc: { label: "Free Assessment", href: "/free-assessment" },
-      line: { label: "Ask on LINE", href: site.linePageUrl },
+      line: { label: "Ask About Services", href: site.linePageUrl },
       services: { label: "Services", href: "/services" },
     },
     problemCards: [
@@ -1392,7 +1395,7 @@ export const siteContent = {
         "An NTUT engineering team helping Taiwan SMEs, schools, and organizations turn company documents into a LINE-searchable, source-grounded enterprise AI knowledge assistant with deployment boundaries based on data sensitivity.",
       privacyPolicy: "Privacy policy",
       contactPlan: "AI assistant PoC / cloud or local deployment:",
-      addLine: "Ask on LINE",
+      addLine: "Ask About Services",
       directContact: "Direct contact",
       pros: "Pros",
       cons: "Constraints",
@@ -1636,7 +1639,7 @@ export const siteContent = {
           ["Validation method", "Test with real questions to check answer accuracy, source citations, LINE experience, data boundaries, and maintenance workflow."],
           ["Next step", "If the AI assistant PoC shows clear value, expand documents, users, permissions, cloud hosting, or local deployment."],
         ],
-        secondaryNote: "Other technical demo: a LINE translation module can be customized when needed.",
+        secondaryNote: "This case is a capability demo. For your own documents, start with a free assessment to confirm document quality and PoC scope.",
         cta: {
           title: "Want to build the first demo with your own documents?",
           body: "Prepare one clean document and real questions. We can help judge whether it is a good fit for an enterprise AI Assistant Starter PoC.",
@@ -1756,16 +1759,16 @@ export const siteContent = {
       },
       line: {
         metadata: {
-          title: "Ask on LINE | LINE101Chat",
-          description: `Scan the LINE101Chat official LINE QR Code or email ${site.email} to ask about enterprise AI knowledge assistants.`,
+          title: "Ask About LINE101Chat Services | AI Knowledge Assistant Assessment",
+          description: `Scan the LINE101Chat business inquiry QR Code or email ${site.email} to ask about AI knowledge assistants, document Q&A, PoCs, and free assessments.`,
           canonical: "/en/line",
         },
-        eyebrow: "LINE101Chat Official LINE",
-        title: "Ask on LINE",
-        description: "Scan the QR Code to ask about enterprise AI knowledge assistants, LINE document search, confidential deployment, or PoC review.",
+        eyebrow: "LINE101Chat Business Inquiry LINE",
+        title: "Ask About LINE101Chat Services",
+        description: "This LINE account is for LINE101Chat business inquiries: AI knowledge assistants, LINE document Q&A, confidential deployment, PoCs, and free assessments.",
         contactLabel: "Contact us",
         subject: "LINE101Chat Needs Assessment",
-        qrAlt: "QR Code for adding LINE101Chat's official LINE account",
+        qrAlt: "QR Code for LINE101Chat business inquiry LINE account",
       },
       privacy: {
         metadata: {
