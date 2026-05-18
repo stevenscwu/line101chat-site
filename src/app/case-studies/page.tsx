@@ -20,6 +20,13 @@ export const metadata: Metadata = {
 export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) {
   const content = getSiteContent(locale);
   const caseStudies = content.pages.caseStudies;
+  const taipei101Demo = {
+    title: "Taipei 101 Chatbot｜台北留學生報到生活 AI 助理",
+    description:
+      "一個以台北外籍生與交換生為對象的 LINE AI 知識助理 Demo，展示如何用 RAG 將官方資訊與生活指南轉成可查詢服務。",
+    features: ["外籍生抵達台北問答", "官方資訊與生活指南檢索", "LINE AI 知識助理案例", "可轉交人工協助"],
+    icon: MessageCircle,
+  };
 
   return (
     <main>
@@ -31,14 +38,23 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
             description={caseStudies.heading.description}
           />
           <div className="mt-8 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
-            {content.demoCases.map((demo, index) => (
-              <DemoCard
-                key={demo.title}
-                {...demo}
-                actionHref={index === 0 ? "/demo/ifirst-rag" : undefined}
-                actionLabel={index === 0 ? (locale === "en" ? "Try Demo Online" : "線上試用 Demo") : undefined}
-              />
-            ))}
+            <div className="grid gap-5">
+              {content.demoCases.map((demo, index) => (
+                <DemoCard
+                  key={demo.title}
+                  {...demo}
+                  actionHref={index === 0 ? "/demo/ifirst-rag" : undefined}
+                  actionLabel={index === 0 ? (locale === "en" ? "Try Demo Online" : "線上試用 Demo") : undefined}
+                />
+              ))}
+              {locale === "zh" ? (
+                <DemoCard
+                  {...taipei101Demo}
+                  actionHref="/case-studies/taipei101"
+                  actionLabel="查看案例"
+                />
+              ) : null}
+            </div>
             <aside className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="text-xl font-black text-slate-950">
                 {locale === "en" ? "What this demo proves" : "這個 Demo 對客戶代表什麼"}

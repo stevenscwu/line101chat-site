@@ -1,0 +1,236 @@
+# Next Developer Handoff
+
+Generated: 2026-05-14
+
+## Project
+
+- Local path: `C:\line101chat-site`
+- Production site: `https://line101chat.com/`
+- GitHub repo: `https://github.com/stevenscwu/line101chat-site`
+- Current branch: `main`
+- Latest pushed commit: `6f9c8f8 Refine case studies conversion flow`
+- Latest production deployment: `dpl_EJBVjz269wxnP1PfK88TinUoh6B8`
+- Vercel production alias: `https://line101chat.com`
+
+## Current Business Positioning
+
+LINE101Chat should be positioned as an AI Knowledge Assistant service, not a generic chatbot company.
+
+Core customer-facing sentence:
+
+> 幫台灣中小企業與學校，把文件、FAQ、SOP 變成可在 LINE 查詢、能附來源的 AI 知識助理。
+
+Main service:
+
+- `AI 知識助理`
+- `LINE AI 助理`
+- `文件問答`
+- `來源引用`
+- `免費評估`
+- `PoC`
+- `本地端 / 私有化部署` when needed
+
+Avoid making translation chatbot the main product. Translation can remain a secondary optional module only.
+
+## Two LINE Chatbots
+
+Do not mix these two channels or QR codes.
+
+### Business Inquiry Chatbot
+
+- Purpose: answer customer questions about LINE101Chat service, free assessment, PoC, document preparation, and pricing logic.
+- Local project: `C:\line101chat\chatbots\line101-business`
+- LINE channel ID: `2007691019`
+- Website QR asset: `public/line101-business-qr.png`
+- Source QR asset: `C:\line101chat\chatbots\line101-business\assets\line101_business.PNG`
+- Website route: `/line`
+- Label: `詢問 LINE101Chat 服務`
+
+### NTUT iFIRST RAG Demo Chatbot
+
+- Purpose: demonstrate RAG document Q&A using public NTUT iFIRST / 北科大創新學院 documents.
+- Local project: `C:\FirstRAG`
+- LINE channel ID: `2007782998`
+- Website QR asset: `public/ntut-ifirst-demo-qr.png`
+- Website routes: `/case-studies`, `/demo/ifirst-rag`
+- Label: `試用北科大創新學院文件問答 Demo`
+- Disclaimer: `本 Demo 僅供技術展示與商業案例說明，正式學校規定仍以官方公告與辦公室回覆為準。`
+
+## Recent Published Work
+
+### Commit `1539159` - Fix LINE QR routing and demo labels
+
+- Replaced ambiguous business QR usage on NTUT demo surfaces.
+- Added distinct QR assets:
+  - `public/line101-business-qr.png`
+  - `public/ntut-ifirst-demo-qr.png`
+- Updated `/line` to use the business inquiry QR.
+- Updated `/case-studies` and `/demo/ifirst-rag` to use the NTUT demo QR.
+- Added channel labels on visible QR blocks.
+
+### Commit `6f9c8f8` - Refine case studies conversion flow
+
+- Reframed `/case-studies` so the NTUT iFIRST demo reads as proof of a repeatable AI 知識助理 service, not just a school project.
+- Added a case-study video section with a safe placeholder for future video:
+  - `src/components/case-studies/DemoVideoSection.tsx`
+  - Future MP4 path: `public/videos/ifirst-rag-demo.mp4`
+- Added a chatbot QR guide:
+  - `src/components/case-studies/ChatbotQrGuide.tsx`
+  - Clear separation between demo chatbot and business inquiry chatbot.
+- Added video planning content under:
+  - `content/video/ifirst-rag-demo/`
+- Strengthened conversion CTAs:
+  - `預約免費評估`
+  - `詢問導入方式`
+  - Free assessment path uses `20-30 頁正式文件` and `30-50 個常見問題`.
+
+### 2026-05-18 - Add Taipei 101 Chatbot case-study demo
+
+- Added new route:
+  - `src/app/case-studies/taipei101/page.tsx`
+  - Public path: `/case-studies/taipei101`
+- Page positioning:
+  - `Taipei 101 Chatbot｜台北留學生報到生活 AI 助理`
+  - Demo microbusiness proving LINE101Chat can build a RAG-enabled LINE AI Knowledge Assistant for a practical Taipei international-student arrival use case.
+  - This is a case-study / demo, not the main LINE101Chat service.
+- Page sections added:
+  - Problem: international students arriving in Taipei do not know who to ask.
+  - Solution: official information and local guides become a LINE AI assistant.
+  - Answer categories: arrival, registration, ARC / insurance, housing, transport, SIM / bank, human help.
+  - English sample questions for student-facing Q&A.
+  - LINE101Chat proof points, small-profit model, disclaimer, and CTA.
+- Added a visible TODO placeholder for a future Taipei 101 Chatbot LINE QR code.
+  - No fake QR code was added.
+- Updated:
+  - `src/app/case-studies/page.tsx`
+  - Added a new Taipei 101 Chatbot card linking to `/case-studies/taipei101`.
+- Updated:
+  - `src/app/sitemap.ts`
+  - Added `/case-studies/taipei101` as a Traditional Chinese route without inventing a missing English alternate.
+- Validation run locally:
+  - `npm run build` passed.
+  - `npm run lint` passed.
+  - Local HTTP check for `/case-studies/taipei101` returned `200`.
+  - Local `/case-studies` output contains `Taipei 101 Chatbot`.
+
+## Video Planning Assets
+
+Folder:
+
+`content/video/ifirst-rag-demo/`
+
+Files:
+
+- `README.md`
+- `script.zh-TW.md`
+- `storyboard.zh-TW.md`
+- `captions.zh-TW.srt`
+- `voiceover.zh-TW.txt`
+- `shot-list.zh-TW.md`
+- `video-page-copy.zh-TW.md`
+- `ollama-script-polish-prompt.md`
+- `video-production-guide.md`
+
+Video title:
+
+`用公開文件建立 LINE AI 知識助理｜北科大創新學院 RAG Demo`
+
+Recommended final video location:
+
+`public/videos/ifirst-rag-demo.mp4`
+
+If the MP4 is large, prefer YouTube unlisted or external video hosting instead of committing a large video to the repo/Vercel.
+
+## Important Website Files
+
+- `src/data/site.ts`
+  - Centralized positioning copy, nav labels, CTAs, QR paths, case-study copy.
+  - `site.lineQrImage = "/line101-business-qr.png"`
+  - `site.ntutDemoQrImage = "/ntut-ifirst-demo-qr.png"`
+  - `site.businessLineChannelId = "2007691019"`
+  - `site.ntutDemoLineChannelId = "2007782998"`
+
+- `src/app/case-studies/page.tsx`
+  - Main case-study page.
+  - Imports `DemoVideoSection` and `ChatbotQrGuide`.
+
+- `src/components/case-studies/DemoVideoSection.tsx`
+  - Shows a video if `public/videos/ifirst-rag-demo.mp4` exists.
+  - Otherwise shows `Demo 影片準備中` placeholder.
+  - Includes TODO comments for future public LINE add-friend links.
+
+- `src/components/case-studies/ChatbotQrGuide.tsx`
+  - Explains the two chatbot purposes and channel IDs.
+  - Uses customer-facing Traditional Chinese and English copy.
+  - Does not expose LINE Developers Console URLs.
+
+- `src/app/line/page.tsx`
+  - Business inquiry QR page.
+  - Uses `site.lineQrImage`.
+
+- `src/components/rag-demo/RagDemoChat.tsx`
+  - Web demo prepared-answer component.
+  - Uses the NTUT demo QR, not the business inquiry QR.
+
+## Validation Already Run
+
+Local:
+
+- `npm run build` passed after QR changes.
+- `npm run build` passed after video section and conversion copy changes.
+
+Vercel:
+
+- Production build passed for deployment `dpl_EJBVjz269wxnP1PfK88TinUoh6B8`.
+- Production alias updated to `https://line101chat.com`.
+
+Live no-cache checks confirmed `/case-studies` includes:
+
+- `從北科大 iFIRST Demo，看文件如何變成 LINE AI 知識助理`
+- `這個 Demo 對客戶代表什麼`
+- `不只是學校 Demo`
+- `先試 Demo`
+- `預約免費評估`
+- `詢問導入方式`
+
+Live QR verification from the previous deployment confirmed:
+
+- `https://line101chat.com/line101-business-qr.png` matches `C:\line101chat\chatbots\line101-business\assets\line101_business.PNG`.
+- `https://line101chat.com/ntut-ifirst-demo-qr.png` matches `C:\line101chat-site\public\ntut-ifirst-demo-qr.png`.
+
+## Remaining Manual Work
+
+- Produce final promo video and place it at:
+  - `public/videos/ifirst-rag-demo.mp4`
+- If video is too large, use YouTube unlisted or external hosting and update `DemoVideoSection`.
+- Record final voiceover based on:
+  - `content/video/ifirst-rag-demo/voiceover.zh-TW.txt`
+- Adjust final caption timing:
+  - `content/video/ifirst-rag-demo/captions.zh-TW.srt`
+- Add public LINE add-friend URLs if available.
+  - Keep LINE Developers Console URLs private; do not use them as public CTA links.
+
+## Security And Data Notes
+
+- Do not edit or commit `.env` files.
+- Do not commit LINE private logs or user IDs.
+- Do not commit FirstRAG conversation DB, vector DB, logs, or generated test outputs.
+- Keep business chatbot credentials separate from NTUT demo chatbot credentials.
+
+## Current Local Worktree Gotchas
+
+There are unrelated untracked local files in `C:\line101chat-site`. Do not stage them unless explicitly requested:
+
+- `proposal20260508v1.txt`
+- `service.jpg`
+- `summary20260509v1.txt`
+- `summary20260511v1.txt`
+- `summary20260511v2.txt`
+- `summary20260512v1.txt`
+- `summary20260512v2.txt`
+
+There are also local dev logs such as `.next-dev*.log`. These should remain uncommitted.
+
+## Known Follow-Up
+
+Vercel install output reports `1 high severity vulnerability` from `npm audit`. This was not part of the case-study/QR/video work and should be handled separately with a dependency audit before running any forced fix.
