@@ -1,6 +1,7 @@
 # Next Developer Handoff
 
-Generated: 2026-05-14
+Generated: 2026-05-14  
+Last updated: 2026-05-19
 
 ## Project
 
@@ -8,8 +9,8 @@ Generated: 2026-05-14
 - Production site: `https://line101chat.com/`
 - GitHub repo: `https://github.com/stevenscwu/line101chat-site`
 - Current branch: `main`
-- Latest pushed commit: `6f9c8f8 Refine case studies conversion flow`
-- Latest production deployment: `dpl_EJBVjz269wxnP1PfK88TinUoh6B8`
+- Latest product commit: `be9fe29 Add iFIRST demo video package`
+- Latest production deployment: `dpl_F5wMX6fEtAVYpCvYUVHX4oiHN3MX`
 - Vercel production alias: `https://line101chat.com`
 
 ## Current Business Positioning
@@ -113,6 +114,42 @@ Do not mix these two channels or QR codes.
   - Local HTTP check for `/case-studies/taipei101` returned `200`.
   - Local `/case-studies` output contains `Taipei 101 Chatbot`.
 
+### 2026-05-19 - Add and deploy iFIRST demo video package
+
+- Prepared the 60-90 second Traditional Chinese demo video package under:
+  - `content/video/ifirst-rag-demo/`
+- Updated the video section on `/case-studies`:
+  - `src/components/case-studies/DemoVideoSection.tsx`
+  - Exact title: `北科大創新學院 iFIRST AI 文件問答 Demo`
+  - Exact subtitle: `用公開文件建立可在 LINE 查詢的 AI 知識助理`
+  - Uses local video path: `/videos/ifirst-rag-demo.mp4`
+  - Shows a placeholder only when the MP4 file is missing.
+- Added TODO comments in QR-related UI for future approved public LINE add-friend links / QR assets:
+  - `src/components/case-studies/DemoVideoSection.tsx`
+  - `src/components/case-studies/ChatbotQrGuide.tsx`
+- Generated and committed the final MP4:
+  - `public/videos/ifirst-rag-demo.mp4`
+  - Size: about `2.35 MB`
+  - Format: `video/mp4`
+  - Resolution: `1920x1080`
+  - Duration: about `90 seconds`
+  - Includes visible captions and an embedded subtitle track generated from `captions.zh-TW.srt`.
+- The MP4 uses safe public/web assets and a clean LINE-style demo scene.
+  - It does not automate-record the private LINE desktop window.
+  - This avoids exposing private LINE chats, notifications, user IDs, or console/admin screens.
+- GitHub:
+  - Commit: `be9fe29 Add iFIRST demo video package`
+  - URL: `https://github.com/stevenscwu/line101chat-site/commit/be9fe29190e81f184995a40911e8bc7afef73852`
+- Vercel:
+  - Deployment: `dpl_F5wMX6fEtAVYpCvYUVHX4oiHN3MX`
+  - Production alias: `https://line101chat.com`
+  - Live page: `https://line101chat.com/case-studies`
+  - Live MP4: `https://line101chat.com/videos/ifirst-rag-demo.mp4`
+- Live verification:
+  - `/case-studies` contains `<video>` with source `/videos/ifirst-rag-demo.mp4`.
+  - Placeholder text `Demo 影片準備中` is no longer present when the video file exists.
+  - `HEAD /videos/ifirst-rag-demo.mp4` returned `200 OK`, `video/mp4`, content length `2354111`.
+
 ## Video Planning Assets
 
 Folder:
@@ -133,13 +170,17 @@ Files:
 
 Video title:
 
-`用公開文件建立 LINE AI 知識助理｜北科大創新學院 RAG Demo`
+`北科大創新學院 iFIRST AI 文件問答 Demo`
 
-Recommended final video location:
+Video subtitle:
+
+`用公開文件建立可在 LINE 查詢的 AI 知識助理`
+
+Final video location:
 
 `public/videos/ifirst-rag-demo.mp4`
 
-If the MP4 is large, prefer YouTube unlisted or external video hosting instead of committing a large video to the repo/Vercel.
+The current MP4 is committed because it is small, about `2.35 MB`. If a future replacement video is large, prefer YouTube unlisted or external video hosting instead of committing a large video to the repo/Vercel.
 
 ## Important Website Files
 
@@ -182,6 +223,7 @@ Local:
 Vercel:
 
 - Production build passed for deployment `dpl_EJBVjz269wxnP1PfK88TinUoh6B8`.
+- Production build passed for deployment `dpl_F5wMX6fEtAVYpCvYUVHX4oiHN3MX`.
 - Production alias updated to `https://line101chat.com`.
 
 Live no-cache checks confirmed `/case-studies` includes:
@@ -198,16 +240,20 @@ Live QR verification from the previous deployment confirmed:
 - `https://line101chat.com/line101-business-qr.png` matches `C:\line101chat\chatbots\line101-business\assets\line101_business.PNG`.
 - `https://line101chat.com/ntut-ifirst-demo-qr.png` matches `C:\line101chat-site\public\ntut-ifirst-demo-qr.png`.
 
+Live video verification from 2026-05-19 confirmed:
+
+- `https://line101chat.com/case-studies` includes `/videos/ifirst-rag-demo.mp4`.
+- `https://line101chat.com/videos/ifirst-rag-demo.mp4` returns `200 OK`, `video/mp4`, and content length `2354111`.
+
 ## Remaining Manual Work
 
-- Produce final promo video and place it at:
-  - `public/videos/ifirst-rag-demo.mp4`
-- If video is too large, use YouTube unlisted or external hosting and update `DemoVideoSection`.
-- Record final voiceover based on:
-  - `content/video/ifirst-rag-demo/voiceover.zh-TW.txt`
-- Adjust final caption timing:
-  - `content/video/ifirst-rag-demo/captions.zh-TW.srt`
-- Add public LINE add-friend URLs if available.
+- Optional future replacement: record a true live LINE demo clip manually if needed.
+  - Use Do Not Disturb.
+  - Hide private LINE IDs, other chats, notifications, and any unrelated personal content.
+  - Keep iFIRST demo chatbot separate from the LINE101Chat business chatbot.
+  - Do not show LINE Developers Console, Channel Secret, Webhook URL, Access Token, or admin pages.
+- If a future replacement video is large, use YouTube unlisted or external hosting and update `DemoVideoSection`.
+- Add public LINE add-friend URLs if available and approved.
   - Keep LINE Developers Console URLs private; do not use them as public CTA links.
 
 ## Security And Data Notes
