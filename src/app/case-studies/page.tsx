@@ -21,10 +21,11 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
   const content = getSiteContent(locale);
   const caseStudies = content.pages.caseStudies;
   const taipei101Demo = {
-    title: "Taipei 101 Chatbot｜台北留學生報到生活 AI 助理",
+    title: "Taipei101 Chatbot｜台北留學生報到生活 AI 助理",
     description:
       "一個以台北外籍生與交換生為對象的 LINE AI 知識助理 Demo，展示如何用 RAG 將官方資訊與生活指南轉成可查詢服務。",
     features: ["外籍生抵達台北問答", "官方資訊與生活指南檢索", "LINE AI 知識助理案例", "可轉交人工協助"],
+    badge: "開發中案例",
     icon: MessageCircle,
   };
 

@@ -118,15 +118,23 @@ type DemoCardProps = {
   description: string;
   features: string[];
   icon: LucideIcon;
+  badge?: string;
   actionHref?: string;
   actionLabel?: string;
 };
 
-export function DemoCard({ title, description, features, icon: Icon, actionHref, actionLabel }: DemoCardProps) {
+export function DemoCard({ title, description, features, icon: Icon, badge, actionHref, actionLabel }: DemoCardProps) {
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-sky-50 text-sky-700">
-        <Icon className="h-6 w-6" aria-hidden="true" />
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-sky-50 text-sky-700">
+          <Icon className="h-6 w-6" aria-hidden="true" />
+        </div>
+        {badge ? (
+          <span className="rounded-lg bg-amber-50 px-3 py-1 text-xs font-black text-amber-700">
+            {badge}
+          </span>
+        ) : null}
       </div>
       <h2 className="mt-5 text-2xl font-black leading-tight text-slate-950">{title}</h2>
       <p className="mt-3 text-base leading-8 text-slate-600">{description}</p>

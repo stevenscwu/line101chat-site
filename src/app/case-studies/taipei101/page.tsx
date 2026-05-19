@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   Bus,
   CheckCircle2,
@@ -22,10 +23,15 @@ import { ButtonLink } from "@/components/button-link";
 import { PresenterCallout } from "@/components/presenter";
 import { SectionHeading } from "@/components/section-heading";
 
+const taipei101LineId = "@138hrqii";
+const taipei101LineChannelId = "2007764825";
+const taipei101LineAddFriendUrl = "https://line.me/R/ti/p/%40138hrqii";
+const taipei101QrImage = "/taipei101-chatbot-qr.png";
+
 export const metadata: Metadata = {
-  title: "Taipei 101 Chatbot｜台北留學生 AI 助理｜LINE101Chat",
+  title: "Taipei101 Chatbot｜台北留學生報到生活 AI 助理",
   description:
-    "Taipei 101 Chatbot 是 LINE101Chat 的 AI 知識助理 Demo，展示如何用 LINE 與 RAG 文件問答協助外籍生查詢台北報到、交通、住宿、ARC、健保與生活資訊。",
+    "Taipei101 Chatbot 是一個微型商業案例 / 開發中 Demo，展示一人台北服務如何用 RAG-enabled LINE chatbot 回答外籍生與交換生的報到生活問題。",
   alternates: { canonical: "/case-studies/taipei101" },
 };
 
@@ -111,16 +117,19 @@ export default function Taipei101CaseStudyPage() {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_380px] lg:items-center">
           <div>
             <p className="inline-flex rounded-lg bg-emerald-50 px-4 py-2 text-sm font-black text-emerald-700">
-              Case Study / Demo
+              微型商業案例 / 開發中 Demo
             </p>
-            <p className="mt-5 text-sm font-black uppercase tracking-[0.08em] text-slate-500">
-              Taipei 101 Chatbot｜台北留學生報到生活 AI 助理
+            <p className="mt-5 text-sm font-black text-slate-500">
+              Taipei101 Chatbot｜台北留學生報到生活 AI 助理
             </p>
             <h1 className="mt-3 max-w-4xl text-4xl font-black leading-tight tracking-[0] text-slate-950 sm:text-5xl">
               用 LINE 幫新生快速搞懂台北報到與生活大小事
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-9 text-slate-600">
-              Taipei 101 Chatbot 是一個以外籍生與交換生為對象的 AI 知識助理 Demo，展示如何將官方資訊、學校文件與在地生活指南整理成可在 LINE 查詢的問答服務。
+              Taipei101 Chatbot 是一個以外籍生與交換生為對象的 AI 知識助理 Demo，展示如何將官方資訊、學校文件與在地生活指南整理成可在 LINE 查詢的問答服務。
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-bold leading-7 text-slate-500">
+              此案例用來展示 LINE101Chat 的導入方式，不是 LINE101Chat 主服務本身。
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <ButtonLink href="/free-assessment">預約免費評估</ButtonLink>
@@ -140,12 +149,29 @@ export default function Taipei101CaseStudyPage() {
                 <p className="mt-1 text-sm font-semibold text-slate-600">Taipei student arrival Q&A</p>
               </div>
             </div>
-            <div className="mt-5 rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
-              <MessageCircle className="mx-auto h-8 w-8 text-slate-400" aria-hidden="true" />
-              <p className="mt-3 text-sm font-black text-slate-800">LINE QR Code TODO</p>
-              <p className="mt-2 text-xs font-semibold leading-6 text-slate-500">
-                TODO：正式上線後放置 Taipei 101 Chatbot LINE QR code；此處不使用假 QR code。
+            <div className="mt-5 rounded-lg border border-emerald-100 bg-emerald-50 p-5 text-center">
+              <div className="mx-auto w-44 rounded-lg border border-emerald-100 bg-white p-3 shadow-sm">
+                <Image
+                  src={taipei101QrImage}
+                  alt="Taipei101 Chatbot LINE QR Code"
+                  width={180}
+                  height={180}
+                  className="h-auto w-full"
+                />
+              </div>
+              <p className="mt-4 text-sm font-black text-slate-900">掃描加入 Taipei101 Chatbot</p>
+              <p className="mt-2 text-xs font-bold leading-6 text-slate-600">
+                LINE ID {taipei101LineId}｜Demo Channel {taipei101LineChannelId}
               </p>
+              <ButtonLink
+                href={taipei101LineAddFriendUrl}
+                variant="line"
+                icon={MessageCircle}
+                external
+                className="mt-4"
+              >
+                加入 LINE 試用
+              </ButtonLink>
             </div>
             <div className="mt-5 grid gap-3 rounded-lg bg-emerald-50 p-4">
               <div className="flex gap-3">
@@ -161,7 +187,7 @@ export default function Taipei101CaseStudyPage() {
 
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <SectionHeading title="外籍生剛到台北，常常不知道該問誰" />
+          <SectionHeading eyebrow="1. Problem" title="外籍生剛到台北，常常不知道該問誰" />
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-6">
             <CheckList items={problemItems} />
           </div>
@@ -171,8 +197,9 @@ export default function Taipei101CaseStudyPage() {
       <section className="bg-slate-50 px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
+            eyebrow="2. Solution"
             title="把官方資訊與生活指南變成 LINE AI 助理"
-            description="Taipei 101 Chatbot 透過 RAG 文件問答方式，讓學生用 LINE 詢問問題。系統會優先從官方頁面與整理過的指南中找資料，再產生簡潔回答。"
+            description="Taipei101 Chatbot 透過 RAG 文件問答方式，讓學生用 LINE 詢問問題。系統會優先從官方頁面與整理過的指南中找資料，再產生簡潔回答。"
           />
           <div className="mt-8 grid gap-5 md:grid-cols-4">
             {solutionCards.map(({ title, icon: Icon }) => (
@@ -187,7 +214,7 @@ export default function Taipei101CaseStudyPage() {
               imageKey="rag"
               label="Demo Note"
               title="這不是主服務，而是一個可複製的微型案例"
-              body="Taipei 101 Chatbot 用留學生抵達台北的高頻問題，展示 LINE101Chat 如何把資料整理、檢索、回答與人工轉接做成一個可理解的 AI 知識助理流程。"
+              body="Taipei101 Chatbot 用留學生抵達台北的高頻問題，展示 LINE101Chat 如何把資料整理、檢索、回答與人工轉接做成一個可理解的 AI 知識助理流程。"
             />
           </div>
         </div>
@@ -195,7 +222,11 @@ export default function Taipei101CaseStudyPage() {
 
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          <SectionHeading title="What it can answer" description="學生抵達前後最常遇到的問題，可以先被整理成可查詢的主題。" />
+          <SectionHeading
+            eyebrow="3. What it can answer"
+            title="可以先回答哪些主題"
+            description="學生抵達前後最常遇到的問題，可以先被整理成可查詢的主題。"
+          />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {answerCards.map((card) => (
               <IconCard key={card.title} {...card} />
@@ -206,7 +237,11 @@ export default function Taipei101CaseStudyPage() {
 
       <section className="bg-slate-50 px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          <SectionHeading title="Example questions" description="外籍生可以用自然英文問題詢問，系統再從文件與指南中找出可回答的內容。" />
+          <SectionHeading
+            eyebrow="4. Example questions"
+            title="學生可以這樣問"
+            description="外籍生可以用自然英文問題詢問，系統再從文件與指南中找出可回答的內容。"
+          />
           <div className="mt-8 grid gap-3 md:grid-cols-2">
             {exampleQuestions.map((question) => (
               <div key={question} className="flex gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
@@ -220,7 +255,11 @@ export default function Taipei101CaseStudyPage() {
 
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <SectionHeading title="Why this demonstrates LINE101Chat" description="這個 Demo 展示了 LINE101Chat 的核心能力：" />
+          <SectionHeading
+            eyebrow="5. Why this demonstrates LINE101Chat"
+            title="為什麼這能代表 LINE101Chat"
+            description="這個 Demo 展示了 LINE101Chat 的核心能力："
+          />
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-6">
             <CheckList items={proofItems} />
           </div>
@@ -229,7 +268,7 @@ export default function Taipei101CaseStudyPage() {
 
       <section className="bg-slate-50 px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
-          <SectionHeading title="小型服務如何產生收入" />
+          <SectionHeading eyebrow="6. Small-profit model" title="微型服務如何產生小額收入" />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {revenueItems.map((item) => (
               <article key={item} className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
@@ -242,12 +281,15 @@ export default function Taipei101CaseStudyPage() {
       </section>
 
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
-        <div className="mx-auto max-w-7xl rounded-lg border border-amber-200 bg-amber-50 p-6">
-          <div className="flex gap-3">
-            <ShieldCheck className="mt-1 h-6 w-6 shrink-0 text-amber-700" aria-hidden="true" />
-            <p className="text-sm font-bold leading-7 text-slate-800">
-              Taipei 101 Chatbot 不是官方學校或政府服務。簽證、ARC、健保、入學與學籍相關事項，仍應以學校、政府機關與官方公告為準。
-            </p>
+        <div className="mx-auto max-w-7xl">
+          <SectionHeading eyebrow="7. Disclaimer" title="Demo 用途與資訊邊界" />
+          <div className="mt-8 rounded-lg border border-amber-200 bg-amber-50 p-6">
+            <div className="flex gap-3">
+              <ShieldCheck className="mt-1 h-6 w-6 shrink-0 text-amber-700" aria-hidden="true" />
+              <p className="text-sm font-bold leading-7 text-slate-800">
+                Taipei101 Chatbot 不是官方學校或政府服務。簽證、ARC、健保、入學與學籍相關事項，仍應以學校、政府機關與官方公告為準。
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -255,6 +297,7 @@ export default function Taipei101CaseStudyPage() {
       <section className="bg-emerald-700 px-5 py-12 text-white sm:px-8 lg:px-10">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-5 md:flex-row md:items-center">
           <div>
+            <p className="text-sm font-black text-emerald-100">8. CTA</p>
             <h2 className="text-3xl font-black leading-tight tracking-[0]">
               想為你的學校、社群或公司建立類似的 AI 知識助理？
             </h2>
