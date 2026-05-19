@@ -51,6 +51,7 @@ export function ChatbotQrGuide({ locale = "zh" }: { locale?: Locale }) {
           <article className="rounded-lg border border-emerald-200 bg-white p-5 shadow-sm">
             <div className="flex items-start gap-4">
               <div className="w-32 shrink-0 rounded-lg border border-emerald-100 bg-white p-2">
+                {/* TODO: Replace with an approved public iFIRST demo QR image if this asset changes. */}
                 <Image
                   src={site.ntutDemoQrImage}
                   alt={content.demoLabel}
@@ -80,6 +81,7 @@ export function ChatbotQrGuide({ locale = "zh" }: { locale?: Locale }) {
           <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex items-start gap-4">
               <div className="w-32 shrink-0 rounded-lg border border-slate-200 bg-white p-2">
+                {/* TODO: Replace with an approved public LINE101Chat business QR image if this asset changes. */}
                 <Image
                   src={site.lineQrImage}
                   alt={content.businessLabel}

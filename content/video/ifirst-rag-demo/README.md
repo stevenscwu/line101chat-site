@@ -1,14 +1,18 @@
 # 北科大創新學院 iFIRST RAG Demo Video Kit
 
-This folder contains planning assets for a 60-90 second promotion video for LINE101Chat's main service: AI 知識助理 for Taiwan SMEs, schools, departments, and organizations.
+This folder contains the production package for a professional 60-90 second demo video for LINE101Chat's main service: AI 知識助理.
 
 ## Video Title
 
-用公開文件建立 LINE AI 知識助理｜北科大創新學院 RAG Demo
+北科大創新學院 iFIRST AI 文件問答 Demo
+
+## Video Subtitle
+
+用公開文件建立可在 LINE 查詢的 AI 知識助理
 
 ## Business Goal
 
-Show potential customers that LINE101Chat can build a reliable AI Knowledge Assistant from official documents and connect it to LINE or a website.
+Show Taiwan SMEs, schools, departments, and organizations that LINE101Chat can build a LINE-based AI Knowledge Assistant that answers from official documents and provides source citations.
 
 ## Main Service Positioning
 
@@ -22,7 +26,6 @@ Show potential customers that LINE101Chat can build a reliable AI Knowledge Assi
 - `voiceover.zh-TW.txt` - clean narration text for recording.
 - `shot-list.zh-TW.md` - recording checklist.
 - `video-page-copy.zh-TW.md` - copy used on the case studies page.
-- `ollama-script-polish-prompt.md` - optional local LLM polish prompt.
 - `video-production-guide.md` - manual production workflow.
 
 ## Chatbot Boundary
@@ -31,3 +34,21 @@ Show potential customers that LINE101Chat can build a reliable AI Knowledge Assi
 - LINE101Chat business inquiry chatbot: LINE channel `2007691019`, used for service questions, free assessment, PoC, document preparation, and pricing logic.
 
 Do not mix these QR codes or public labels.
+
+## Placement
+
+After recording and editing, place the final MP4 here if it is under 20 MB:
+
+```text
+public/videos/ifirst-rag-demo.mp4
+```
+
+If the video is larger, upload it to YouTube as unlisted and update the case-studies page to embed the hosted video.
+
+## Restrictions
+
+- Do not promote this as an official NTUT service.
+- Do not overclaim accuracy.
+- Do not say AI fully replaces workers.
+- Do not expose LINE Developers Console links or secrets.
+- Official regulations remain subject to school announcements and office replies.
