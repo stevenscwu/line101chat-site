@@ -1,7 +1,7 @@
 # Next Developer Handoff
 
 Generated: 2026-05-14  
-Last updated: 2026-05-19
+Last updated: 2026-05-20
 
 ## Project
 
@@ -9,8 +9,8 @@ Last updated: 2026-05-19
 - Production site: `https://line101chat.com/`
 - GitHub repo: `https://github.com/stevenscwu/line101chat-site`
 - Current branch: `main`
-- Latest product commit: `be9fe29 Add iFIRST demo video package`
-- Latest production deployment: `dpl_F5wMX6fEtAVYpCvYUVHX4oiHN3MX`
+- Latest product commit: `6302e54 Add translation payment flow`
+- Latest production deployment: `dpl_FZRUG4wkNzxT6A3WpTN7kWnvFUUw`
 - Vercel production alias: `https://line101chat.com`
 
 ## Current Business Positioning
@@ -32,6 +32,273 @@ Main service:
 - `本地端 / 私有化部署` when needed
 
 Avoid making translation chatbot the main product. Translation can remain a secondary optional module only.
+
+## LINE Translation Bot Subscription Flow
+
+Date implemented and deployed: 2026-05-20
+
+Customer-facing route:
+
+- `https://line101chat.com/translation-service`
+
+Admin route:
+
+- `/translation-service/admin`
+- Requires `TRANSLATION_PAYMENTS_ADMIN_TOKEN` in production.
+- Open as `/translation-service/admin?token=<admin-token>` after the token is configured in Vercel.
+- If the admin token is not configured, local development allows access but production denies access.
+
+GitHub and Vercel:
+
+- GitHub commit: `6302e54443ca5b826ed1e095ebab91c58facd314`
+- Commit message: `Add translation payment flow`
+- GitHub URL: `https://github.com/stevenscwu/line101chat-site/commit/6302e54443ca5b826ed1e095ebab91c58facd314`
+- Vercel deployment ID: `dpl_FZRUG4wkNzxT6A3WpTN7kWnvFUUw`
+- Vercel deployment URL: `https://line101chat-site-36h596lw5-line101chats-projects.vercel.app`
+- Vercel inspector: `https://vercel.com/line101chats-projects/line101chat-site/FZRUG4wkNzxT6A3WpTN7kWnvFUUw`
+- Production alias: `https://line101chat.com`
+
+### Product Scope
+
+The new page is for a Chinese `<->` Indonesian LINE Translation Bot subscription.
+
+Plans:
+
+- Free: `NT$0`, `30 translations/month`
+- Basic: `NT$99/month`, `300 translations`
+- Plus: `NT$199/month`, `1000 translations`
+
+The public page explains:
+
+- What the translation bot does.
+- Pricing and monthly quota.
+- `Pay with LINE Pay` buttons for Basic and Plus.
+- Activation only happens after server-side LINE Pay confirmation.
+- Real activation codes are not shown on public pages.
+- LINE Pay secrets are not exposed to the browser.
+
+### Implemented Routes
+
+Public page:
+
+- `src/app/translation-service/page.tsx`
+- Route: `/translation-service`
+- Uses `public/presenter/2.png`.
+- Accepts optional query params:
+  - `lineUserId`
+  - `payment`
+  - `orderId`
+- Basic and Plus submit HTML forms to `POST /api/translation-payments/create`.
+
+Admin page:
+
+- `src/app/translation-service/admin/page.tsx`
+- Route: `/translation-service/admin`
+- Dynamic server page.
+- Shows payments table:
+  - `orderId`
+  - `lineUserId`
+  - `plan`
+  - `amount`
+  - `status`
+  - `transactionId`
+  - `activationCode`
+  - `createdAt`
+  - `paidAt`
+- Includes manual `Recheck payment` form that posts to `POST /api/translation-payments/reconcile`.
+- Noindex metadata is set.
+- `robots.ts` also disallows `/translation-service/admin` and `/api/translation-payments`.
+
+API routes:
+
+- `src/app/api/translation-payments/create/route.ts`
+  - `POST /api/translation-payments/create`
+  - Requires `plan` and `lineUserId`.
+  - Only accepts Basic or Plus for payment creation.
+  - Creates a local pending order with a unique `orderId`.
+  - Calls LINE Pay Payment Request API.
+  - Stores `transactionId` and `paymentUrl`.
+  - Redirects HTML form requests to LINE Pay payment URL.
+  - Returns JSON for JSON clients.
+
+- `src/app/api/translation-payments/confirm/route.ts`
+  - `GET /api/translation-payments/confirm`
+  - Confirm URL for LINE Pay return.
+  - Locates order by `orderId` or `transactionId`.
+  - Calls LINE Pay Confirm Payment API with `transactionId`, `amount`, and `currency`.
+  - Only marks paid after LINE Pay returns `0000` and local verification passes.
+  - Generates/stores activation code after server-side verification only.
+  - Redirects back to `/translation-service?payment=<status>&orderId=<orderId>`.
+
+- `src/app/api/translation-payments/reconcile/route.ts`
+  - `POST /api/translation-payments/reconcile`
+  - Admin-only.
+  - Uses `orderId` or `transactionId`.
+  - Calls LINE Pay Retrieve Payment Details API.
+  - Compares `amount`, `currency`, `orderId`, and `transactionId`.
+  - Never activates quota unless server-side LINE Pay verification succeeds.
+
+### Payment Library Files
+
+- `src/lib/translation-payments/plans.ts`
+  - Central plan data and TypeScript plan types.
+
+- `src/lib/translation-payments/store.ts`
+  - Local file-backed payment store.
+  - Default local path: `.data/translation-payments.json`.
+  - `.data/` is ignored by git.
+  - Uses OS temp directory on Vercel if no durable directory is configured.
+  - Generates:
+    - `orderId` like `L101T-YYYYMMDDHHMMSS-XXXXXXXX`
+    - `activationCode` like `TR-XXXXXXXXXXXXXXXX`
+
+- `src/lib/translation-payments/line-pay.ts`
+  - Server-only LINE Pay API client.
+  - Reads LINE Pay credentials from environment variables at request time.
+  - Uses HMAC SHA256 signing for `X-LINE-Authorization`.
+  - Keeps LINE Pay `transactionId` as string to avoid JavaScript 64-bit integer precision loss.
+  - Calls:
+    - `POST /v3/payments/request`
+    - `POST /v3/payments/{transactionId}/confirm`
+    - `GET /v3/payments`
+  - Verifies payment details before activation.
+
+- `src/lib/translation-payments/admin.ts`
+  - Admin token comparison with `timingSafeEqual`.
+  - `TRANSLATION_PAYMENTS_ADMIN_TOKEN` is recommended and required for production admin access.
+
+### Required Environment Variables
+
+Do not commit values. Configure these in Vercel before using real payments:
+
+```text
+LINE_PAY_CHANNEL_ID
+LINE_PAY_CHANNEL_SECRET
+LINE_PAY_API_BASE_URL
+LINE_PAY_CONFIRM_URL
+LINE_PAY_CANCEL_URL
+```
+
+Recommended production admin variable:
+
+```text
+TRANSLATION_PAYMENTS_ADMIN_TOKEN
+```
+
+As of the 2026-05-20 production deployment, `vercel env ls` showed only:
+
+```text
+RAG_DEMO_API_KEY
+RAG_DEMO_API_URL
+```
+
+This means the deployed LINE Pay flow is present, but real LINE Pay payment creation will fail until the LINE Pay env vars are added in Vercel.
+
+Suggested production values:
+
+- `LINE_PAY_API_BASE_URL`
+  - Sandbox: `https://sandbox-api-pay.line.me`
+  - Production: `https://api-pay.line.me`
+- `LINE_PAY_CONFIRM_URL`
+  - `https://line101chat.com/api/translation-payments/confirm`
+- `LINE_PAY_CANCEL_URL`
+  - A public cancellation route can be added later.
+  - For now, it can point to `https://line101chat.com/translation-service?payment=cancelled`.
+
+### LINE Pay API Notes
+
+Official docs used:
+
+- `https://developers-pay.line.me/online-api-v3`
+- `https://developers-pay.line.me/online-api-v3/request-payment`
+- `https://developers-pay.line.me/online-api-v3/confirm-payment`
+- `https://developers-pay.line.me/online-api-v3/retrieve-payment-details`
+
+Header/signature pattern:
+
+- `X-LINE-ChannelId`
+- `X-LINE-Authorization-Nonce`
+- `X-LINE-Authorization`
+- For `POST`: HMAC message is `channelSecret + apiPath + JSON.stringify(body) + nonce`.
+- For `GET`: HMAC message is `channelSecret + apiPath + queryString + nonce`.
+- Signature uses HMAC SHA256 and Base64 output.
+
+Important result codes:
+
+- `0000`: successful API processing.
+- Confirm API `0000`: payment confirmation succeeded.
+- Request-status API docs also define:
+  - `0110`: customer completed LINE Pay authentication and confirm can proceed.
+  - `0121`: cancelled or expired.
+  - `0122`: payment failed.
+  - `0123`: payment completed.
+
+The implementation does not activate from redirects or client-side success pages. It always calls LINE Pay from the server.
+
+### Storage Caveat Before Real Payments
+
+Current storage is intentionally isolated and file-backed to match the existing site, which did not have a database layer.
+
+This is acceptable for local development and integration scaffolding, but not enough for real production billing because Vercel serverless storage is not durable.
+
+Before accepting real payments, replace `src/lib/translation-payments/store.ts` with durable storage, for example:
+
+- Vercel Postgres/Neon
+- Supabase Postgres
+- PlanetScale
+- Turso
+- Upstash Redis plus durable export, only if the data model remains simple
+
+Keep the public page and API route contracts stable when swapping storage.
+
+### Security Rules To Preserve
+
+- Do not expose LINE Pay channel secret in code, browser JS, HTML, logs, screenshots, docs, or prompts.
+- Do not trust `/translation-service?payment=paid`.
+- Do not activate based only on a LINE Pay redirect.
+- Always confirm with LINE Pay server-side before quota upgrade or activation-code generation.
+- Compare local `orderId`, `transactionId`, `amount`, and `currency` with LINE Pay response data.
+- Keep real activation codes out of public pages.
+- Keep admin page noindexed and token-gated.
+- Do not commit `.data/translation-payments.json` if it is created locally.
+
+### Validation And Deployment Checks
+
+Local checks passed before deployment:
+
+- `npm run lint`
+- `npm run build`
+
+Production deployment checks:
+
+- Vercel production build passed.
+- `https://line101chat.com/translation-service` returned `200`.
+- Live page contained `Pay with LINE Pay`.
+- Live page contained `NT$199 / month`.
+- Vercel production error logs for the last hour returned no logs.
+
+Browser verification note:
+
+- `agent-browser` was not installed in the local environment, so browser automation could not run.
+- Fallback HTTP/content/API checks were run instead.
+
+Local development note:
+
+- A dev server was started on `http://localhost:3002` because ports `3000` and `3001` were busy.
+- That dev server was stopped after deployment.
+
+### Follow-Up Tasks For This Flow
+
+- Add the required LINE Pay env vars in Vercel.
+- Add `TRANSLATION_PAYMENTS_ADMIN_TOKEN` in Vercel.
+- Replace the file-backed store with durable storage before real payments.
+- Add a dedicated cancel page or cancel API handler if LINE Pay cancellation UX needs to be cleaner.
+- Connect successful paid orders to the real LINE bot quota system:
+  - Either directly upgrade by `lineUserId`.
+  - Or let the LINE bot consume the stored activation relation.
+- Add admin authentication beyond a URL token if this becomes operationally important.
+- Consider webhook/status polling only if LINE Pay flow needs additional resilience.
+- Add integration tests with mocked LINE Pay responses before first real transaction.
 
 ## Three LINE Chatbots
 
@@ -327,16 +594,19 @@ Live video verification from 2026-05-19 confirmed:
 
 There are unrelated untracked local files in `C:\line101chat-site`. Do not stage them unless explicitly requested:
 
+- `businessReview20260519.docx`
 - `proposal20260508v1.txt`
+- `public/presenter/prompt.txt`
 - `service.jpg`
 - `summary20260509v1.txt`
 - `summary20260511v1.txt`
 - `summary20260511v2.txt`
 - `summary20260512v1.txt`
 - `summary20260512v2.txt`
+- `~$sinessReview20260519.docx`
 
 There are also local dev logs such as `.next-dev*.log`. These should remain uncommitted.
 
 ## Known Follow-Up
 
-Vercel install output reports `1 high severity vulnerability` from `npm audit`. This was not part of the case-study/QR/video work and should be handled separately with a dependency audit before running any forced fix.
+Vercel install output on 2026-05-20 reported `2 vulnerabilities (1 moderate, 1 high)` from `npm audit`. This was not part of the translation payment work and should be handled separately with a dependency audit before running any forced fix.
