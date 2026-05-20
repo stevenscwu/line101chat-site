@@ -33,9 +33,9 @@ Main service:
 
 Avoid making translation chatbot the main product. Translation can remain a secondary optional module only.
 
-## Two LINE Chatbots
+## Three LINE Chatbots
 
-Do not mix these two channels or QR codes.
+Do not mix these channels, QR codes, LINE IDs, webhooks, or credentials.
 
 ### Business Inquiry Chatbot
 
@@ -56,6 +56,21 @@ Do not mix these two channels or QR codes.
 - Website routes: `/case-studies`, `/demo/ifirst-rag`
 - Label: `試用北科大創新學院文件問答 Demo`
 - Disclaimer: `本 Demo 僅供技術展示與商業案例說明，正式學校規定仍以官方公告與辦公室回覆為準。`
+
+### Taipei101 Student Arrival Demo Chatbot
+
+- Purpose: demonstrate a microbusiness case study for international students and exchange students arriving in Taipei.
+- Local project: `C:\line101chat\chatbots\taipei101-student`
+- LINE channel ID: `2007764825`
+- Public LINE Basic ID: `@138hrqii`
+- Public add-friend URL: `https://line.me/R/ti/p/%40138hrqii`
+- Official LINE QR source used for the website asset: `https://qr-official.line.me/sid/M/138hrqii.png`
+- Website QR asset: `public/taipei101-chatbot-qr.png`
+- Website route: `/case-studies/taipei101`
+- Label: `微型商業案例 / 開發中 Demo`
+- Main page title: `Taipei101 Chatbot｜台北留學生報到生活 AI 助理`
+- Disclaimer: `Taipei101 Chatbot 不是官方學校或政府服務。簽證、ARC、健保、入學與學籍相關事項，仍應以學校、政府機關與官方公告為準。`
+- Credentials remain only in the Taipei101 local `.env`; do not copy channel secret or access token into website code, docs, screenshots, commits, or prompts.
 
 ## Recent Published Work
 
@@ -113,6 +128,51 @@ Do not mix these two channels or QR codes.
   - `npm run lint` passed.
   - Local HTTP check for `/case-studies/taipei101` returned `200`.
   - Local `/case-studies` output contains `Taipei 101 Chatbot`.
+
+### 2026-05-20 - Save Taipei101 QR and deployment state
+
+- Public LINE metadata confirmed through the Taipei101 channel token without exposing secrets:
+  - LINE display name: `Taipei101`
+  - Channel ID: `2007764825`
+  - Basic ID: `@138hrqii`
+  - Add-friend URL: `https://line.me/R/ti/p/%40138hrqii`
+- Added real Taipei101 QR asset:
+  - `public/taipei101-chatbot-qr.png`
+  - Source: `https://qr-official.line.me/sid/M/138hrqii.png`
+  - Size: `180x180`, `image/png`, `983 bytes`
+- Updated website:
+  - `src/app/case-studies/taipei101/page.tsx`
+  - `src/app/case-studies/page.tsx`
+  - `src/components/cards.tsx`
+- The Taipei101 case-study page now shows:
+  - Real QR image instead of the TODO placeholder.
+  - LINE ID `@138hrqii`.
+  - Demo Channel `2007764825`.
+  - External button text: `加入 LINE 試用`.
+  - CTA remains `預約免費評估` for LINE101Chat service inquiries.
+- The `/case-studies` listing shows:
+  - `Taipei101 Chatbot｜台北留學生報到生活 AI 助理`
+  - Badge: `開發中案例`
+  - Link: `/case-studies/taipei101`
+- GitHub:
+  - Commit: `7c86ef0 Add Taipei101 chatbot QR case study`
+  - Full SHA: `7c86ef0ed53e549e7e1038f21c4dd279de901a9b`
+  - Repository: `https://github.com/stevenscwu/line101chat-site`
+- Vercel:
+  - GitHub integration deployed the commit successfully.
+  - `Vercel - line101chat-site`: success.
+  - `Vercel - line101chat`: success.
+  - Production alias: `https://line101chat.com`
+- Live verification:
+  - `https://line101chat.com/case-studies/taipei101` returned `200`.
+  - Page contains `Taipei101 Chatbot`, `@138hrqii`, `加入 LINE 試用`, and `/taipei101-chatbot-qr.png`.
+  - `https://line101chat.com/taipei101-chatbot-qr.png` returned `200`, `image/png`, `983 bytes`.
+  - Live QR hash matched the local asset.
+  - `https://line101chat.com/case-studies` returned `200` and contains the Taipei101 card, `開發中案例`, and `/case-studies/taipei101`.
+- Build verification:
+  - `npm run build` passed before commit and deploy.
+- Future warning:
+  - The QR/add-friend flow is now public, but broad promotion should still wait for stable webhook hosting, RAG-backed answers, golden question tests, safety fallback tests, and privacy/data-safety messaging.
 
 ### 2026-05-19 - Add and deploy iFIRST demo video package
 
