@@ -132,10 +132,38 @@ https://vercel.com/line101chats-projects?repo=https://github.com/stevenscwu/line
 - `/blog/rag-chatbot-document-preparation`
 - `/contact`
 - `/line`
+- `/translation-service`
 - `/about`
 - `/privacy`
 - `/feiz` noindexed private shortcut for Zoho Mail access
 - English equivalents under `/en`, for example `/en/services`, `/en/pricing`, `/en/book-demo`, and `/en/contact`
+
+## Translation Bot Payments
+
+The `/translation-service` page supports the Chinese ⇄ Indonesian LINE Translation Bot subscription flow:
+
+- `POST /api/translation-payments/create`
+- `GET /api/translation-payments/confirm`
+- `POST /api/translation-payments/reconcile`
+- Admin table at `/translation-service/admin`
+
+Required LINE Pay environment variables:
+
+```text
+LINE_PAY_CHANNEL_ID
+LINE_PAY_CHANNEL_SECRET
+LINE_PAY_API_BASE_URL
+LINE_PAY_CONFIRM_URL
+LINE_PAY_CANCEL_URL
+```
+
+Recommended production admin variable:
+
+```text
+TRANSLATION_PAYMENTS_ADMIN_TOKEN
+```
+
+Payment records are stored through the local file-backed store in `.data/translation-payments.json` during local development. For production billing, replace the store with a durable database or configure durable storage before accepting real payments.
 
 ## Future Integrations
 

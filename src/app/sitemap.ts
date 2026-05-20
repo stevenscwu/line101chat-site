@@ -20,6 +20,7 @@ const routes = [
 ];
 
 const zhOnlyRoutes = ["/case-studies/taipei101"];
+const paymentRoutes = ["/translation-service"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -59,6 +60,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: new Date(),
         changeFrequency: "weekly" as const,
         priority: 0.8,
+        alternates: {
+          languages: {
+            "zh-Hant-TW": `${baseUrl}${route}`,
+          },
+        },
+      }
+    )),
+    ...paymentRoutes.map((route) => (
+      {
+        url: `${baseUrl}${route}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
         alternates: {
           languages: {
             "zh-Hant-TW": `${baseUrl}${route}`,

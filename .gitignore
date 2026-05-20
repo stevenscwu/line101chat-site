@@ -21,6 +21,7 @@ yarn-error.log*
 .next-start*.log
 .verification/
 /QR.JPG
+.data/
 
 # env
 .env*
