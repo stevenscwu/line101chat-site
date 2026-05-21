@@ -30,9 +30,9 @@ export const site = {
   businessLineChannelId: "2007691019",
   ntutDemoLineChannelId: "2007782998",
   ntutDemoQrImage: "/ntut-ifirst-demo-qr.png",
-  title: "LINE101Chat｜企業 AI 知識助理與 LINE 文件問答",
+  title: "LINE101Chat｜台灣在地 LINE AI 知識助理",
   description:
-    "LINE101Chat 協助台灣中小企業、學校與組織，把 FAQ、SOP、規章與內部文件轉換成可在 LINE 或網站查詢的 AI 知識助理，支援來源引用、文件整理、雲端與本地端部署評估。",
+    "LINE101Chat 協助台灣中小企業、學校與服務團隊，把 FAQ、SOP、招生資料與服務文件變成可在 LINE 中即時回答的 AI 知識助理，適合 LINE 自動客服、企業知識庫問答與小型 PoC。",
   keywords: [
     "AI 知識助理",
     "LINE AI 助理",
@@ -58,8 +58,8 @@ export const navItems = [
 
 export const primaryCtas = {
   assessment: { label: "免費評估", href: "/free-assessment" },
-  demo: { label: "預約 Demo", href: "/book-demo" },
-  demoPage: { label: "看 Demo", href: "/case-studies" },
+  demo: { label: "預約討論", href: "/book-demo" },
+  demoPage: { label: "查看案例", href: "/case-studies" },
   poc: { label: "免費評估", href: "/free-assessment" },
   line: { label: "LINE 詢問服務", href: site.linePageUrl },
   services: { label: "服務說明", href: "/services" },
@@ -76,32 +76,32 @@ export const problemCards = [
 
 export const coreServices = [
   {
-    title: "文件問答助理",
-    href: "/rag-chatbot",
-    icon: FileSearch,
-    description:
-      "將 PDF、Word、網頁、FAQ、SOP 轉成可查詢知識庫。",
-  },
-  {
-    title: "LINE AI 助理",
+    title: "LINE 自動客服",
     href: "/line",
     icon: MessageCircle,
     description:
-      "讓員工、學生或客戶直接在 LINE 裡查詢常見問題。",
+      "把客戶、學生或員工最常問的問題放進 LINE，先處理重複詢問，再轉交需要真人判斷的問題。",
   },
   {
-    title: "來源引用與修正流程",
+    title: "企業知識庫問答",
+    href: "/rag-chatbot",
+    icon: FileSearch,
+    description:
+      "將 FAQ、產品資料、內部制度與服務文件整理成可查詢、可追溯、可維護的企業知識庫。",
+  },
+  {
+    title: "文件 / SOP 查詢",
     href: "/rag-chatbot",
     icon: SearchCheck,
     description:
-      "每次回答盡量附上來源，方便追查、修正與更新文件。",
+      "讓同仁不用翻資料夾，也能在 LINE 或網站快速查 SOP、表單位置、作業流程與規章內容。",
   },
   {
-    title: "雲端 / 本地端部署",
+    title: "小型 PoC 導入",
     href: "/rag-chatbot",
-    icon: ServerCog,
+    icon: CalendarDays,
     description:
-      "依資料敏感度選擇快速雲端 PoC、本地端或私有雲部署。",
+      "先用一份 FAQ、PDF 或 SOP 文件測試真實問題，確認回答品質與使用情境後再正式導入。",
   },
 ];
 
@@ -159,24 +159,24 @@ export const benefits = [
 
 export const securityPrinciples = [
   {
-    title: "資料邊界先定義",
-    description: "先盤點哪些文件可進 PoC、哪些資料需遮蔽、哪些場景必須本地端或私有雲。",
-    icon: LockKeyhole,
-  },
-  {
-    title: "LINE 入口，後端可控",
-    description: "使用者在熟悉的 LINE 提問，文件索引、權限與紀錄則依企業需求放在可管理的環境。",
-    icon: MessageCircle,
-  },
-  {
-    title: "來源引用與修正流程",
-    description: "答案附上文件來源，管理者可以追查、修正與更新知識庫，避免黑箱回答。",
+    title: "根據來源回答 / Source-grounded answers",
+    description: "回答優先根據整理過的文件與資料來源，方便追查、修正與更新，降低憑空回答的風險。",
     icon: SearchCheck,
   },
   {
-    title: "雲端或本地端部署",
-    description: "一般資料可用雲端快速驗證，敏感資料可評估本地端、私有雲、權限控管與稽核紀錄。",
-    icon: ServerCog,
+    title: "LINE 原生流程 / LINE-native workflow",
+    description: "使用者不需要學新系統，直接在熟悉的 LINE 提問；後端再依需求管理文件、權限與紀錄。",
+    icon: MessageCircle,
+  },
+  {
+    title: "繁體中文支援 / Traditional Chinese support",
+    description: "以繁體中文與台灣在地用語優先設計，適合客服、招生、HR、觀光與服務現場使用。",
+    icon: ClipboardCheck,
+  },
+  {
+    title: "小型 PoC 優先 / Small PoC first",
+    description: "先用一份 FAQ、PDF 或 SOP 與真實問題做小型 PoC，確認價值後再擴大文件與場景。",
+    icon: CalendarDays,
   },
 ];
 
@@ -486,7 +486,7 @@ export const siteContent = {
     trustPoints,
     emailAccounts,
     labels: {
-      brandTagline: "LINE AI knowledge assistant",
+      brandTagline: "台灣在地 LINE AI 知識助理",
       navAria: "主要導覽",
       mobileNavAria: "手機導覽",
       openMenu: "開啟選單",
@@ -512,17 +512,17 @@ export const siteContent = {
       cons: "限制",
     },
     hero: {
-      features: ["企業 AI 助理", "LINE 快速查詢", "來源引用", "資料保密邊界"],
-      eyebrow: "台灣中小企業 AI 助理 / 北科大工程團隊",
-      title: "企業 AI 知識助理，真人回答水準，公司機密資料不外流",
+      features: ["LINE 自動客服", "企業知識庫問答", "文件 / SOP 查詢", "小型 PoC"],
+      eyebrow: "台灣中小企業 / 學校 / 服務業 LINE AI 助理",
+      title: "台灣在地 LINE AI 知識助理",
       description:
-        "把 SOP、FAQ、規章、產品手冊與內部制度整理成可透過 LINE 或網站查詢的 AI 助理。回答時附上文件來源，並可依資料敏感度規劃雲端、本地端或私有雲部署。",
+        "將 FAQ、SOP、招生資料、服務文件變成可在 LINE 中即時回答的 AI 助理。",
       speech:
-        "我是 LINE101Chat 的 AI 解決方案顧問，會先協助你盤點文件、常見問題與查詢場景，再評估是否適合做 AI 知識助理 PoC。",
+        "先準備一份 FAQ、PDF 或 SOP，我們可以協助評估是否適合做 LINE AI 知識助理小型 PoC。",
       stats: [
-        ["20-30 頁", "先用正式文件評估"],
-        ["2-3 週", "小範圍 Starter PoC"],
-        ["雲端 / 本地端", "依資料敏感度部署"],
+        ["LINE 入口", "不改變使用習慣"],
+        ["1 份文件", "先做 Demo 評估"],
+        ["小型 PoC", "確認成效再擴大"],
       ],
     },
     pages: {
@@ -534,22 +534,22 @@ export const siteContent = {
         },
         sections: {
           problems: {
-            eyebrow: "導入痛點",
-            title: "我們解決的問題",
+            eyebrow: "常見痛點",
+            title: "每天重複回答的問題，其實可以先整理成 LINE 知識助理",
             description:
-              "不是每個組織都需要大型 AI 平台。很多時候，先把文件整理好、把資料邊界定義清楚，讓同仁在 LINE 裡查得到答案，就能立即減少團隊壓力。",
+              "LINE101Chat 先從客服、行政、招生、HR 或服務現場最常遇到的問題開始，把既有文件變成可查詢、可追溯、可維護的回答流程。",
           },
           core: {
             eyebrow: "核心服務",
-            title: "我們專注做一件事：讓公司文件變成可靠的 AI 知識助理",
+            title: "用商務場景說清楚，不只是一個會聊天的 Bot",
             description:
-              "不是做一個會聊天的玩具，而是把正式文件、FAQ、SOP 與內部規章整理成可查詢、可追溯、可維護的 AI 問答系統。",
+              "LINE101Chat 專注在 LINE 自動客服、企業知識庫問答、文件 / SOP 查詢，以及可先驗證價值的小型 PoC。",
           },
           security: {
-            eyebrow: "資料保密",
-            title: "讓公司資訊留在可控邊界，也能被 LINE 快速搜尋",
+            eyebrow: "信任設計",
+            title: "讓 LINE AI 助理回答得有根據、用得順、容易先驗證",
             description:
-              "LINE101Chat 的重點不是把所有資料丟進公開模型，而是先界定資料範圍、部署方式與更新流程，讓公司知識變得好查、可追溯、可維護。",
+              "對台灣企業與學校來說，重點不是技術名詞，而是答案是否根據文件、使用者是否願意用、內容是否能維護，以及是否能先用小範圍 PoC 控制風險。",
           },
           trust: {
             eyebrow: "台灣市場信任",
@@ -558,9 +558,9 @@ export const siteContent = {
               "導入 AI 不只是 demo 漂亮，更要符合台灣公司對預算、維護、資料安全與可追溯答案的要求。",
           },
           audiences: {
-            eyebrow: "適用對象",
-            title: "適合誰使用？",
-            description: "LINE101Chat 特別適合已經累積大量文件、表單、FAQ 或日常 LINE 溝通量的台灣組織。",
+            eyebrow: "應用場景",
+            title: "先從一個重複問題最多的場景開始",
+            description: "學校招生、企業客服、內部 SOP、觀光旅遊與 HR 新人訓練，都可以先用一份文件和一組真實問題評估。",
           },
           process: {
             eyebrow: "導入流程",
@@ -581,9 +581,10 @@ export const siteContent = {
           },
         },
         cta: {
-          title: "想知道你的文件適不適合做 AI 知識助理？",
-          body: "先用 20-30 頁正式文件做免費評估，我們會協助判斷文件品質、使用場景、LINE 或網站入口，以及是否值得做 PoC。",
-          buttonLabel: "免費評估",
+          title: "準備一份 FAQ、PDF 或 SOP，先做 Demo 評估",
+          body: "不用一開始就導入大型系統。先提供一份常被查詢的文件和幾個真實問題，我們會協助判斷是否適合做 LINE AI 知識助理小型 PoC。",
+          buttonLabel: "預約討論",
+          buttonHref: "/book-demo",
         },
       },
       services: {
