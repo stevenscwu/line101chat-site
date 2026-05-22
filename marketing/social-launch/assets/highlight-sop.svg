@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-labelledby="title desc">
+  <title id="title">SOP highlight icon</title>
+  <desc id="desc">LINE101Chat SOP category icon.</desc>
+  <rect width="1080" height="1080" rx="240" fill="#f8fff9"/>
+  <circle cx="840" cy="184" r="136" fill="#06c755" opacity="0.18"/>
+  <rect x="300" y="218" width="480" height="590" rx="48" fill="#ffffff" stroke="#cdeedd" stroke-width="8"/>
+  <rect x="386" y="342" width="308" height="30" rx="15" fill="#06a94f"/>
+  <rect x="386" y="442" width="308" height="30" rx="15" fill="#274b3f" opacity="0.72"/>
+  <rect x="386" y="542" width="238" height="30" rx="15" fill="#274b3f" opacity="0.72"/>
+  <circle cx="342" cy="356" r="18" fill="#f7d35d"/>
+  <circle cx="342" cy="456" r="18" fill="#f7d35d"/>
+  <circle cx="342" cy="556" r="18" fill="#f7d35d"/>
+  <text x="540" y="910" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="72" font-weight="900" fill="#102d24">SOP 查詢</text>
+</svg>

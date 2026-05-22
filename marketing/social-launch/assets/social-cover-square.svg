@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-labelledby="title desc">
+  <title id="title">LINE101Chat square launch cover</title>
+  <desc id="desc">Square social cover for launch posts.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f9fffb"/>
+      <stop offset="0.52" stop-color="#e6f8ef"/>
+      <stop offset="1" stop-color="#c2eed7"/>
+    </linearGradient>
+    <clipPath id="avatarClip">
+      <circle cx="540" cy="316" r="222"/>
+    </clipPath>
+  </defs>
+  <rect width="1080" height="1080" rx="52" fill="url(#bg)"/>
+  <circle cx="898" cy="144" r="118" fill="#06c755" opacity="0.16"/>
+  <circle cx="146" cy="890" r="170" fill="#f7d35d" opacity="0.24"/>
+  <circle cx="540" cy="316" r="242" fill="#ffffff"/>
+  <image href="../../../public/presenter/host-main.png" x="306" y="70" width="468" height="492" clip-path="url(#avatarClip)" preserveAspectRatio="xMidYMid slice"/>
+  <text x="540" y="648" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="46" font-weight="800" fill="#06a94f">LINE101Chat</text>
+  <text x="540" y="736" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="72" font-weight="900" fill="#102d24">台灣在地</text>
+  <text x="540" y="820" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="72" font-weight="900" fill="#102d24">LINE AI 知識助理</text>
+  <rect x="226" y="894" width="628" height="72" rx="36" fill="#06c755"/>
+  <text x="540" y="942" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="30" font-weight="800" fill="#ffffff">FAQ / SOP / 文件查詢 / 小型 PoC</text>
+</svg>

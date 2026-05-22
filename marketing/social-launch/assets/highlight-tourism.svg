@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Tourism highlight icon</title>
+  <desc id="desc">LINE101Chat tourism category icon.</desc>
+  <rect width="1080" height="1080" rx="240" fill="#fff9e9"/>
+  <circle cx="826" cy="210" r="126" fill="#f7d35d"/>
+  <path d="M236 660 C324 512 402 476 512 590 C606 688 686 650 844 474 V812 H236 Z" fill="#06c755"/>
+  <path d="M236 702 C354 568 448 558 548 660 C638 752 728 720 844 598 V812 H236 Z" fill="#102d24" opacity="0.9"/>
+  <path d="M506 246 C406 246 326 326 326 426 C326 562 506 690 506 690 C506 690 686 562 686 426 C686 326 606 246 506 246 Z" fill="#ffffff" stroke="#06a94f" stroke-width="20"/>
+  <circle cx="506" cy="426" r="66" fill="#06c755"/>
+  <text x="540" y="908" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="72" font-weight="900" fill="#102d24">觀光旅遊</text>
+</svg>

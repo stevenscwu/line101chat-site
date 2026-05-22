@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-labelledby="title desc">
+  <title id="title">LINE101Chat demo QR placeholder</title>
+  <desc id="desc">Placeholder card for a future LINE chatbot demo QR code.</desc>
+  <rect width="1080" height="1080" rx="52" fill="#f8fff9"/>
+  <rect x="100" y="100" width="880" height="880" rx="44" fill="#ffffff" stroke="#d8f2e3" stroke-width="6"/>
+  <text x="540" y="208" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="42" font-weight="900" fill="#06a94f">LINE101Chat Demo</text>
+  <text x="540" y="274" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="32" font-weight="800" fill="#102d24">台灣在地 LINE AI 知識助理</text>
+  <rect x="318" y="354" width="444" height="444" rx="28" fill="#eef8f1" stroke="#06c755" stroke-width="8" stroke-dasharray="22 18"/>
+  <text x="540" y="565" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="46" font-weight="900" fill="#102d24">QR</text>
+  <text x="540" y="626" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="30" font-weight="800" fill="#48675c">Replace with live demo QR</text>
+  <rect x="236" y="850" width="608" height="72" rx="36" fill="#06c755"/>
+  <text x="540" y="898" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="30" font-weight="900" fill="#ffffff">line101chat.com/demo/ifirst-rag</text>
+</svg>

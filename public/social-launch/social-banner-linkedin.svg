@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1584" height="396" viewBox="0 0 1584 396" role="img" aria-labelledby="title desc">
+  <title id="title">LINE101Chat LinkedIn banner</title>
+  <desc id="desc">LinkedIn company banner for LINE101Chat.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#102d24"/>
+      <stop offset="0.6" stop-color="#164333"/>
+      <stop offset="1" stop-color="#06a94f"/>
+    </linearGradient>
+    <clipPath id="avatarClip">
+      <circle cx="1346" cy="198" r="152"/>
+    </clipPath>
+  </defs>
+  <rect width="1584" height="396" fill="url(#bg)"/>
+  <circle cx="1222" cy="52" r="152" fill="#ffffff" opacity="0.08"/>
+  <circle cx="1480" cy="356" r="196" fill="#f7d35d" opacity="0.16"/>
+  <text x="96" y="94" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="30" font-weight="800" fill="#9df2bd">LINE101Chat</text>
+  <text x="96" y="185" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="64" font-weight="900" fill="#ffffff">台灣在地 LINE AI 知識助理</text>
+  <text x="96" y="252" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="32" font-weight="700" fill="#d8f9e4">LINE 自動客服、企業知識庫問答、文件 / SOP 查詢</text>
+  <text x="96" y="309" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="27" font-weight="700" fill="#f7d35d">一份 FAQ、PDF 或 SOP，先做小型 PoC</text>
+  <circle cx="1346" cy="198" r="166" fill="#ffffff" opacity="0.96"/>
+  <image href="/presenter/8.png" x="1182" y="28" width="328" height="340" clip-path="url(#avatarClip)" preserveAspectRatio="xMidYMid slice"/>
+</svg>

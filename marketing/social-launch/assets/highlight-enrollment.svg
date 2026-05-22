@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Enrollment highlight icon</title>
+  <desc id="desc">LINE101Chat enrollment category icon.</desc>
+  <rect width="1080" height="1080" rx="240" fill="#eaf7ff"/>
+  <circle cx="184" cy="180" r="132" fill="#06c755" opacity="0.18"/>
+  <path d="M540 232 L802 356 L540 480 L278 356 Z" fill="#102d24"/>
+  <path d="M366 420 V598 C446 670 634 670 714 598 V420 L540 502 Z" fill="#06c755"/>
+  <rect x="736" y="374" width="36" height="208" rx="18" fill="#f7d35d"/>
+  <circle cx="754" cy="610" r="36" fill="#f7d35d"/>
+  <text x="540" y="816" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="78" font-weight="900" fill="#102d24">招生</text>
+  <text x="540" y="890" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="42" font-weight="800" fill="#2e5a4a">Enrollment</text>
+</svg>

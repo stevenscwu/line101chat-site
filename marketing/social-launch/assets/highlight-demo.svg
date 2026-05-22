@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Demo highlight icon</title>
+  <desc id="desc">LINE101Chat demo category icon.</desc>
+  <rect width="1080" height="1080" rx="240" fill="#06c755"/>
+  <circle cx="838" cy="190" r="140" fill="#ffffff" opacity="0.16"/>
+  <circle cx="188" cy="872" r="174" fill="#f7d35d" opacity="0.24"/>
+  <rect x="270" y="288" width="540" height="360" rx="56" fill="#ffffff"/>
+  <path d="M496 400 L496 536 L620 468 Z" fill="#06a94f"/>
+  <text x="540" y="762" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="82" font-weight="900" fill="#ffffff">Demo</text>
+  <text x="540" y="842" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="42" font-weight="800" fill="#e6ffef">LINE chatbot</text>
+</svg>

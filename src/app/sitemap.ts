@@ -4,6 +4,7 @@ const baseUrl = "https://line101chat.com";
 
 const routes = [
   "",
+  "/start",
   "/services",
   "/rag-chatbot",
   "/case-studies",

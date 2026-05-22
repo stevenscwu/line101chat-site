@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img" aria-labelledby="title desc">
+  <title id="title">LINE101Chat YouTube banner</title>
+  <desc id="desc">YouTube channel art source with center-safe LINE101Chat message.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071f18"/>
+      <stop offset="0.55" stop-color="#103526"/>
+      <stop offset="1" stop-color="#06c755"/>
+    </linearGradient>
+    <clipPath id="avatarClip">
+      <circle cx="1950" cy="720" r="270"/>
+    </clipPath>
+  </defs>
+  <rect width="2560" height="1440" fill="url(#bg)"/>
+  <rect x="508" y="423" width="1544" height="594" rx="54" fill="#ffffff" opacity="0.08"/>
+  <circle cx="2104" cy="260" r="288" fill="#ffffff" opacity="0.07"/>
+  <circle cx="382" cy="1190" r="320" fill="#f7d35d" opacity="0.16"/>
+  <text x="690" y="596" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="48" font-weight="800" fill="#9df2bd">LINE101Chat</text>
+  <text x="690" y="724" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="86" font-weight="900" fill="#ffffff">台灣在地 LINE AI 知識助理</text>
+  <text x="690" y="820" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="42" font-weight="700" fill="#dffbe8">Demo videos, Shorts, FAQ, SOP, LINE chatbot 實務</text>
+  <text x="690" y="910" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="36" font-weight="800" fill="#f7d35d">line101chat.com/start</text>
+  <circle cx="1950" cy="720" r="292" fill="#ffffff"/>
+  <image href="/presenter/host-main.png" x="1662" y="424" width="576" height="594" clip-path="url(#avatarClip)" preserveAspectRatio="xMidYMid slice"/>
+</svg>

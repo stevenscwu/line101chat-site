@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" role="img" aria-labelledby="title desc">
+  <title id="title">HR highlight icon</title>
+  <desc id="desc">LINE101Chat HR category icon.</desc>
+  <rect width="1080" height="1080" rx="240" fill="#102d24"/>
+  <circle cx="836" cy="220" r="140" fill="#06c755" opacity="0.28"/>
+  <circle cx="430" cy="394" r="100" fill="#ffffff"/>
+  <circle cx="650" cy="394" r="100" fill="#ffffff"/>
+  <path d="M250 684 C280 560 356 518 430 518 C504 518 572 560 600 684 Z" fill="#06c755"/>
+  <path d="M480 684 C510 560 576 518 650 518 C724 518 800 560 830 684 Z" fill="#9df2bd"/>
+  <text x="540" y="832" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="78" font-weight="900" fill="#ffffff">HR</text>
+  <text x="540" y="908" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="42" font-weight="800" fill="#f7d35d">新人訓練</text>
+</svg>

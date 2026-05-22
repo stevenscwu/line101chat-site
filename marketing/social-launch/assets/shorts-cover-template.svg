@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-labelledby="title desc">
+  <title id="title">LINE101Chat Shorts cover template</title>
+  <desc id="desc">Vertical Shorts, Reels, and TikTok cover template.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#08251b"/>
+      <stop offset="0.56" stop-color="#0e3b2b"/>
+      <stop offset="1" stop-color="#06c755"/>
+    </linearGradient>
+    <clipPath id="avatarClip">
+      <circle cx="540" cy="512" r="268"/>
+    </clipPath>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <circle cx="910" cy="270" r="178" fill="#ffffff" opacity="0.08"/>
+  <circle cx="142" cy="1516" r="238" fill="#f7d35d" opacity="0.2"/>
+  <circle cx="540" cy="512" r="290" fill="#ffffff"/>
+  <image href="../../../public/presenter/4.png" x="252" y="220" width="576" height="604" clip-path="url(#avatarClip)" preserveAspectRatio="xMidYMid slice"/>
+  <text x="540" y="940" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="54" font-weight="800" fill="#9df2bd">LINE101Chat</text>
+  <text x="540" y="1088" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="92" font-weight="900" fill="#ffffff">客服一直</text>
+  <text x="540" y="1202" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="92" font-weight="900" fill="#ffffff">重複回答？</text>
+  <rect x="160" y="1300" width="760" height="96" rx="48" fill="#ffffff"/>
+  <text x="540" y="1363" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="38" font-weight="900" fill="#102d24">先用 LINE chatbot demo 測試</text>
+  <text x="540" y="1612" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="36" font-weight="800" fill="#ffffff">台灣在地 LINE AI 知識助理</text>
+  <text x="540" y="1680" text-anchor="middle" font-family="'Noto Sans TC','Microsoft JhengHei',Arial,sans-serif" font-size="34" font-weight="800" fill="#f7d35d">line101chat.com</text>
+</svg>
