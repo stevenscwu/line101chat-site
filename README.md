@@ -37,6 +37,7 @@ https://github.com/stevenscwu/line101chat-site
 - Structured `/book-demo` flow with seven PoC qualification questions and email/LINE fallback
 - `/document-readiness-checklist` lead magnet page that can be printed or saved as PDF
 - SEO blog and detailed NTUT iFIRST RAG case-study pages
+- `/101recipe` local recipe PDF retrieval page, proxied to the 101recipe bot backend
 
 ## Presenter Assets
 
@@ -84,6 +85,32 @@ Open:
 http://localhost:3000/
 ```
 
+For the 101recipe page, run the bot backend first:
+
+```bash
+cd C:\line101chat\chatbots\101recipe
+npm run dev
+```
+
+Then run the site on another port:
+
+```bash
+cd C:\line101chat-site
+npm run dev -- -p 3001
+```
+
+Open:
+
+```text
+http://localhost:3001/101recipe
+```
+
+The site proxies `/api/101recipe/*` to the bot backend. Configure the backend URL with:
+
+```env
+RECIPE_BOT_API_BASE_URL=http://127.0.0.1:3000
+```
+
 ## Production Checks
 
 ```bash
@@ -125,6 +152,7 @@ https://vercel.com/line101chats-projects?repo=https://github.com/stevenscwu/line
 - `/translation-chatbot`
 - `/case-studies`
 - `/case-studies/ntut-ifirst-rag`
+- `/101recipe`
 - `/pricing`
 - `/book-demo`
 - `/document-readiness-checklist`
