@@ -20,7 +20,7 @@ const routes = [
   "/privacy",
 ];
 
-const zhOnlyRoutes = ["/case-studies/taipei101"];
+const zhOnlyRoutes = ["/case-studies/101recipe"];
 const paymentRoutes = ["/translation-service"];
 
 export default function sitemap(): MetadataRoute.Sitemap {

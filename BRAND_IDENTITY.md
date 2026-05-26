@@ -27,7 +27,7 @@ Important routes:
 - AI knowledge assistant page: `src/app/rag-chatbot/page.tsx`
 - Case studies listing: `src/app/case-studies/page.tsx`
 - NTUT iFIRST case study: `src/app/case-studies/ntut-ifirst-rag/page.tsx`
-- Taipei101 case study: `src/app/case-studies/taipei101/page.tsx`
+- 101recipe case study: `src/app/case-studies/101recipe/page.tsx`
 - Free assessment page: `src/app/free-assessment/page.tsx`
 - Book demo page: `src/app/book-demo/page.tsx`
 - Contact page: `src/app/contact/page.tsx`

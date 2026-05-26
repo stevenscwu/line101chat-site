@@ -21,7 +21,7 @@ Case studies:
 
 - Listing route: `src/app/case-studies/page.tsx`
 - NTUT iFIRST detail: `src/app/case-studies/ntut-ifirst-rag/page.tsx`
-- Taipei101 detail: `src/app/case-studies/taipei101/page.tsx`
+- 101recipe detail: `src/app/case-studies/101recipe/page.tsx`
 - Video helper: `src/components/case-studies/DemoVideoSection.tsx`
 - QR helper: `src/components/case-studies/ChatbotQrGuide.tsx`
 - Growth copy source: `src/data/growth.ts`
@@ -116,7 +116,7 @@ Review checklist:
 Ask Codex:
 
 ```text
-Repurpose the LINE101Chat case study [NTUT iFIRST / Taipei101] into:
+Repurpose the LINE101Chat case study [NTUT iFIRST / 101recipe] into:
 1. a 45-second short video script,
 2. a 5-slide Instagram carousel,
 3. a LinkedIn post,
@@ -131,11 +131,11 @@ For NTUT iFIRST:
 - Mention source-backed answers.
 - Avoid implying official NTUT endorsement unless separately confirmed.
 
-For Taipei101:
+For 101recipe:
 
-- Emphasize microbusiness / student arrival support demo.
-- Include the disclaimer that official matters still require official sources.
-- Do not confuse the demo channel with the business inquiry LINE account.
+- Emphasize authorized recipe PDF retrieval through LINE and web.
+- Include the disclaimer that passcodes, credentials, and unauthorized file names must not be exposed.
+- Do not confuse the recipe demo QR with the business inquiry LINE account.
 
 ### Friday: Publish Prep
 

@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import {
-  Bus,
   CheckCircle2,
+  ChefHat,
   ClipboardCheck,
-  CreditCard,
+  Database,
   FileSearch,
-  GraduationCap,
+  FileText,
   HelpCircle,
-  Home,
-  Landmark,
+  KeyRound,
+  LockKeyhole,
   MessageCircle,
-  Plane,
   SearchCheck,
+  ServerCog,
   ShieldCheck,
   Smartphone,
-  UsersRound,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -23,67 +22,66 @@ import { ButtonLink } from "@/components/button-link";
 import { PresenterCallout } from "@/components/presenter";
 import { SectionHeading } from "@/components/section-heading";
 
-const taipei101LineId = "@138hrqii";
-const taipei101LineChannelId = "2007764825";
-const taipei101LineAddFriendUrl = "https://line.me/R/ti/p/%40138hrqii";
-const taipei101QrImage = "/taipei101-chatbot-qr.png";
+const recipeQrImage = "/101recipe-chatbot-qr.png";
 
 export const metadata: Metadata = {
-  title: "Taipei101 Chatbot｜台北留學生報到生活 AI 助理",
+  title: "101recipe LINE 食譜 PDF 查找助理｜授權通行碼與本機 RAG 案例",
   description:
-    "Taipei101 Chatbot 是一個微型商業案例 / 開發中 Demo，展示一人台北服務如何用 RAG-enabled LINE chatbot 回答外籍生與交換生的報到生活問題。",
-  alternates: { canonical: "/case-studies/taipei101" },
+    "101recipe 是一個 LINE 與網站雙入口的食譜 PDF 查找助理，使用通行碼、SQLite、Ollama 與本機食譜索引，讓授權使用者快速找到可下載的食譜檔案。",
+  alternates: { canonical: "/case-studies/101recipe" },
 };
 
 const problemItems = [
-  "報到流程不清楚",
-  "機場到學校路線不熟",
-  "ARC、健保、住宿、手機、銀行資訊分散",
-  "學校行政與學生社群常被問重複問題",
-  "很多資訊其實已經存在官方網站，但不容易被快速找到",
+  "食譜 PDF 與課程檔案散在資料夾裡，使用者很難靠記憶找到正確檔名",
+  "LINE 上常出現簡短查詢，例如「叉燒」、「胡桃塔」或「Cheese cake」",
+  "不同使用者可看的食譜範圍不同，不能把未授權檔名直接露出",
+  "下載連結需要再次檢查登入狀態、通行碼有效期限與權限範圍",
+  "本機資料與網站入口需要串起來，又不能把 LINE credentials 或 passcode 寫進前端",
 ];
 
 const answerCards: Array<{ title: string; icon: LucideIcon }> = [
-  { title: "Before Arrival", icon: Plane },
-  { title: "Enrollment / Registration", icon: ClipboardCheck },
-  { title: "Visa / ARC / Insurance", icon: ShieldCheck },
-  { title: "Housing / Daily Life", icon: Home },
-  { title: "Transportation", icon: Bus },
-  { title: "SIM Card / Bank Account", icon: Smartphone },
-  { title: "Human Help", icon: UsersRound },
+  { title: "Passcode Login", icon: KeyRound },
+  { title: "Authorized PDF Search", icon: FileSearch },
+  { title: "Filename-first Matching", icon: SearchCheck },
+  { title: "Local Recipe Index", icon: Database },
+  { title: "LINE Webhook", icon: MessageCircle },
+  { title: "Website Proxy", icon: ServerCog },
+  { title: "PDF Download Gate", icon: LockKeyhole },
+  { title: "Access Logs", icon: ClipboardCheck },
 ];
 
 const solutionCards: Array<{ title: string; icon: LucideIcon }> = [
-  { title: "官方頁面", icon: FileSearch },
-  { title: "學校文件", icon: GraduationCap },
-  { title: "在地指南", icon: Landmark },
-  { title: "LINE 問答", icon: MessageCircle },
+  { title: "本機 recipes 資料夾", icon: FileText },
+  { title: "SQLite 權限與紀錄", icon: ShieldCheck },
+  { title: "Ollama 輔助判斷", icon: ServerCog },
+  { title: "LINE / Web 雙入口", icon: Smartphone },
 ];
 
 const exampleQuestions = [
-  "What should I do after arriving at Taoyuan Airport?",
-  "How do I get from Taoyuan Airport to NTUT?",
-  "What documents should I bring for enrollment?",
-  "Where can I buy a SIM card?",
-  "Do I need ARC?",
-  "What is EasyCard?",
-  "Where is the international office?",
+  "叉燒",
+  "起司蛋糕",
+  "Cheese cake",
+  "我要胡桃塔的 PDF",
+  "有沒有水果三明治的食譜？",
+  "南瓜濃湯無酒版",
+  "檸檬餅乾",
 ];
 
 const proofItems = [
-  "將公開資料與整理過的文件變成知識庫",
-  "用 LINE 作為自然入口",
-  "回答時提供來源依據",
-  "遇到不確定或個人化問題時轉交人工協助",
-  "一人也可以管理大量重複詢問",
+  "通行碼以 bcrypt hash 儲存，前端只拿短期 session token",
+  "每次 PDF 下載前都重新檢查 session、通行碼、到期日與 scope",
+  "一般查詢採 filename-first deterministic search，降低語意搜尋漂移",
+  "LINE 回覆只從授權候選檔案產生下載連結",
+  "網站 `/101recipe` 透過 Vercel API routes proxy 到後端服務",
+  "測試已覆蓋中文、英文、直接食譜名稱與無關結果防漂移情境",
 ];
 
 const revenueItems = [
-  "免費 LINE 問答",
-  "付費抵達台北 checklist",
-  "30 分鐘線上諮詢",
-  "60 分鐘抵達規劃",
-  "學校 / 社團客製 AI 問答 PoC",
+  "課程食譜授權查找",
+  "付費會員資料庫",
+  "LINE 售後支援",
+  "內部文件庫 PoC",
+  "小型教材下載平台",
 ];
 
 function CheckList({ items }: { items: string[] }) {
@@ -110,29 +108,29 @@ function IconCard({ title, icon: Icon }: { title: string; icon: LucideIcon }) {
   );
 }
 
-export default function Taipei101CaseStudyPage() {
+export default function RecipeCaseStudyPage() {
   return (
     <main>
       <section className="bg-slate-50 px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_380px] lg:items-center">
           <div>
             <p className="inline-flex rounded-lg bg-emerald-50 px-4 py-2 text-sm font-black text-emerald-700">
-              微型商業案例 / 開發中 Demo
+              LINE 食譜案例 / 可試用 Demo
             </p>
             <p className="mt-5 text-sm font-black text-slate-500">
-              Taipei101 Chatbot｜台北留學生報到生活 AI 助理
+              101recipe Chatbot｜授權食譜 PDF 查找助理
             </p>
             <h1 className="mt-3 max-w-4xl text-4xl font-black leading-tight tracking-[0] text-slate-950 sm:text-5xl">
-              用 LINE 幫新生快速搞懂台北報到與生活大小事
+              用 LINE 幫授權使用者快速找到正確食譜 PDF
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-9 text-slate-600">
-              Taipei101 Chatbot 是一個以外籍生與交換生為對象的 AI 知識助理 Demo，展示如何將官方資訊、學校文件與在地生活指南整理成可在 LINE 查詢的問答服務。
+              101recipe 是一個以食譜課程與 PDF 資料庫為情境的 LINE AI 助理。使用者先輸入通行碼，再用自然語言或食譜名稱查找檔案；系統只會從授權範圍內回傳可下載的 PDF。
             </p>
             <p className="mt-4 max-w-3xl text-sm font-bold leading-7 text-slate-500">
-              此案例用來展示 LINE101Chat 的導入方式，不是 LINE101Chat 主服務本身。
+              此案例展示 LINE101Chat 如何把本機資料、權限控管、網站 proxy 與 LINE 對話串成可維護的小型知識服務。
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/free-assessment">預約免費評估</ButtonLink>
+              <ButtonLink href="/101recipe">開啟網站版</ButtonLink>
               <ButtonLink href="/case-studies" variant="secondary">
                 回到成功案例
               </ButtonLink>
@@ -146,38 +144,32 @@ export default function Taipei101CaseStudyPage() {
               </div>
               <div>
                 <h2 className="text-lg font-black text-slate-950">LINE Demo Entry</h2>
-                <p className="mt-1 text-sm font-semibold text-slate-600">Taipei student arrival Q&A</p>
+                <p className="mt-1 text-sm font-semibold text-slate-600">101recipe authorized PDF retrieval</p>
               </div>
             </div>
             <div className="mt-5 rounded-lg border border-emerald-100 bg-emerald-50 p-5 text-center">
               <div className="mx-auto w-44 rounded-lg border border-emerald-100 bg-white p-3 shadow-sm">
                 <Image
-                  src={taipei101QrImage}
-                  alt="Taipei101 Chatbot LINE QR Code"
+                  src={recipeQrImage}
+                  alt="101recipe LINE Chatbot QR Code"
                   width={180}
                   height={180}
                   className="h-auto w-full"
                 />
               </div>
-              <p className="mt-4 text-sm font-black text-slate-900">掃描加入 Taipei101 Chatbot</p>
+              <p className="mt-4 text-sm font-black text-slate-900">掃描加入 101recipe LINE Chatbot</p>
               <p className="mt-2 text-xs font-bold leading-6 text-slate-600">
-                LINE ID {taipei101LineId}｜Demo Channel {taipei101LineChannelId}
+                通行碼授權後，才能查找與下載可存取的食譜 PDF。
               </p>
-              <ButtonLink
-                href={taipei101LineAddFriendUrl}
-                variant="line"
-                icon={MessageCircle}
-                external
-                className="mt-4"
-              >
-                加入 LINE 試用
+              <ButtonLink href="/101recipe" variant="line" icon={ChefHat} className="mt-4">
+                開啟網站版
               </ButtonLink>
             </div>
             <div className="mt-5 grid gap-3 rounded-lg bg-emerald-50 p-4">
               <div className="flex gap-3">
                 <SearchCheck className="mt-1 h-5 w-5 shrink-0 text-emerald-700" aria-hidden="true" />
                 <p className="text-sm font-bold leading-7 text-slate-700">
-                  Demo 重點是證明 RAG-enabled LINE AI Knowledge Assistant 可用於真實台北情境。
+                  Demo 重點是證明 LINE AI 助理也能處理「授權檔案查找」這類需要權限邊界的實用流程。
                 </p>
               </div>
             </div>
@@ -187,7 +179,7 @@ export default function Taipei101CaseStudyPage() {
 
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <SectionHeading eyebrow="1. Problem" title="外籍生剛到台北，常常不知道該問誰" />
+          <SectionHeading eyebrow="1. Problem" title="食譜資料越多，越需要可授權的查找入口" />
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-6">
             <CheckList items={problemItems} />
           </div>
@@ -198,8 +190,8 @@ export default function Taipei101CaseStudyPage() {
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="2. Solution"
-            title="把官方資訊與生活指南變成 LINE AI 助理"
-            description="Taipei101 Chatbot 透過 RAG 文件問答方式，讓學生用 LINE 詢問問題。系統會優先從官方頁面與整理過的指南中找資料，再產生簡潔回答。"
+            title="把本機 PDF 索引、通行碼與 LINE 對話接成一個查找助理"
+            description="101recipe 先同步本機 recipes 資料夾，將 PDF 檔名與必要 metadata 建立成可查詢索引。使用者通過 passcode 後，才能查找與下載授權範圍內的檔案。"
           />
           <div className="mt-8 grid gap-5 md:grid-cols-4">
             {solutionCards.map(({ title, icon: Icon }) => (
@@ -213,8 +205,8 @@ export default function Taipei101CaseStudyPage() {
             <PresenterCallout
               imageKey="rag"
               label="Demo Note"
-              title="這不是主服務，而是一個可複製的微型案例"
-              body="Taipei101 Chatbot 用留學生抵達台北的高頻問題，展示 LINE101Chat 如何把資料整理、檢索、回答與人工轉接做成一個可理解的 AI 知識助理流程。"
+              title="這是一個權限控管比聊天更重要的 AI 助理案例"
+              body="101recipe 不讓模型決定誰能下載檔案。AI 可以協助理解問題，但授權、候選檔案與下載連結都由 deterministic backend 檢查，適合教材、內部文件與會員資料庫情境。"
             />
           </div>
         </div>
@@ -223,9 +215,9 @@ export default function Taipei101CaseStudyPage() {
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            eyebrow="3. What it can answer"
-            title="可以先回答哪些主題"
-            description="學生抵達前後最常遇到的問題，可以先被整理成可查詢的主題。"
+            eyebrow="3. What it handles"
+            title="食譜查找助理需要處理的核心模組"
+            description="這個案例把聊天入口、搜尋品質與授權下載拆開處理，避免 AI 回覆越界。"
           />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {answerCards.map((card) => (
@@ -239,8 +231,8 @@ export default function Taipei101CaseStudyPage() {
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="4. Example questions"
-            title="學生可以這樣問"
-            description="外籍生可以用自然英文問題詢問，系統再從文件與指南中找出可回答的內容。"
+            title="使用者可以這樣問"
+            description="系統優先用檔名與食譜概念做穩定比對，避免單靠向量搜尋產生不相關結果。"
           />
           <div className="mt-8 grid gap-3 md:grid-cols-2">
             {exampleQuestions.map((question) => (
@@ -258,7 +250,7 @@ export default function Taipei101CaseStudyPage() {
           <SectionHeading
             eyebrow="5. Why this demonstrates LINE101Chat"
             title="為什麼這能代表 LINE101Chat"
-            description="這個 Demo 展示了 LINE101Chat 的核心能力："
+            description="101recipe 展示的是一個小型但完整的 LINE AI 知識服務流程："
           />
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-6">
             <CheckList items={proofItems} />
@@ -272,7 +264,7 @@ export default function Taipei101CaseStudyPage() {
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {revenueItems.map((item) => (
               <article key={item} className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-                <CreditCard className="h-6 w-6 text-emerald-700" aria-hidden="true" />
+                <ChefHat className="h-6 w-6 text-emerald-700" aria-hidden="true" />
                 <h3 className="mt-4 text-base font-black leading-7 text-slate-950">{item}</h3>
               </article>
             ))}
@@ -287,7 +279,7 @@ export default function Taipei101CaseStudyPage() {
             <div className="flex gap-3">
               <ShieldCheck className="mt-1 h-6 w-6 shrink-0 text-amber-700" aria-hidden="true" />
               <p className="text-sm font-bold leading-7 text-slate-800">
-                Taipei101 Chatbot 不是官方學校或政府服務。簽證、ARC、健保、入學與學籍相關事項，仍應以學校、政府機關與官方公告為準。
+                101recipe 是授權查找與下載流程展示。食譜內容、課程授權、會員資格與實際交付規則，仍應以服務提供者公告與約定為準；網站與 LINE 端不應公開 passcode、LINE credentials 或未授權檔案資訊。
               </p>
             </div>
           </div>
@@ -299,10 +291,10 @@ export default function Taipei101CaseStudyPage() {
           <div>
             <p className="text-sm font-black text-emerald-100">8. CTA</p>
             <h2 className="text-3xl font-black leading-tight tracking-[0]">
-              想為你的學校、社群或公司建立類似的 AI 知識助理？
+              想把你的教材、會員資料或內部文件變成 LINE 授權查找助理？
             </h2>
             <p className="mt-3 max-w-3xl text-base leading-8 text-emerald-50">
-              從一組常見問題與 20-40 頁正式文件開始，就能判斷 LINE AI 知識助理是否值得進入 PoC。
+              從一組檔案、明確的使用者權限與 30-50 個真實查詢開始，就能評估 LINE AI 查找助理是否適合你的服務。
             </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row md:shrink-0">

@@ -47,29 +47,29 @@ On-screen text:
 - LINE 自動客服
 - 已整理資料先回答
 
-## 3. Taipei101 Upcoming Chatbot Concept
+## 3. 101recipe Authorized Recipe Chatbot Demo
 
 Length: 90 seconds-2 minutes  
 Visual reference: `/public/presenter/6.png`
 
-Purpose: Present as upcoming or under development if no live link exists.
+Purpose: Present recipe PDF retrieval as a practical LINE AI assistant with clear authorization boundaries.
 
 Structure:
-1. Opening:「這是一個觀光旅遊 LINE chatbot 概念示範，適合景點、旅遊服務與地方商圈。」
-2. Clear disclaimer:「以下為 demo concept，不代表已上線商用案例。」
+1. Opening:「這是一個 101recipe 食譜 PDF 查找 demo，示範 LINE 如何變成授權文件入口。」
+2. Clear disclaimer:「只有通行碼授權範圍內的檔案才會被查找與下載。」
 3. Show user questions:
-   -「怎麼到？」
-   -「營業時間？」
-   -「附近有什麼推薦？」
-   -「下雨天適合怎麼安排？」
-4. Explain value:「旅客不想下載新 app，他們只想在熟悉的 LINE 裡快速找到答案。」
-5. Tie back:「LINE101Chat 可協助把旅遊 FAQ、交通資訊、票券說明整理成台灣在地 LINE AI 知識助理。」
-6. Close CTA:「觀光或服務業想做 demo，可從一份 FAQ 開始：line101chat.com」
+   -「叉燒」
+   -「胡桃塔 PDF」
+   -「Cheese cake」
+   -「南瓜濃湯無酒版」
+4. Explain value:「使用者不用翻資料夾，只要在 LINE 裡用食譜名稱、食材或日期查找。」
+5. Tie back:「LINE101Chat 可協助把教材、會員資料或內部文件整理成台灣在地 LINE AI 知識助理。」
+6. Close CTA:「想做授權文件查找 demo，可從一組 PDF 和一個通行碼流程開始：line101chat.com」
 
 On-screen text:
-- Upcoming demo concept
-- 觀光旅遊 LINE 問答
-- 不需下載新 app
+- Authorized recipe retrieval
+- 食譜 PDF 查找
+- 通行碼權限控管
 
 ## 4. SOP And Internal Knowledge Demo
 

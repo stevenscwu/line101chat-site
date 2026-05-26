@@ -66,15 +66,15 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
           note: "Use this account for LINE101Chat service inquiries.",
         },
         {
-          title: "Taipei101 Chatbot",
-          badge: "Under development",
+          title: "101recipe Chatbot",
+          badge: "Recipe demo",
           description:
-            "An upcoming local-service demo for international students arriving in Taipei, showing tourism and service Q&A possibilities.",
-          qrImage: "/taipei101-chatbot-qr.png",
-          qrAlt: "Taipei101 Chatbot QR Code",
-          href: "/case-studies/taipei101",
+            "A passcode-gated LINE and web demo for retrieving authorized recipe PDFs from a local recipe index.",
+          qrImage: "/101recipe-chatbot-qr.png",
+          qrAlt: "101recipe Chatbot QR Code",
+          href: "/case-studies/101recipe",
           actionLabel: "View case",
-          note: "Development demo; official travel, school, or government details should be checked with official sources.",
+          note: "Demo account for authorized recipe retrieval; file access still depends on passcode scope.",
           localized: false,
         },
       ]
@@ -102,15 +102,15 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
           note: "服務詢問請使用此商務帳號，避免與案例 Demo 帳號混用。",
         },
         {
-          title: "Taipei101 Chatbot",
-          badge: "開發中案例",
+          title: "101recipe Chatbot",
+          badge: "食譜案例",
           description:
-            "以台北外籍生與旅遊服務問題為情境，展示觀光旅遊、報到生活與在地服務如何延伸成 LINE AI 助理。",
-          qrImage: "/taipei101-chatbot-qr.png",
-          qrAlt: "Taipei101 Chatbot LINE QR Code",
-          href: "/case-studies/taipei101",
-          actionLabel: "查看開發中案例",
-          note: "開發中 Demo；簽證、學籍、政府或旅遊規定仍需回到官方資訊確認。",
+            "以食譜課程與 PDF 資料庫為情境，展示通行碼授權、本機索引與 LINE / Web 雙入口如何做成查找助理。",
+          qrImage: "/101recipe-chatbot-qr.png",
+          qrAlt: "101recipe Chatbot LINE QR Code",
+          href: "/case-studies/101recipe",
+          actionLabel: "查看食譜案例",
+          note: "授權查找 Demo；可下載檔案仍依通行碼範圍與服務約定為準。",
           localized: false,
         },
       ];
@@ -182,7 +182,7 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
             description={
               isEnglish
                 ? "Use existing demos and business inquiry flows to evaluate whether a small PoC makes sense for your organization."
-                : "從 iFIRST 文件問答、LINE101Chat 商務詢問到 Taipei101 開發中案例，先用具體情境理解文件如何變成 LINE 裡的即時回答。"
+                : "從 iFIRST 文件問答、LINE101Chat 商務詢問到 101recipe 食譜案例，先用具體情境理解文件如何變成 LINE 裡的即時回答。"
             }
           />
           <div className="mt-8 grid gap-5 lg:grid-cols-3">

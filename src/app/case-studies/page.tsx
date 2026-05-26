@@ -20,12 +20,12 @@ export const metadata: Metadata = {
 export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) {
   const content = getSiteContent(locale);
   const caseStudies = content.pages.caseStudies;
-  const taipei101Demo = {
-    title: "Taipei101 Chatbot｜台北留學生報到生活 AI 助理",
+  const recipeDemo = {
+    title: "101recipe Chatbot｜授權食譜 PDF 查找助理",
     description:
-      "一個以台北外籍生與交換生為對象的 LINE AI 知識助理 Demo，展示如何用 RAG 將官方資訊與生活指南轉成可查詢服務。",
-    features: ["外籍生抵達台北問答", "官方資訊與生活指南檢索", "LINE AI 知識助理案例", "可轉交人工協助"],
-    badge: "開發中案例",
+      "一個以食譜課程與 PDF 資料庫為情境的 LINE AI 助理，展示如何用通行碼、權限控管與本機索引回傳授權檔案。",
+    features: ["食譜 PDF 查找", "通行碼授權", "本機檔名索引", "LINE / Web 雙入口"],
+    badge: "可試用案例",
     icon: MessageCircle,
   };
 
@@ -50,8 +50,8 @@ export function CaseStudiesContent({ locale = "zh" }: { locale?: Locale } = {}) 
               ))}
               {locale === "zh" ? (
                 <DemoCard
-                  {...taipei101Demo}
-                  actionHref="/case-studies/taipei101"
+                  {...recipeDemo}
+                  actionHref="/case-studies/101recipe"
                   actionLabel="查看案例"
                 />
               ) : null}

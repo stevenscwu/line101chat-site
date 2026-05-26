@@ -20,7 +20,7 @@ Use the presenter/avatar assets in `/public/presenter` as recurring brand anchor
 14. QR code placeholder card labeled「掃描測試 LINE chatbot demo」.
 15. iFIRST chatbot demo thumbnail with presenter and simple question examples.
 16. Business chatbot demo thumbnail:「客服 FAQ 先自動回答」.
-17. Taipei101 upcoming concept thumbnail labeled「Upcoming demo concept」.
+17. 101recipe authorized retrieval thumbnail labeled「Recipe PDF demo」.
 18. Document upload/evaluation visual: FAQ, PDF, SOP icons leading to LINE.
 19. Before/after carousel: before「一直重複回答」after「LINE 中即時查詢」.
 20. Weekly content cover graphic featuring `/public/presenter/8.png` and CTA:「準備一份文件，先做 demo」.
