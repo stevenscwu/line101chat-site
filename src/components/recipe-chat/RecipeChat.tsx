@@ -51,6 +51,19 @@ function createId(prefix: string) {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
+function normalizeFileName(value: string) {
+  return value.trim().toLocaleLowerCase("zh-TW");
+}
+
+function candidateToFile(candidate: RecipeCandidate): RecipeFile {
+  return {
+    id: candidate.id,
+    name: candidate.name,
+    mimeType: "application/pdf",
+    score: candidate.score,
+  };
+}
+
 export function RecipeChat() {
   const [token, setToken] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
@@ -59,6 +72,7 @@ export function RecipeChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isAsking, setIsAsking] = useState(false);
+  const [openingFileId, setOpeningFileId] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -123,6 +137,24 @@ export function RecipeChat() {
     const message = messageText.trim();
     if (!message || !token || isAsking) return;
 
+    const selectedCandidate = findCandidateByName(message);
+    if (selectedCandidate) {
+      const selectedFile = candidateToFile(selectedCandidate);
+      setMessages((current) => [
+        ...current,
+        { id: createId("user"), role: "user", text: message },
+        {
+          id: createId("assistant"),
+          role: "assistant",
+          text: "我幫你開啟這份 PDF。之後看到相近結果時，也可以直接點選檔名。",
+          file: selectedFile,
+        },
+      ]);
+      setDraft("");
+      await openPdf(selectedFile);
+      return;
+    }
+
     setMessages((current) => [...current, { id: createId("user"), role: "user", text: message }]);
     setDraft("");
     setIsAsking(true);
@@ -167,22 +199,47 @@ export function RecipeChat() {
     }
   }
 
-  async function openPdf(file: RecipeFile) {
-    if (!token) return;
-    const response = await fetch(`/api/101recipe/file/${encodeURIComponent(file.id)}`, {
-      headers: { authorization: `Bearer ${token}` },
-    });
-    if (!response.ok) {
-      setMessages((current) => [
-        ...current,
-        { id: createId("error"), role: "assistant", text: "無法開啟這份 PDF，請重新登入後再試。", isError: true },
-      ]);
-      return;
+  async function openPdf(file: Pick<RecipeFile, "id" | "name">) {
+    if (!token || openingFileId) return;
+    const pdfWindow = window.open("about:blank", "_blank");
+    if (pdfWindow) {
+      pdfWindow.opener = null;
+      pdfWindow.document.title = file.name;
+      pdfWindow.document.body.textContent = "Loading PDF...";
     }
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-    window.open(url, "_blank", "noopener,noreferrer");
-    window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    setOpeningFileId(file.id);
+    try {
+      const response = await fetch(`/api/101recipe/file/${encodeURIComponent(file.id)}`, {
+        headers: { authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) {
+        pdfWindow?.close();
+        setMessages((current) => [
+          ...current,
+          { id: createId("error"), role: "assistant", text: "無法開啟這份 PDF，請重新登入後再試。", isError: true },
+        ]);
+        return;
+      }
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      if (pdfWindow) {
+        pdfWindow.location.href = url;
+      } else {
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } finally {
+      setOpeningFileId("");
+    }
+  }
+
+  function findCandidateByName(fileName: string) {
+    const normalized = normalizeFileName(fileName);
+    for (let index = messages.length - 1; index >= 0; index -= 1) {
+      const match = messages[index].candidates?.find((candidate) => normalizeFileName(candidate.name) === normalized);
+      if (match) return match;
+    }
+    return undefined;
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -306,19 +363,42 @@ export function RecipeChat() {
                               <button
                                 type="button"
                                 onClick={() => openPdf(message.file!)}
-                                className="mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 py-3 text-sm font-black text-white hover:bg-slate-800"
+                                disabled={openingFileId === message.file.id}
+                                className="mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 py-3 text-sm font-black text-white hover:bg-slate-800 disabled:cursor-wait disabled:bg-slate-500"
                               >
-                                <FileText className="h-4 w-4" aria-hidden="true" />
-                                開啟 PDF
+                                {openingFileId === message.file.id ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                                ) : (
+                                  <FileText className="h-4 w-4" aria-hidden="true" />
+                                )}
+                                {openingFileId === message.file.id ? "開啟中" : "開啟 PDF"}
                               </button>
                             ) : null}
                             {message.candidates?.length && !message.file ? (
-                              <div className="mt-4 grid gap-2 border-t border-slate-200 pt-4">
+                              <div className="mt-4 grid gap-3 border-t border-slate-200 pt-4">
+                                <p className="text-xs font-black text-slate-500">請直接點選要開啟的 PDF：</p>
                                 {message.candidates.slice(0, 5).map((candidate) => (
-                                  <div key={candidate.id} className="rounded-lg bg-slate-50 px-3 py-2 text-sm font-bold text-slate-700">
-                                    {candidate.name}
-                                  </div>
+                                  <button
+                                    key={candidate.id}
+                                    type="button"
+                                    onClick={() => openPdf(candidateToFile(candidate))}
+                                    disabled={Boolean(openingFileId)}
+                                    className="group grid min-h-14 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-left text-sm font-black text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-900 disabled:cursor-wait disabled:opacity-70"
+                                  >
+                                    <span className="min-w-0 break-all leading-6">{candidate.name}</span>
+                                    <span className="inline-flex min-h-9 shrink-0 items-center justify-center gap-1.5 rounded-lg bg-white px-3 py-2 text-xs font-black text-emerald-700 shadow-sm group-hover:bg-emerald-600 group-hover:text-white">
+                                      {openingFileId === candidate.id ? (
+                                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                                      ) : (
+                                        <Download className="h-4 w-4" aria-hidden="true" />
+                                      )}
+                                      {openingFileId === candidate.id ? "開啟中" : "開啟"}
+                                    </span>
+                                  </button>
                                 ))}
+                                <p className="text-xs font-semibold leading-6 text-slate-500">
+                                  也可以補充食材、日期或完整檔名；若輸入上方完整檔名，系統會直接開啟該 PDF。
+                                </p>
                               </div>
                             ) : null}
                           </article>
