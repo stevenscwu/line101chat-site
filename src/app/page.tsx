@@ -13,6 +13,7 @@ import type { LucideIcon } from "lucide-react";
 
 import { BenefitCard, ServiceCard } from "@/components/cards";
 import { HeroSection } from "@/components/hero-section";
+import { HowItWorksSection } from "@/components/how-it-works-section";
 import { PresenterCTA } from "@/components/presenter";
 import { ProcessSteps } from "@/components/process-steps";
 import { SectionHeading } from "@/components/section-heading";
@@ -305,6 +306,8 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
           </div>
         </div>
       </section>
+
+      <HowItWorksSection locale={locale} />
 
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">

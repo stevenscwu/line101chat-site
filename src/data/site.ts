@@ -580,6 +580,49 @@ export const siteContent = {
               "企業 AI 知識助理的價值不只在會回答，而是在能否回答得準、能否追溯來源、能否保護資料邊界，並被團隊長期維護。",
           },
         },
+        howItWorks: {
+          eyebrow: "技術流程",
+          title: "AI 知識助理是怎麼建立的？",
+          description:
+            "不是把文件丟給 AI 就結束，而是把資料整理、搜尋、回答、權限與維護流程設計成一套可長期使用的系統。",
+          diagramHeading: "從文件到 LINE 回答的流程",
+          diagramLabels: ["文件 / FAQ / SOP", "資料整理", "AI 知識庫", "LINE 提問", "根據來源回答", "持續維護"],
+          steps: [
+            {
+              title: "整理文件",
+              description:
+                "先盤點 FAQ、PDF、SOP、表單、網頁或內部知識，確認哪些內容適合讓 AI 助理回答，哪些內容需要保留人工判斷。",
+            },
+            {
+              title: "建立知識庫",
+              description: "將文件切分成可搜尋的段落並建立索引，讓系統能快速找到和問題最相關的內容。",
+              tag: "RAG / 向量搜尋",
+            },
+            {
+              title: "接上 LINE 入口",
+              description: "使用者不需要學新系統，直接在 LINE 提問；後端再根據問題搜尋知識庫並整理回答。",
+            },
+            {
+              title: "根據來源回答",
+              description: "回答會優先依據整理過的文件內容，並保留來源線索，方便日後追查、修正與更新。",
+            },
+            {
+              title: "權限與資料邊界",
+              description: "依文件敏感度規劃雲端、本地端或私有化部署，也可以設計 passcode、角色或資料範圍控管。",
+            },
+            {
+              title: "測試、修正與維護",
+              description: "用真實問題測試回答品質，持續補文件、修正答案與更新知識庫，讓 AI 助理逐步變得更實用。",
+            },
+          ],
+          trustNote:
+            "重點不是讓 AI 自由發揮，而是讓 AI 在指定文件與權限範圍內回答。這樣才能兼顧速度、可追溯性與資料安全。",
+          ctaTitle: "想知道自己的文件適不適合做成 LINE AI 助理？",
+          ctaDescription:
+            "先從一份最常被查詢的 FAQ、PDF 或 SOP 開始，確認回答品質與實際使用情境後再擴大。",
+          ctaButton: "用一份文件試做 Demo",
+          ctaHref: "/free-assessment",
+        },
         cta: {
           title: "準備一份 FAQ、PDF 或 SOP，先做 Demo 評估",
           body: "不用一開始就導入大型系統。先提供一份常被查詢的文件和幾個真實問題，我們會協助判斷是否適合做 LINE AI 知識助理小型 PoC。",
@@ -1470,6 +1513,60 @@ export const siteContent = {
             description:
               "The value of an enterprise AI assistant is not just conversation. It must answer accurately, cite sources, protect data boundaries, and be maintained by the team over time.",
           },
+        },
+        howItWorks: {
+          eyebrow: "Technical Process",
+          title: "How is the LINE AI knowledge assistant built?",
+          description:
+            "It is not just uploading documents to AI. We organize documents, retrieval, answer generation, access control, and maintenance into a practical workflow.",
+          diagramHeading: "From documents to LINE answers",
+          diagramLabels: [
+            "Documents / FAQ / SOP",
+            "Data preparation",
+            "AI knowledge base",
+            "LINE question",
+            "Source-grounded answer",
+            "Continuous maintenance",
+          ],
+          steps: [
+            {
+              title: "Organize Documents",
+              description:
+                "We review FAQs, PDFs, SOPs, forms, web pages, or internal knowledge and decide what the assistant can answer and what should stay with humans.",
+            },
+            {
+              title: "Build the Knowledge Base",
+              description: "Documents are split into searchable sections and indexed so the system can find relevant content quickly.",
+              tag: "RAG / vector search",
+            },
+            {
+              title: "Connect LINE",
+              description:
+                "Users ask in familiar LINE chats. The backend searches the knowledge base and prepares an answer based on the question.",
+            },
+            {
+              title: "Answer From Sources",
+              description:
+                "Answers are grounded in prepared documents and keep source clues so teams can trace, correct, and update content.",
+            },
+            {
+              title: "Define Access Boundaries",
+              description:
+                "Cloud, local, or private deployment can be planned by data sensitivity, with passcodes, roles, or document scopes where needed.",
+            },
+            {
+              title: "Test and Maintain",
+              description:
+                "Real questions are used to test answer quality, add missing documents, correct answers, and keep the knowledge base useful.",
+            },
+          ],
+          trustNote:
+            "The goal is not to let AI answer freely, but to let it answer within approved documents and access boundaries.",
+          ctaTitle: "Want to know whether your documents fit a LINE AI assistant?",
+          ctaDescription:
+            "Start with the FAQ, PDF, or SOP your team searches most often, then expand after answer quality and real use cases are clear.",
+          ctaButton: "Try a Demo With One Document",
+          ctaHref: "/free-assessment",
         },
         cta: {
           title: "Want to know whether your documents are suitable for an AI knowledge assistant?",
