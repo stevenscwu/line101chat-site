@@ -175,6 +175,47 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
     <main>
       <HeroSection locale={locale} />
 
+      <section className="bg-slate-950 px-5 py-16 text-white sm:px-8 lg:px-10">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.08em] text-emerald-300">
+              {isEnglish ? "9-Second LINE AI Demo" : "9 秒 LINE AI 知識助理短片"}
+            </p>
+            <h2 className="mt-4 text-3xl font-black leading-tight tracking-[0] sm:text-4xl">
+              {isEnglish ? "Stop answering the same LINE questions by hand" : "別再手動回答一樣的 LINE 問題"}
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
+              {isEnglish
+                ? "Turn your FAQs, PDFs, SOPs, and website content into a LINE AI assistant that answers repeated customer questions automatically."
+                : "把 FAQ、PDF、SOP 和網站資料交給 LINE101Chat。客戶一問，AI 就能根據你的知識內容直接回答。"}
+            </p>
+            <Link
+              href={localizePath("/book-demo", locale)}
+              className="mt-7 inline-flex min-h-11 items-center justify-center rounded-lg bg-[#06c755] px-5 py-3 text-sm font-black text-slate-950 shadow-sm hover:bg-[#40d878]"
+            >
+              {isEnglish ? "Discuss your AI assistant" : "預約討論 AI 助理"}
+            </Link>
+          </div>
+
+          <div className="mx-auto w-full max-w-[390px] overflow-hidden rounded-[2rem] border border-white/15 bg-black shadow-[0_26px_80px_rgba(0,0,0,0.38)]">
+            <video
+              className="aspect-[9/16] h-auto w-full bg-black object-cover"
+              controls
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster="/videos/line101chat-hook-promo-9s-poster.png"
+              aria-label={isEnglish ? "LINE101Chat promotional video" : "LINE101Chat LINE AI 知識助理宣傳短片"}
+            >
+              <source src="/videos/line101chat-hook-promo-9s.mp4" type="video/mp4" />
+              {isEnglish ? "Your browser does not support HTML video." : "您的瀏覽器不支援影片播放。"}
+            </video>
+          </div>
+        </div>
+      </section>
+
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
