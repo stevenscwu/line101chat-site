@@ -17,6 +17,7 @@ import { HowItWorksSection } from "@/components/how-it-works-section";
 import { PresenterCTA } from "@/components/presenter";
 import { ProcessSteps } from "@/components/process-steps";
 import { SectionHeading } from "@/components/section-heading";
+import { ViewportPromoVideo } from "@/components/ViewportPromoVideo";
 import { getSiteContent, localizePath } from "@/data/site";
 import type { Locale } from "@/data/site";
 
@@ -197,22 +198,11 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
             </Link>
           </div>
 
-          <div className="mx-auto w-full max-w-[390px] overflow-hidden rounded-[2rem] border border-white/15 bg-black shadow-[0_26px_80px_rgba(0,0,0,0.38)]">
-            <video
-              className="aspect-[9/16] h-auto w-full bg-black object-cover"
-              controls
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster="/videos/line101chat-hook-promo-9s-poster.png"
-              aria-label={isEnglish ? "LINE101Chat promotional video" : "LINE101Chat LINE AI 知識助理宣傳短片"}
-            >
-              <source src="/videos/line101chat-hook-promo-9s.mp4" type="video/mp4" />
-              {isEnglish ? "Your browser does not support HTML video." : "您的瀏覽器不支援影片播放。"}
-            </video>
-          </div>
+          <ViewportPromoVideo
+            src="/videos/line101chat-hook-promo-9s.mp4"
+            poster="/videos/line101chat-hook-promo-9s-poster.png"
+            ariaLabel={isEnglish ? "LINE101Chat promotional video" : "LINE101Chat LINE AI 知識助理宣傳短片"}
+          />
         </div>
       </section>
 
