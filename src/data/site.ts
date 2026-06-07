@@ -182,10 +182,10 @@ export const securityPrinciples = [
 
 export const packages = [
   {
-    title: "AI Assistant Starter PoC",
-    price: "NT$50,000-100,000",
-    description: "用一個明確場景驗證 LINE 查詢體驗、文件品質、問答準確度與資料邊界。",
-    items: ["2-3 週", "1 個服務場景", "20-40 頁乾淨文件", "LINE 或網站介面", "基礎準確度檢查"],
+    title: "LINE Enrollment FAQ Pilot",
+    price: "NT$38,000",
+    description: "用一個招生、報名或課程 FAQ 場景驗證 LINE 查詢體驗、文件品質、回答邊界與真人分流。",
+    items: ["7-10 個工作天", "1 個教育服務場景", "20-30 頁乾淨文件", "30 題測試問題", "轉真人流程"],
     highlighted: true,
   },
   {
@@ -212,20 +212,20 @@ export const pricingPlans = [
     includes: ["30 分鐘諮詢", "使用場景討論", "文件準備建議", "粗略導入評估"],
   },
   {
-    name: "AI Assistant Starter PoC",
-    price: "NT$50,000-100,000",
-    summary: "用最小範圍驗證 LINE AI 助理是否真的能降低重複問答與文件查找成本。",
-    timeline: "2-3 週",
-    bestFor: "第一次導入 AI 知識助理的中小企業",
+    name: "LINE Enrollment FAQ Pilot",
+    price: "NT$38,000",
+    summary: "用最小範圍驗證 LINE AI 助理是否真的能降低招生、報名與課程 FAQ 的重複回答工作。",
+    timeline: "7-10 個工作天",
+    bestFor: "已經用 LINE 回覆招生、報名或課程問題的教育團隊",
     highlighted: true,
     includes: [
-      "1 個 AI 助理使用場景",
-      "20-40 頁乾淨文件",
-      "最多 50 個測試問題",
+      "1 個招生、報名或課程 FAQ 使用場景",
+      "20-30 頁乾淨文件",
+      "30 個測試問題",
       "基礎 AI 知識庫與索引",
       "LINE 或網站聊天介面",
       "來源引用",
-      "基礎準確度檢查",
+      "基礎準確度檢查與轉真人流程",
     ],
   },
   {
@@ -298,9 +298,9 @@ export const smeRolloutSchedule = [
   },
   {
     phase: "Phase 1",
-    title: "AI Assistant Starter PoC",
-    duration: "2-3 週",
-    detail: "以 20-40 頁文件與 30-50 個真實問題驗證回答品質、來源引用、資料邊界與 LINE / Web 體驗。",
+    title: "LINE Enrollment FAQ Pilot",
+    duration: "7-10 個工作天",
+    detail: "以 20-30 頁招生或課程文件與 30 個真實問題驗證回答品質、來源引用、資料邊界與 LINE / Web 體驗。",
   },
   {
     phase: "Phase 2",
@@ -340,12 +340,12 @@ export const faqItems = [
   {
     question: "客戶需要準備什麼文件？",
     answer:
-      "建議先準備最新、正式、可選取文字的 FAQ、SOP、規章、招生資訊或產品文件。PoC 階段以 20-40 頁乾淨資料與 30-50 個真實問題最容易驗證成效。",
+      "建議先準備最新、正式、可選取文字的 FAQ、SOP、招生資訊或課程文件。教育情境 Pilot 以 20-30 頁乾淨資料與 30 個真實問題最容易驗證成效。",
   },
   {
     question: "PoC 通常需要多久？",
     answer:
-      "若文件清楚、範圍明確，AI Assistant Starter PoC 通常 2-3 週可完成第一版。正式雲端導入多為 4-6 週；本地端或私有雲因硬體、權限與資安流程，通常需 6-10 週以上。",
+      "若文件清楚、範圍明確，LINE Enrollment FAQ Pilot 通常 7-10 個工作天可完成第一版。正式雲端導入多為 4-6 週；本地端或私有雲因硬體、權限與資安流程，通常需 6-10 週以上。",
   },
   {
     question: "可以取代員工嗎？",
@@ -365,7 +365,7 @@ export const faqItems = [
   {
     question: "價格怎麼計算？",
     answer:
-      "主要依文件量、使用場景數、LINE 或 Web 整合、部署位置、使用量紀錄、權限控管與維護頻率計算。台灣中小企業建議先從免費評估或 NT$50,000-100,000 的 Starter PoC 開始。",
+      "主要依文件量、使用場景數、LINE 或 Web 整合、部署位置、使用量紀錄、權限控管與維護頻率計算。第一批教育情境建議先從免費評估或 NT$38,000 的 LINE Enrollment FAQ Pilot 開始。",
   },
   {
     question: "為什麼強調北科大工程背景？",
@@ -791,7 +791,7 @@ export const siteContent = {
         cards: [
           ["這個 Demo 證明什麼", "正式文件可以被整理成可查詢、可引用來源、可在 LINE 使用的 AI 知識助理。"],
           ["可以複製到哪裡", "招生 FAQ、SOP 查詢、產品手冊、內部制度、表單流程、客服知識庫與教育行政問答。"],
-          ["下一步怎麼開始", "先用 20-30 頁正式文件與 30-50 個常見問題做免費評估，再決定是否進入 Starter PoC。"],
+          ["下一步怎麼開始", "先用 20-30 頁招生或課程文件與 30 個常見問題做免費評估，再決定是否進入 LINE Enrollment FAQ Pilot。"],
         ],
         secondaryNote: "本 Demo 僅供技術展示與商業案例說明，正式學校規定仍以官方公告與辦公室回覆為準。",
         cta: {
@@ -857,7 +857,7 @@ export const siteContent = {
         ],
         pricingNote: {
           title: "如果評估後適合，再進入 PoC",
-          body: "Starter PoC 通常從 NT$50,000-100,000 起，依文件數量、是否需要 LINE 串接、是否需要本地端部署而調整。正式導入與維護費用會在需求評估後再報價。",
+          body: "第一批教育情境 Pilot 試行價為 NT$38,000，適合用 20-30 頁招生或課程文件與 30 個真實問題先驗證。正式導入與維護費用會在需求評估後再報價。",
         },
       },
       contact: {
