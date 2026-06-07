@@ -17,17 +17,17 @@ export function Footer() {
           { label: "Free Assessment", href: "/free-assessment" },
           { label: "Document checklist", href: "/document-readiness-checklist" },
           { label: "Demo", href: "/case-studies" },
+          { label: "Pricing", href: "/pricing" },
           { label: "Privacy policy", href: "/privacy" },
           { label: "Contact", href: "/contact" },
-          { label: "PoC cost notes", href: "/free-assessment#poc-pricing", muted: true },
         ]
       : [
           { label: "免費評估", href: "/free-assessment" },
           { label: "文件準備檢查表", href: "/document-readiness-checklist" },
           { label: "Demo", href: "/case-studies" },
+          { label: "費用", href: "/pricing" },
           { label: "隱私政策", href: "/privacy" },
           { label: "聯絡我們", href: "/contact" },
-          { label: "PoC 費用說明", href: "/free-assessment#poc-pricing", muted: true },
         ];
 
   return (
@@ -80,7 +80,7 @@ export function Footer() {
                 <Link
                   key={`${item.href}-${item.label}`}
                   href={localizePath(item.href, locale)}
-                  className={`text-sm hover:text-white ${item.muted ? "text-slate-500" : "text-slate-300"}`}
+                  className="text-sm text-slate-300 hover:text-white"
                 >
                   {item.label}
                 </Link>

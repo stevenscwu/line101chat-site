@@ -9,6 +9,7 @@ const routes = [
   "/rag-chatbot",
   "/case-studies",
   "/case-studies/ntut-ifirst-rag",
+  "/pricing",
   "/free-assessment",
   "/book-demo",
   "/document-readiness-checklist",
@@ -20,7 +21,7 @@ const routes = [
   "/privacy",
 ];
 
-const zhOnlyRoutes = ["/case-studies/101recipe"];
+const zhOnlyRoutes = ["/ai-knowledge-assistant", "/case-studies/101recipe"];
 const paymentRoutes = ["/translation-service"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
