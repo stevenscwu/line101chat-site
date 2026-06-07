@@ -18,6 +18,7 @@ export function Footer() {
           { label: "Document checklist", href: "/document-readiness-checklist" },
           { label: "Demo", href: "/case-studies" },
           { label: "Pricing", href: "/pricing" },
+          { label: "Legal documents", href: "/legal" },
           { label: "Privacy policy", href: "/privacy" },
           { label: "Contact", href: "/contact" },
         ]
@@ -26,6 +27,7 @@ export function Footer() {
           { label: "文件準備檢查表", href: "/document-readiness-checklist" },
           { label: "Demo", href: "/case-studies" },
           { label: "費用", href: "/pricing" },
+          { label: "客戶法律文件", href: "/legal" },
           { label: "隱私政策", href: "/privacy" },
           { label: "聯絡我們", href: "/contact" },
         ];
