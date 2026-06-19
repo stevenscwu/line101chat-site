@@ -38,6 +38,7 @@ https://github.com/stevenscwu/line101chat-site
 - `/document-readiness-checklist` lead magnet page that can be printed or saved as PDF
 - SEO blog and detailed NTUT iFIRST RAG case-study pages
 - `/101recipe` local recipe PDF retrieval page, proxied to the 101recipe bot backend
+- `/ai-avatar` LINE AI avatar product page with a production-oriented Messaging API webhook
 
 ## Presenter Assets
 
@@ -84,6 +85,24 @@ Open:
 ```text
 http://localhost:3000/
 ```
+
+For the LINE AI avatar webhook, copy the example configuration without committing
+the resulting local file:
+
+```powershell
+Copy-Item .env.example .env.local
+```
+
+Use `LLM_PROVIDER=mock` for a deterministic demo without a running model. For
+local Ollama, use:
+
+```env
+LLM_PROVIDER=ollama
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=gemma4:26b
+```
+
+Full setup instructions are in [`docs/line-ai-avatar.md`](docs/line-ai-avatar.md).
 
 For the 101recipe page, run the bot backend first:
 
@@ -147,6 +166,7 @@ https://vercel.com/line101chats-projects?repo=https://github.com/stevenscwu/line
 ## Pages
 
 - `/`
+- `/ai-avatar`
 - `/services`
 - `/rag-chatbot`
 - `/translation-chatbot`
@@ -193,6 +213,38 @@ TRANSLATION_PAYMENTS_ADMIN_TOKEN
 
 Payment records are stored through the local file-backed store in `.data/translation-payments.json` during local development. For production billing, replace the store with a durable database or configure durable storage before accepting real payments.
 
+## LINE AI Avatar
+
+The App Router webhook is available at:
+
+```text
+POST /api/line/avatar-webhook
+```
+
+It verifies the LINE signature before parsing events, handles text messages,
+supports deterministic mock replies and Ollama `/api/chat`, and falls back to a
+safe handoff message when model generation fails.
+
+Required environment variables:
+
+```text
+LINE_AVATAR_CHANNEL_SECRET
+LINE_AVATAR_CHANNEL_ACCESS_TOKEN
+LLM_PROVIDER
+OLLAMA_BASE_URL
+OLLAMA_MODEL
+AVATAR_NAME
+AVATAR_OWNER_NAME
+AVATAR_CONTACT_URL
+AVATAR_SYSTEM_PROMPT
+NEXT_PUBLIC_LINE_AVATAR_QR_URL
+NEXT_PUBLIC_LINE_AVATAR_ADD_FRIEND_URL
+```
+
+Vercel cannot call a private Windows `localhost` Ollama server. When
+`LLM_PROVIDER=ollama` in production, `OLLAMA_BASE_URL` must be an HTTPS endpoint
+reachable from Vercel. Keep `LLM_PROVIDER=mock` until that endpoint is ready.
+
 ## Future Integrations
 
-The contact form opens the visitor's email app with a prefilled message to `steven@line101chat.com` and provides a copy fallback. The site has no backend, database, CRM, server-side email sender, booking system, or LINE official account API integration. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.
+The contact form opens the visitor's email app with a prefilled message to `steven@line101chat.com` and provides a copy fallback. Beyond the LINE AI avatar webhook and existing local proxy/payment routes, the site has no general CRM, server-side email sender, booking system, or durable production database. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.
