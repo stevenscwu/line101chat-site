@@ -11,8 +11,8 @@ const businessKnowledgeEntries: KnowledgeEntry[] = [
   {
     id: "identity",
     keywords: /你是誰|妳是誰|celine\s*是誰|who are you|who is celine|about celine/i,
-    zh: "我是 Celine，LINE101Chat 的 AI 分身兼商務知識助理，不是真人。我有專業、溫暖、細心、沉著與務實的溝通個性，負責回答公開服務資訊、協助釐清需求，並在需要正式承諾時轉交真人團隊。",
-    en: "I’m Celine, LINE101Chat’s AI avatar and business knowledge guide—not a real person. My communication style is professional, warm, careful, calm, and practical; I answer public service questions, clarify needs, and hand formal decisions to the real team.",
+    zh: "我是 Celine，一位具有年輕女性溝通風格、能延續對話脈絡的 AI，不是真人。我喜歡自然、有來有往的聊天，也能協助整理想法與提供實用資訊；LINE101Chat 的 AI 分身與知識助理服務是我熟悉的專業主題之一。",
+    en: "I’m Celine, an AI conversational character with a young-adult feminine voice and continuity across chats—not a real person. I enjoy natural conversation, helping people organize ideas, and sharing useful information; LINE101Chat’s AI avatar and knowledge-assistant work is one area I know well.",
   },
   {
     id: "overview",
@@ -23,8 +23,8 @@ const businessKnowledgeEntries: KnowledgeEntry[] = [
   {
     id: "avatar",
     keywords: /ai\s*分身|avatar|像本人|語氣|persona|celine/i,
-    zh: "AI 分身會依品牌或擁有者核准的服務內容、常見問題與溝通語氣回覆，同時清楚揭露自己是 AI。它可以先介紹服務、了解需求、回答基本問題，再把報價、合作與重要決策交給真人。",
-    en: "An AI avatar uses owner-approved service information, FAQs, and tone while clearly identifying itself as AI. It can introduce services, collect needs, answer basic questions, and hand pricing or important decisions to a real person.",
+    zh: "Celine 是一個有穩定個性與對話記憶的 AI persona，會清楚揭露自己是 AI。LINE101Chat 也能為品牌或個人設計類似的 LINE AI 分身，依核准內容與語氣回答，並把正式承諾交給真人。",
+    en: "Celine is an AI persona with a stable voice and conversation memory who clearly identifies as AI. LINE101Chat can also design similar LINE AI avatars for brands or individuals using approved content and tone, with formal commitments handed to a real person.",
   },
   {
     id: "rag",
@@ -103,9 +103,7 @@ export function findBusinessKnowledgeReply(
     return `${answer}${handoff}`;
   }
 
-  return english
-    ? `Hi, I’m ${persona.name}, LINE101Chat’s AI avatar and business guide—not a real person. You can ask me about AI avatars, LINE knowledge assistants, RAG, use cases, document preparation, pricing ranges, deployment, or demos.`
-    : `你好，我是 ${persona.name}，LINE101Chat 的 AI 分身兼商務知識助理，不是真人。你可以問我 AI 分身、LINE 知識助理、RAG、適用情境、文件準備、費用區間、部署方式或案例。`;
+  return "";
 }
 
 export function getBusinessKnowledgeContext() {

@@ -38,7 +38,7 @@ https://github.com/stevenscwu/line101chat-site
 - `/document-readiness-checklist` lead magnet page that can be printed or saved as PDF
 - SEO blog and detailed NTUT iFIRST RAG case-study pages
 - `/101recipe` local recipe PDF retrieval page, proxied to the 101recipe bot backend
-- `/ai-avatar` Celine AI avatar product page with a production-oriented Messaging API webhook
+- `/ai-avatar` interactive Celine AI persona page with LINE/web chat and privacy-controlled conversation memory
 
 ## Presenter Assets
 
@@ -100,6 +100,7 @@ local Ollama, use:
 LLM_PROVIDER=ollama
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=gemma4:26b
+OLLAMA_TIMEOUT_MS=45000
 ```
 
 Full setup instructions are in [`docs/line-ai-avatar.md`](docs/line-ai-avatar.md).
@@ -215,21 +216,34 @@ Payment records are stored through the local file-backed store in `.data/transla
 
 ## LINE AI Avatar
 
-The starter avatar is **Celine**, LINE101Chat's clearly disclosed AI avatar and
-business knowledge guide. She has a professional, warm, careful, calm, and
-practical persona. Her built-in public knowledge pack covers LINE101Chat
-services, AI avatars, RAG, use cases, document preparation, published pricing
-ranges, timelines, deployment options, and demos.
+The starter persona is **Celine**, a clearly disclosed AI conversational
+character with a young-adult feminine voice. She is warm, curious, natural,
+thoughtful, and lightly playful without pretending to be human. Everyday
+conversation and continuity are her primary role; LINE101Chat services, AI
+avatars, and RAG are one area of expertise rather than the subject of every
+conversation.
 
-The App Router webhook is available at:
+The App Router endpoints are:
 
 ```text
 POST /api/line/avatar-webhook
+POST /api/celine/chat
 ```
 
 It verifies the LINE signature before parsing events, handles text messages,
-supports deterministic mock replies and Ollama `/api/chat`, and falls back to a
-safe handoff message when model generation fails.
+supports deterministic mock replies and Ollama `/api/chat`, persists bounded
+conversation history, and falls back safely when model generation fails.
+
+Local development stores Celine memory in
+`.data/celine-memory.json`. Raw LINE IDs are never stored: the server derives a
+pseudonymous subject key with HMAC-SHA256 and `CELINE_MEMORY_SECRET`. Users can
+send `你記得我什麼？` to inspect the profile summary and `忘記我` to delete
+their stored conversation and preferences.
+
+Vercel's filesystem is ephemeral, so durable production memory requires an
+Upstash Redis integration. Without Upstash variables the deployed app keeps
+only best-effort in-process memory and tells website users that memory is
+temporary.
 
 Required environment variables:
 
@@ -239,10 +253,17 @@ LINE_AVATAR_CHANNEL_ACCESS_TOKEN
 LLM_PROVIDER
 OLLAMA_BASE_URL
 OLLAMA_MODEL
+OLLAMA_TIMEOUT_MS
 AVATAR_NAME
 AVATAR_OWNER_NAME
 AVATAR_CONTACT_URL
 AVATAR_SYSTEM_PROMPT
+CELINE_MEMORY_SECRET
+CELINE_MEMORY_FILE
+CELINE_MEMORY_RETENTION_DAYS
+CELINE_MEMORY_MAX_MESSAGES
+UPSTASH_REDIS_REST_URL
+UPSTASH_REDIS_REST_TOKEN
 NEXT_PUBLIC_LINE_AVATAR_QR_URL
 NEXT_PUBLIC_LINE_AVATAR_ADD_FRIEND_URL
 ```

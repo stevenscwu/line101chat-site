@@ -20,19 +20,20 @@ import {
 import type { LucideIcon } from "lucide-react";
 
 import { ButtonLink } from "@/components/button-link";
+import { CelineChat } from "@/components/celine/CelineChat";
 import { SectionHeading } from "@/components/section-heading";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Celine｜LINE101Chat 的 AI分身 for LINE",
+    absolute: "Celine｜會記得你的 LINE 與網站 AI 對話夥伴",
   },
   description:
-    "認識 Celine：LINE101Chat 的 AI 分身兼商務知識助理，能回答服務問題、了解需求，並在重要時刻轉交真人。",
+    "認識 Celine：一位具有年輕女性聊天風格、能延續對話記憶的 AI 角色，可透過 LINE 與網站自然互動。",
   alternates: { canonical: "/ai-avatar" },
   openGraph: {
-    title: "Celine｜LINE101Chat 的 AI分身 for LINE",
+    title: "Celine｜會記得你的 LINE 與網站 AI 對話夥伴",
     description:
-      "和 Celine 在 LINE 對話，了解 AI 分身、LINE 知識助理、RAG、導入方式與費用區間。",
+      "和 Celine 聊日常、工作、學習與想法；她會清楚表明自己是 AI，並在你允許的範圍內延續對話脈絡。",
     url: "/ai-avatar",
   },
 };
@@ -46,22 +47,22 @@ type IconCard = {
 const audiences: IconCard[] = [
   {
     title: "創辦人與顧問",
-    description: "先回答服務範圍、合作方式與常見問題，把需要本人判斷的對話留下來。",
+    description: "在忙碌時先接住日常對話、想法整理與基本詢問，需要本人判斷時再交接。",
     icon: BriefcaseBusiness,
   },
   {
     title: "老師與講師",
-    description: "介紹課程、報名方式與教學理念，複雜個案再轉由老師親自回覆。",
+    description: "延續學生的學習脈絡、回答一般問題，也能陪使用者把問題問得更清楚。",
     icon: GraduationCap,
   },
   {
     title: "創作者與個人品牌",
-    description: "維持一致語氣介紹作品、合作方向與公開資訊，不假裝是真人本人。",
+    description: "建立有辨識度的 AI persona，分享公開資訊，也能成為作品之外的互動入口。",
     icon: Mic2,
   },
   {
     title: "業務與客服團隊",
-    description: "先做需求分流、FAQ 回覆與聯絡資訊蒐集，再交給適合的真人窗口。",
+    description: "商務詢問只是其中一種能力；Celine 也能先理解對方、記住脈絡，再自然分流。",
     icon: Headphones,
   },
   {
@@ -78,52 +79,53 @@ const audiences: IconCard[] = [
 
 const capabilities: IconCard[] = [
   {
-    title: "回答常見問題",
-    description: "用整理過的 FAQ、網站內容與服務資料，先處理高頻、低風險問題。",
+    title: "自然日常對話",
+    description: "能聊工作、學習、生活與正在思考的事，不會每句話都導向產品或銷售。",
     icon: MessagesSquare,
   },
   {
-    title: "自然介紹服務",
-    description: "依擁有者設定的語氣，清楚說明服務特色、適合對象與下一步。",
+    title: "記得每位使用者",
+    description: "用去識別化 ID 保存有限的近期對話、稱呼與主動提供的偏好。",
     icon: Sparkles,
   },
   {
-    title: "蒐集使用者需求",
-    description: "詢問使用情境、預計時程與需要協助的範圍，讓真人接手更有效率。",
+    title: "延續上次話題",
+    description: "下一次見面時能接回相關脈絡，而不是每次都像第一次認識。",
     icon: CheckCircle2,
   },
   {
-    title: "模擬偏好語氣",
-    description: "維持專業、溫暖或簡潔等品牌語調，但清楚表明自己是 AI 分身。",
+    title: "穩定的女性風格 persona",
+    description: "溫暖、聰明、自然、有主見，像年輕女性聊天，但不假裝擁有真人身分。",
     icon: UserRound,
   },
   {
-    title: "需要時轉真人",
-    description: "報價、合作、客製建置與正式承諾，自動引導至真人團隊確認。",
+    title: "使用者可控制記憶",
+    description: "可以詢問「你記得我什麼」，也能隨時輸入「忘記我」刪除對話記憶。",
     icon: Handshake,
   },
   {
-    title: "擴充專屬知識庫",
-    description: "未來可加上 RAG，讓 AI 分身依正式文件回答並建立可維護的知識範圍。",
+    title: "必要時使用專業知識",
+    description: "Celine 熟悉 LINE101Chat、AI 分身與 RAG，但只在話題相關時自然提供。",
     icon: Bot,
   },
 ];
 
 const whyLine101Chat = [
   ["LINE-native", "使用者不必下載新 App，直接在台灣最熟悉的 LINE 對話。"],
-  ["繁體中文優先", "以台灣繁體中文、在地商務語感與常見服務情境設計。"],
-  ["可接 RAG 知識庫", "從 FAQ MVP 開始，之後可擴充 PDF、SOP、規章與服務資料。"],
+  ["繁體中文優先", "以台灣繁體中文、自然聊天節奏與在地語感設計。"],
+  ["有界線的對話記憶", "只保存有限脈絡，使用者可以查看摘要並要求刪除。"],
+  ["可接 RAG 知識庫", "需要專業回答時，可擴充 PDF、SOP、規章與服務資料。"],
   ["可評估私有模型", "依資料敏感度評估 Ollama、本地端或私有環境，不把技術選型硬塞給客戶。"],
-  ["有清楚身分界線", "AI 會在適當時機揭露身分，不假裝是真人或做未授權承諾。"],
-  ["真人交接優先", "把 AI 當作前線助理，而不是取代關係、專業判斷與最後決策。"],
+  ["有清楚身分界線", "Celine 會揭露自己是 AI，不編造真人年齡、身體或生活經驗。"],
 ];
 
 const flow = [
-  ["1", "LINE 使用者", "使用熟悉的 LINE 傳送文字訊息"],
+  ["1", "LINE / 網站", "使用熟悉的入口傳送文字訊息"],
   ["2", "安全 Webhook", "驗證 LINE 簽章並接收事件"],
-  ["3", "分身 Persona", "套用身分、語氣與回答邊界"],
-  ["4", "LLM / RAG", "由模型或專屬知識庫產生回答"],
-  ["5", "安全回覆", "簡潔回覆；不確定或高風險問題轉真人"],
+  ["3", "個人記憶", "用雜湊識別碼讀取有限對話脈絡"],
+  ["4", "Celine Persona", "套用個性、語氣、身分與安全邊界"],
+  ["5", "LLM / RAG", "由 Ollama、模型或專屬知識庫產生回答"],
+  ["6", "自然回覆", "保存有限脈絡；不確定或高風險問題轉真人"],
 ];
 
 export default function AiAvatarPage() {
@@ -146,26 +148,26 @@ export default function AiAvatarPage() {
             </p>
             <h1 className="mt-6 max-w-4xl text-4xl font-black leading-tight tracking-[0] sm:text-5xl lg:text-6xl">
               我是 Celine
-              <span className="block text-[#55e486]">先替 LINE101Chat 接住你的問題</span>
+              <span className="block text-[#55e486]">一位會記得你的 AI 對話夥伴</span>
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-9 text-slate-300">
-              我是 LINE101Chat 的 AI 分身兼商務知識助理。我能在 LINE
-              回答服務問題、介紹 AI 分身與知識助理、了解你的需求，並把報價、合作與重要決策交給真人團隊。
+              我能透過 LINE 和網站跟你自然聊天，記得你主動告訴我的稱呼與偏好，也能接續之前聊過的工作、學習與生活脈絡。
+              LINE101Chat 的 AI 分身與 RAG 服務，是我熟悉的專業之一，不是每段對話的主角。
             </p>
             <p className="mt-4 max-w-3xl text-sm font-semibold leading-7 text-slate-400">
-              Celine 有自己的名字與穩定個性，但她是 AI，不是真人，也不會替真人做未授權承諾。
+              Celine 是具有年輕女性溝通風格的 AI，不是真人。她不會編造真人身分、身體或親身經驗；你也能隨時查看或刪除記憶。
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="#talk-to-celine" variant="line" icon={MessagesSquare}>
+                先在網站和 Celine 聊
+              </ButtonLink>
               <ButtonLink
                 href={primaryCtaUrl}
                 external
-                variant="line"
+                variant="secondary"
                 icon={MessageCircle}
               >
-                加入 LINE 與 Celine 對話
-              </ButtonLink>
-              <ButtonLink href="/free-assessment" variant="secondary">
-                預約免費評估
+                加入 LINE
               </ButtonLink>
             </div>
           </div>
@@ -185,26 +187,38 @@ export default function AiAvatarPage() {
                   </div>
                   <div>
                     <p className="font-black">Celine</p>
-                    <p className="text-xs font-bold text-emerald-700">LINE101Chat AI分身 · 可轉真人</p>
+                    <p className="text-xs font-bold text-emerald-700">AI 對話角色 · 有記憶 · 不是真人</p>
                   </div>
                 </div>
                 <div className="mt-5 grid gap-4 text-sm leading-6">
                   <div className="ml-auto max-w-[82%] rounded-2xl rounded-br-sm bg-[#06c755] px-4 py-3 font-semibold text-white">
-                    想了解你們能不能做一個像我本人語氣的 LINE 助理？
+                    嗨，我是 Mia。今天開會有點累。
                   </div>
                   <div className="max-w-[88%] rounded-2xl rounded-bl-sm bg-white px-4 py-3 text-slate-700 shadow-sm">
-                    可以，我是 Celine，LINE101Chat 的 AI 分身，不是真人。我可以先協助整理你的
-                    FAQ、服務內容與偏好語氣，再由真人團隊評估 LINE 串接與交接流程。
+                    嗨 Mia，我是 Celine，一位 AI。聽起來今天消耗不少——是會議太多，還是有一場特別難處理？
                   </div>
                   <div className="ml-auto max-w-[82%] rounded-2xl rounded-br-sm bg-[#06c755] px-4 py-3 font-semibold text-white">
-                    那報價呢？
+                    下次你還會記得我嗎？
                   </div>
                   <div className="max-w-[88%] rounded-2xl rounded-bl-sm bg-white px-4 py-3 text-slate-700 shadow-sm">
-                    報價需要依資料量與功能範圍由真人確認。我可以先請你提供使用對象、常見問題數量與預計上線時間。
+                    會，我會用去識別方式保存有限的近期脈絡和你主動告訴我的偏好。你也可以問我記得什麼，或隨時說「忘記我」。
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#f5faf7] px-5 py-16 sm:px-8 lg:px-10">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading
+            eyebrow="Talk To Celine"
+            title="現在就從網站開始一段對話"
+            description="網站與 LINE 使用相同的 Celine persona、模型介面與記憶規則。網站以安全 Cookie 辨識這個瀏覽器；LINE 則使用雜湊後的使用者 ID。"
+          />
+          <div className="mt-8">
+            <CelineChat />
           </div>
         </div>
       </section>
@@ -223,15 +237,15 @@ export default function AiAvatarPage() {
           <div>
             <SectionHeading
               eyebrow="Celine's Persona"
-              title="有自己的個性，也清楚知道自己的界線"
-              description="Celine 的角色不是假裝成 LINE101Chat 團隊成員，而是成為一位穩定、可辨識、願意坦白自己是 AI 的商務引導者。"
+              title="像一位年輕女性自然聊天，但不假裝自己是真人"
+              description="Celine 有穩定、可辨識的聲音：溫暖、聰明、好奇、有主見，偶爾帶點輕鬆幽默。同時，她會坦白自己是 AI。"
             />
             <div className="mt-7 grid gap-4 sm:grid-cols-2">
               {[
-                ["她的個性", "專業、溫暖、細心、沉著、務實，帶一點自然好奇心。"],
-                ["她知道的事", "LINE101Chat 服務、AI 分身、RAG、導入流程、公開費用區間與案例。"],
-                ["她不會做的事", "不編造真人背景、不承諾正式價格、不假裝真人已經看過對話。"],
-                ["她的下一步", "先協助釐清使用者、資料、入口與時程，再把重要需求轉交真人。"],
+                ["她的個性", "溫暖、聰明、自然、有主見，會認真聽，也敢提出不同角度。"],
+                ["她會記得", "近期對話、你主動告訴她的稱呼、興趣與偏好，而且只在相關時自然使用。"],
+                ["她不會假裝", "不編造真人年齡、外貌、身體、私生活或親身經歷，也不冒充真人。"],
+                ["她熟悉的專業", "日常想法整理之外，也熟悉 LINE AI 分身、知識助理、RAG 與本地 Ollama。"],
               ].map(([title, description]) => (
                 <article key={title} className="rounded-lg border border-emerald-200 bg-white p-5">
                   <h2 className="font-black text-slate-950">{title}</h2>
@@ -247,14 +261,14 @@ export default function AiAvatarPage() {
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="What It Is"
-            title="Celine 是第一個可直接對話的 LINE101Chat AI 分身"
-            description="她把 LINE101Chat 已公開的服務內容、費用區間、案例與導入方式整理成可回答的商務知識，也示範客戶未來可以如何建立自己的 persona。"
+            title="Celine 是有個性、有記憶、跨 LINE 與網站的 AI persona"
+            description="她先是一位能建立連續對話的 AI 角色；當話題真的涉及 AI 分身、知識庫或導入需求時，才會自然使用 LINE101Chat 的專業內容。"
           />
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {[
-              ["有自己的說話方式", "依品牌或擁有者偏好設定專業、溫暖、簡潔等語氣。"],
-              ["有清楚回答範圍", "只處理已授權的基本資訊，不知道時坦白說明。"],
-              ["有真人交接出口", "報價、合作、個案與高風險問題不讓 AI 硬答。"],
+              ["有自己的說話方式", "不是套一句「您好」，而是有穩定語感、好奇心與回應節奏。"],
+              ["有可控制的記憶", "以去識別方式保存有限脈絡，並提供查看摘要與刪除指令。"],
+              ["有清楚安全界線", "高風險專業判斷不硬答，也不鼓勵使用者把 AI 當成真人替代品。"],
             ].map(([title, description]) => (
               <article key={title} className="rounded-lg border border-slate-200 bg-slate-50 p-6">
                 <ShieldCheck className="h-6 w-6 text-emerald-600" aria-hidden="true" />
@@ -289,8 +303,8 @@ export default function AiAvatarPage() {
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="Capabilities"
-            title="MVP 先做好六件真正有用的事"
-            description="不先追求複雜動畫或數位人外觀，而是先讓 LINE 裡的回覆品質、身分界線與真人交接流程可以實際測試。"
+            title="MVP 先把「認識一個人」這件事做好"
+            description="外觀不是重點。真正讓 Celine 有連續感的，是穩定 persona、相關記憶、自然回覆，以及使用者能控制資料。"
           />
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {capabilities.map(({ title, description, icon: Icon }) => (
@@ -310,8 +324,8 @@ export default function AiAvatarPage() {
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="Why LINE101Chat"
-            title="從台灣 LINE 使用情境出發，不只是一段角色提示詞"
-            description="我們把 AI 分身視為一個需要內容、邊界、交接與後續維護的服務流程，並保留未來擴充 RAG 與私有模型的空間。"
+            title="從台灣 LINE 使用情境出發，也保留本地模型與知識庫能力"
+            description="Celine 本身不只是 LINE101Chat 的銷售角色；她同時示範一個 persona 如何擁有記憶、資料邊界，以及未來可擴充的專業知識。"
           />
           <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {whyLine101Chat.map(([title, description]) => (
@@ -331,10 +345,10 @@ export default function AiAvatarPage() {
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="How It Works"
-            title="從 LINE 訊息到安全回覆"
-            description="技術流程保持簡單、模組化，方便未來加入長期記憶、CRM、語音或動畫分身。"
+            title="從訊息、記憶到自然回覆"
+            description="LINE 與網站共用同一個 persona、記憶介面與 LLM adapter，方便未來加入 RAG、語音或動畫分身。"
           />
-          <ol className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+          <ol className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {flow.map(([number, title, description], index) => (
               <li key={title} className="relative rounded-lg border border-slate-200 bg-slate-50 p-5">
                 <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-950 text-sm font-black text-white">
@@ -352,7 +366,7 @@ export default function AiAvatarPage() {
             ))}
           </ol>
           <p className="mt-5 text-sm font-bold leading-7 text-slate-500">
-            LINE 使用者 → LINE webhook → persona prompt → LLM / RAG → 安全回覆 → 真人交接
+            LINE / Web 使用者 → 安全入口 → 去識別記憶 → Celine persona → Ollama / RAG → 自然回覆
           </p>
         </div>
       </section>
@@ -362,10 +376,10 @@ export default function AiAvatarPage() {
           <div>
             <p className="text-sm font-black uppercase tracking-[0.08em] text-emerald-300">Try The MVP</p>
             <h2 className="mt-3 text-3xl font-black leading-tight sm:text-4xl">
-              先用一個 LINE 情境，測試你的 AI 分身值不值得做
+              先認識 Celine，再決定你想把 AI persona 帶到哪裡
             </h2>
             <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">
-              準備 20 個常見問題、一段服務介紹與你希望呈現的語氣。我們會協助確認回答範圍、真人交接與後續知識庫方向。
+              你可以直接在網站聊，也可以加入 LINE。若之後想為品牌、團隊或自己建立有記憶的 AI persona，再由 LINE101Chat 協助評估資料、模型與部署方式。
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <ButtonLink

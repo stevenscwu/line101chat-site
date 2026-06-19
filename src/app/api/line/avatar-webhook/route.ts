@@ -3,6 +3,16 @@ import { NextResponse } from "next/server";
 import { generateAvatarReply } from "@/lib/avatar/llm";
 import { replyToLine, verifyLineSignature } from "@/lib/avatar/line";
 import {
+  buildMemorySummaryReply,
+  deleteAvatarMemory,
+  getMemoryDisclosure,
+  isForgetMemoryCommand,
+  isMemorySummaryCommand,
+  loadAvatarMemory,
+  markMemoryDisclosure,
+  saveAvatarConversationTurn,
+} from "@/lib/avatar/memory";
+import {
   getAvatarPersona,
   getSafeFallbackReply,
   getUnsupportedMessageReply,
@@ -14,7 +24,7 @@ import type {
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-export const maxDuration = 20;
+export const maxDuration = 60;
 
 function logError(label: string, error: unknown) {
   const details =
@@ -26,6 +36,7 @@ function logError(label: string, error: unknown) {
 
 async function handleEvent(event: LineWebhookEvent, index: number) {
   const persona = getAvatarPersona();
+  const lineUserId = event.source?.userId?.trim() || "";
 
   console.info("[line-avatar] event received", {
     index,
@@ -40,9 +51,21 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
   }
 
   if (event.type === "follow") {
+    let disclosure = getMemoryDisclosure(false);
+
+    if (lineUserId) {
+      try {
+        const { context } = await loadAvatarMemory("line", lineUserId);
+        disclosure = getMemoryDisclosure(context.durable);
+        await markMemoryDisclosure("line", lineUserId);
+      } catch (error) {
+        logError("could not initialize conversation memory", error);
+      }
+    }
+
     await replyToLine(
       event.replyToken,
-      `你好，我是 ${persona.name}，LINE101Chat 的 AI 分身兼商務知識助理，不是真人本人。你可以問我 AI 分身、LINE 知識助理、RAG、費用區間、導入方式或案例。`,
+      `嗨，我是 ${persona.name}，一位喜歡自然聊天、也能幫你整理想法的 AI，不是真人。你可以聊日常、工作、學習或任何正在想的事；如果剛好想了解 AI 分身、LINE chatbot 或 RAG，我也很熟。\n\n${disclosure}`,
     );
     return;
   }
@@ -56,12 +79,49 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
   if (event.message?.type !== "text") {
     reply = getUnsupportedMessageReply(persona);
   } else {
+    const message = event.message.text || "";
+
+    if (lineUserId && isForgetMemoryCommand(message)) {
+      try {
+        await deleteAvatarMemory("line", lineUserId);
+        reply =
+          "好，我已經清除這個 LINE 帳號在 Celine 記憶庫中的對話與偏好。下次我們就從新的自我介紹開始。";
+      } catch (error) {
+        logError("could not delete conversation memory", error);
+        reply = "我剛剛沒能完成刪除，請稍後再輸入一次「忘記我」。";
+      }
+      await replyToLine(event.replyToken, reply);
+      return;
+    }
+
     try {
-      reply = await generateAvatarReply({
-        message: event.message.text || "",
-        // MVP is intentionally stateless. A future memory store can populate this history.
-        history: [],
-      });
+      const memory = lineUserId
+        ? await loadAvatarMemory("line", lineUserId)
+        : null;
+
+      if (memory && isMemorySummaryCommand(message)) {
+        reply = buildMemorySummaryReply(memory.record);
+      } else {
+        reply = await generateAvatarReply({
+          message,
+          history: memory?.record.messages || [],
+          memory: memory?.context,
+        });
+      }
+
+      if (memory) {
+        const isFirstReply = !memory.record.disclosureSentAt;
+        const replyToStore = isFirstReply
+          ? `${getMemoryDisclosure(memory.context.durable)}\n\n${reply}`
+          : reply;
+
+        await saveAvatarConversationTurn(
+          memory.record,
+          message,
+          replyToStore,
+        );
+        reply = replyToStore;
+      }
     } catch (error) {
       logError("LLM reply failed; using safe fallback", error);
       reply = getSafeFallbackReply(persona);
