@@ -22,7 +22,7 @@ const routes = [
   "/privacy",
 ];
 
-const zhOnlyRoutes = ["/ai-knowledge-assistant", "/case-studies/101recipe"];
+const zhOnlyRoutes = ["/ai-avatar", "/ai-knowledge-assistant", "/case-studies/101recipe"];
 const paymentRoutes = ["/translation-service"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
