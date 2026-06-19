@@ -1,3 +1,4 @@
+import { findBusinessKnowledgeReply } from "@/lib/avatar/knowledge";
 import { getAvatarPersona } from "@/lib/avatar/persona";
 import type {
   AvatarConversationMessage,
@@ -39,32 +40,8 @@ function getOllamaConfig() {
   return { baseUrl, model };
 }
 
-function looksEnglish(message: string) {
-  const latinCharacters = message.match(/[A-Za-z]/g)?.length || 0;
-  const cjkCharacters = message.match(/[\u3400-\u9fff]/g)?.length || 0;
-  return latinCharacters > cjkCharacters;
-}
-
 function createMockReply(message: string, persona: AvatarPersona) {
-  const normalized = message.toLowerCase();
-  const needsHandoff =
-    /報價|價格|費用|合作|客製|建置|技術|串接|quotation|quote|pricing|custom|cooperat|technical|integration/.test(
-      normalized,
-    );
-
-  if (looksEnglish(message)) {
-    if (needsHandoff) {
-      return `I’m ${persona.name}, an AI avatar for ${persona.ownerName}. For pricing, custom projects, partnerships, or technical setup, please contact the real team here: ${persona.contactUrl}`;
-    }
-
-    return `Hi, I’m ${persona.name}, an AI avatar—not the real person. I can explain the LINE AI avatar service, answer basic questions, collect your needs, and hand the conversation to the ${persona.ownerName} team when needed.`;
-  }
-
-  if (needsHandoff) {
-    return `我是 ${persona.name}，是 AI 分身，不是真人本人。報價、客製專案、合作或技術建置需要由真人團隊確認，請前往 ${persona.contactUrl}，並簡單留下你的使用情境與預計上線時間。`;
-  }
-
-  return `您好，我是 ${persona.name}，是 ${persona.ownerName} 的 AI 分身，不是真人本人。我可以介紹 LINE AI 分身服務、回答基本問題、協助整理需求，並在需要時轉交真人團隊。`;
+  return findBusinessKnowledgeReply(message, persona);
 }
 
 function normalizeHistory(history: AvatarConversationMessage[] = []) {

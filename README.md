@@ -38,7 +38,7 @@ https://github.com/stevenscwu/line101chat-site
 - `/document-readiness-checklist` lead magnet page that can be printed or saved as PDF
 - SEO blog and detailed NTUT iFIRST RAG case-study pages
 - `/101recipe` local recipe PDF retrieval page, proxied to the 101recipe bot backend
-- `/ai-avatar` LINE AI avatar product page with a production-oriented Messaging API webhook
+- `/ai-avatar` Celine AI avatar product page with a production-oriented Messaging API webhook
 
 ## Presenter Assets
 
@@ -214,6 +214,12 @@ TRANSLATION_PAYMENTS_ADMIN_TOKEN
 Payment records are stored through the local file-backed store in `.data/translation-payments.json` during local development. For production billing, replace the store with a durable database or configure durable storage before accepting real payments.
 
 ## LINE AI Avatar
+
+The starter avatar is **Celine**, LINE101Chat's clearly disclosed AI avatar and
+business knowledge guide. She has a professional, warm, careful, calm, and
+practical persona. Her built-in public knowledge pack covers LINE101Chat
+services, AI avatars, RAG, use cases, document preparation, published pricing
+ranges, timelines, deployment options, and demos.
 
 The App Router webhook is available at:
 

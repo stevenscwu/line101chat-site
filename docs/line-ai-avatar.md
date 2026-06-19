@@ -1,13 +1,22 @@
 # LINE AI Avatar Setup
 
-This feature adds a dedicated “AI分身 for LINE” product page and LINE Messaging
-API webhook to the existing LINE101Chat Next.js App Router project.
+This feature adds **Celine**, LINE101Chat's AI avatar and business knowledge
+guide, plus a dedicated product page and LINE Messaging API webhook.
 
 Production routes:
 
 ```text
 https://line101chat.com/ai-avatar
 https://line101chat.com/api/line/avatar-webhook
+```
+
+Celine's current public LINE account information:
+
+```text
+Display name: AICeline
+Basic ID: @821jpehj
+Add friend: https://line.me/R/ti/p/%40821jpehj
+Website QR asset: /celine-line-qr.png
 ```
 
 Use a new or explicitly approved LINE Official Account / Messaging API channel
@@ -93,17 +102,28 @@ correct compatible tag and update `OLLAMA_MODEL`.
 | `LLM_PROVIDER` | Yes | `mock` or `ollama`. Defaults to `mock`. |
 | `OLLAMA_BASE_URL` | Ollama only | Local HTTP URL in development; public HTTPS URL in production. |
 | `OLLAMA_MODEL` | Ollama only | Defaults to `gemma4:26b`. |
-| `AVATAR_NAME` | Recommended | Defaults to `LINE101Chat AI分身`. |
+| `AVATAR_NAME` | Recommended | Defaults to `Celine`. |
 | `AVATAR_OWNER_NAME` | Recommended | Defaults to `LINE101Chat`. |
 | `AVATAR_CONTACT_URL` | Recommended | Real-person handoff URL. |
 | `AVATAR_SYSTEM_PROMPT` | Optional | Additional owner-approved persona rules. |
 | `NEXT_PUBLIC_LINE_AVATAR_QR_URL` | Optional | Public QR image URL or site asset path. |
 | `NEXT_PUBLIC_LINE_AVATAR_ADD_FRIEND_URL` | Optional | Public LINE add-friend URL used by CTAs. |
 
-The starter persona is professional, warm, concise, Traditional Chinese-first,
-and oriented toward Taiwan business communication. It identifies itself as an
-AI avatar, avoids pretending to be the owner, and routes quotation, custom
-project, cooperation, and technical setup questions to the real team.
+The starter persona is Celine: professional, warm, careful, calm, practical,
+Traditional Chinese-first, and gently curious. She identifies herself as an AI,
+does not invent a human biography, and routes quotations, custom projects,
+cooperation, and technical setup questions to the real team.
+
+The built-in public business knowledge pack is maintained in:
+
+```text
+src/lib/avatar/knowledge.ts
+```
+
+It supports useful deterministic replies even in `LLM_PROVIDER=mock` mode and
+is included in the system context when Ollama mode is enabled. It covers public
+LINE101Chat service information only; it is not a replacement for a
+customer-specific production RAG index.
 
 ## LINE Developers Setup
 
@@ -187,6 +207,7 @@ LLM_PROVIDER=mock
 - [ ] `LLM_PROVIDER=mock` returns a deterministic reply.
 - [ ] LINE Developers webhook verification succeeds.
 - [ ] A text message receives a LINE reply.
+- [ ] Adding the account as a friend receives Celine's AI identity greeting.
 - [ ] An image, sticker, audio, or other unsupported message receives the
       polite text-only MVP fallback.
 - [ ] A model timeout or model error receives the safe handoff reply.

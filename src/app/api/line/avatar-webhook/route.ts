@@ -39,6 +39,14 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
     return;
   }
 
+  if (event.type === "follow") {
+    await replyToLine(
+      event.replyToken,
+      `你好，我是 ${persona.name}，LINE101Chat 的 AI 分身兼商務知識助理，不是真人本人。你可以問我 AI 分身、LINE 知識助理、RAG、費用區間、導入方式或案例。`,
+    );
+    return;
+  }
+
   if (event.type !== "message") {
     return;
   }

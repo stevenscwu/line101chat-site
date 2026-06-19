@@ -211,23 +211,23 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
         <div className="mx-auto grid max-w-7xl gap-8 rounded-lg border border-emerald-200 bg-white p-6 shadow-sm sm:p-8 lg:grid-cols-[1fr_360px] lg:items-center">
           <div>
             <p className="text-sm font-black uppercase tracking-[0.08em] text-emerald-700">
-              {isEnglish ? "New: AI Avatar for LINE" : "新功能：AI分身 for LINE"}
+              {isEnglish ? "Meet Celine: AI Avatar for LINE" : "認識 Celine：AI分身 for LINE"}
             </p>
             <h2 className="mt-3 text-3xl font-black leading-tight tracking-[0] text-slate-950 sm:text-4xl">
               {isEnglish
-                ? "Let an AI avatar introduce your work and handle first-line replies"
-                : "讓一個有邊界的 AI 分身，先替你接住 LINE 對話"}
+                ? "Meet Celine, LINE101Chat’s AI avatar and business guide"
+                : "讓 Celine 先替 LINE101Chat 接住你的商務問題"}
             </h2>
             <p className="mt-4 max-w-3xl text-base leading-8 text-slate-600">
               {isEnglish
-                ? "Build a LINE persona that answers FAQs, explains your services, collects needs, and hands important conversations to the real person."
-                : "用你的服務內容、常見問題與偏好語氣，建立能介紹你、蒐集需求、回答基本問題，並在重要時刻轉真人的 LINE AI 分身。"}
+                ? "Celine can answer questions about LINE101Chat, explain AI avatars and knowledge assistants, collect needs, and hand important conversations to the real team."
+                : "Celine 是 LINE101Chat 的 AI 分身兼商務知識助理，能介紹服務、回答常見問題、蒐集需求，並在重要時刻轉交真人。"}
             </p>
             <Link
               href="/ai-avatar"
               className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-[#06c755] px-5 py-3 text-sm font-black text-white shadow-sm hover:bg-[#05b54e]"
             >
-              {isEnglish ? "Explore AI Avatar for LINE" : "了解 AI分身 for LINE"}
+              {isEnglish ? "Talk with Celine" : "認識 Celine"}
             </Link>
           </div>
           <div className="rounded-lg bg-slate-950 p-5 text-white">
@@ -236,14 +236,14 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
                 <Bot className="h-6 w-6" aria-hidden="true" />
               </div>
               <div>
-                <p className="font-black">LINE101Chat AI分身</p>
-                <p className="text-xs font-bold text-emerald-300">AI avatar · Human handoff</p>
+                <p className="font-black">Celine</p>
+                <p className="text-xs font-bold text-emerald-300">LINE101Chat AI avatar · Human handoff</p>
               </div>
             </div>
             <p className="mt-5 rounded-lg bg-white/10 p-4 text-sm leading-7 text-slate-200">
               {isEnglish
-                ? "I’m an AI avatar, not the real person. I can answer basic questions first and connect you with the team for pricing or custom work."
-                : "我是 AI 分身，不是真人本人。我可以先回答基本問題；報價、客製與合作需求會轉交真人團隊。"}
+                ? "I’m Celine, LINE101Chat’s AI avatar—not a real person. Ask me about services, RAG, use cases, pricing ranges, or deployment."
+                : "我是 Celine，LINE101Chat 的 AI 分身，不是真人。你可以問我服務、RAG、適用情境、費用區間或部署方式。"}
             </p>
           </div>
         </div>
