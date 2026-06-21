@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   ArrowRight,
   Bot,
@@ -29,15 +30,15 @@ import { SectionHeading } from "@/components/section-heading";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "AI分身 for LINE｜讓你的 LINE、網站與語音都能自然回覆",
+    absolute: "Celine｜LINE101Chat 的知識型 AI分身 for LINE",
   },
   description:
-    "LINE101 Avatar 是為台灣 LINE-first 企業打造的知識型 AI分身平台，結合 persona、RAG、網站 chat、LINE chatbot、語音與真人交接。",
+    "認識 Celine：LINE101Chat 的知識型 AI 分身。她有穩定個性、可信知識、對話記憶與真人交接，能在網站、LINE 與語音中自然回覆。",
   alternates: { canonical: "/ai-avatar" },
   openGraph: {
-    title: "LINE101 Avatar｜Knowledge-Grounded AI Avatar Platform",
+    title: "Celine｜LINE101Chat Knowledge-Grounded AI Avatar",
     description:
-      "讓個人、品牌、學校、顧問、門市或公司，用核准知識與語氣在 LINE、網站與語音中自然回覆。",
+      "先和 Celine 對話，再看 LINE101Chat 如何把 persona、RAG、LINE、網站、語音與真人交接組成一個 AI 分身。",
     url: "/ai-avatar",
   },
 };
@@ -99,10 +100,13 @@ const flow = [
 ];
 
 export default function AiAvatarPage() {
-  const qrUrl = process.env.NEXT_PUBLIC_LINE_AVATAR_QR_URL?.trim() || "";
+  const qrUrl =
+    process.env.NEXT_PUBLIC_LINE_AVATAR_QR_URL?.trim() ||
+    "/celine-line-qr.png";
   const addFriendUrl =
-    process.env.NEXT_PUBLIC_LINE_AVATAR_ADD_FRIEND_URL?.trim() || "";
-  const lineCtaUrl = addFriendUrl || "/line";
+    process.env.NEXT_PUBLIC_LINE_AVATAR_ADD_FRIEND_URL?.trim() ||
+    "https://line.me/R/ti/p/%40821jpehj";
+  const lineCtaUrl = addFriendUrl;
 
   return (
     <main>
@@ -111,25 +115,24 @@ export default function AiAvatarPage() {
           <div>
             <p className="inline-flex items-center gap-2 rounded-full border border-[#06c755]/30 bg-[#06c755]/10 px-4 py-2 text-sm font-black text-[#8df5ad]">
               <Sparkles className="h-4 w-4" aria-hidden="true" />
-              LINE101 Avatar · LINE101 AI分身
+              Meet Celine · LINE101 AI分身
             </p>
             <h1 className="mt-6 max-w-5xl text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
-              AI分身 for LINE
+              我是 Celine
               <span className="block text-[#55e486]">
-                讓你的 LINE、網站與語音都能自然回覆
+                LINE101Chat 的知識型 AI 分身
               </span>
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-9 text-slate-300">
-              把一個人、品牌、學校、顧問、門市或公司的可信知識與說話方式，
-              變成能在 LINE 與網站持續服務、收集需求並交接真人的 AI分身。
+              我有自己的名字、說話方式和產品觀點，也會從可信知識找答案。
+              我能在網站與 LINE 接住問題、了解需求，並在需要承諾或專業判斷時交給真人。
             </p>
             <p className="mt-4 max-w-3xl text-sm font-semibold leading-7 text-slate-400">
-              Knowledge-grounded AI avatars for Taiwan’s LINE-first businesses.
-              AI 會清楚揭露身分，不冒充真人。
+              我是 AI，不是真人員工。像真人一樣好好對話，不代表要假裝成人。
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <ButtonLink href="#avatar-demo" variant="line" icon={Bot}>
-                立即試用 AI 分身
+                先和 Celine 聊聊
               </ButtonLink>
               <ButtonLink
                 href={lineCtaUrl}
@@ -137,7 +140,7 @@ export default function AiAvatarPage() {
                 variant="secondary"
                 icon={MessageCircle}
               >
-                加入 LINE 試用
+                加入 LINE 和 Celine 對話
               </ButtonLink>
               <ButtonLink href="/free-assessment" variant="secondary">
                 預約免費評估
@@ -145,40 +148,45 @@ export default function AiAvatarPage() {
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-white/15 bg-white/5 p-5 shadow-[0_32px_100px_rgba(0,0,0,0.45)] backdrop-blur sm:p-7">
-            <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-5">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.12em] text-emerald-300">
-                  One brain, many channels
-                </p>
-                <h2 className="mt-2 text-2xl font-black">知識型 AI分身架構</h2>
-              </div>
-              <Bot className="h-9 w-9 text-[#55e486]" aria-hidden="true" />
-            </div>
-            <div className="mt-6 grid gap-3">
-              {[
-                ["Knowledge Base", "FAQ · PDF · Website · Google Drive"],
-                ["RAG + Persona", "可信知識 · 品牌語氣 · 安全邊界"],
-                ["LLM Response", "Mock · Ollama · OpenAI-compatible"],
-                ["Channels", "Website · LINE · Voice · Future Video"],
-                ["Handoff", "Lead capture · Human follow-up"],
-              ].map(([title, description], index) => (
-                <div
-                  key={title}
-                  className="relative rounded-xl border border-white/10 bg-white/5 p-4"
-                >
-                  <p className="text-sm font-black text-white">{title}</p>
-                  <p className="mt-1 text-xs font-semibold leading-6 text-slate-400">
-                    {description}
+          <div className="mx-auto w-full max-w-[470px] rounded-[2rem] border border-white/15 bg-white/5 p-3 shadow-[0_32px_100px_rgba(0,0,0,0.45)] backdrop-blur">
+            <div className="overflow-hidden rounded-[1.5rem] bg-[#eef6f2] text-slate-950">
+              <div className="relative aspect-[16/11] overflow-hidden">
+                <Image
+                  src="/presenter/4.png"
+                  alt="Celine，LINE101Chat 的知識型 AI 分身品牌形象"
+                  fill
+                  loading="eager"
+                  fetchPriority="high"
+                  sizes="(min-width: 1024px) 470px, 92vw"
+                  className="object-cover object-[center_24%]"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/80 to-transparent p-5 pt-20 text-white">
+                  <p className="text-2xl font-black">Celine</p>
+                  <p className="mt-1 text-sm font-bold text-emerald-200">
+                    LINE101Chat AI 分身 · Online
                   </p>
-                  {index < 4 ? (
-                    <ArrowRight
-                      className="absolute -bottom-4 left-1/2 z-10 h-5 w-5 rotate-90 text-emerald-400"
-                      aria-hidden="true"
-                    />
-                  ) : null}
                 </div>
-              ))}
+              </div>
+              <div className="grid gap-4 p-5 text-sm leading-6">
+                <div className="ml-auto max-w-[82%] rounded-2xl rounded-br-sm bg-[#06c755] px-4 py-3 font-semibold text-white">
+                  AI 分身是不是只是 chatbot 換個名字？
+                </div>
+                <div className="max-w-[90%] rounded-2xl rounded-bl-sm bg-white px-4 py-3 text-slate-700 shadow-sm">
+                  如果只是換名字，確實沒什麼意思。我的差別是有固定個性、可信知識、記憶邊界和真人交接——能代表品牌，但不冒充真人。
+                </div>
+                <div className="ml-auto max-w-[82%] rounded-2xl rounded-br-sm bg-[#06c755] px-4 py-3 font-semibold text-white">
+                  那妳的個性呢？
+                </div>
+                <div className="max-w-[90%] rounded-2xl rounded-bl-sm bg-white px-4 py-3 text-slate-700 shadow-sm">
+                  溫暖，但不繞路；有好奇心，也敢說不知道。我偏好先做一個真的有用的小 MVP，而不是先講很大的故事。
+                </div>
+              </div>
+              <div className="border-t border-emerald-100 bg-white px-5 py-4">
+                <p className="flex items-center gap-2 text-xs font-black text-emerald-700">
+                  <ShieldCheck className="h-4 w-4" aria-hidden="true" />
+                  AI 身分清楚揭露 · 回答可追溯 · 重要事項轉真人
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -192,6 +200,45 @@ export default function AiAvatarPage() {
       </section>
 
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-10">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[340px_1fr] lg:items-center">
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-[340px] overflow-hidden rounded-[1.75rem] border border-emerald-200 bg-emerald-50 shadow-[0_24px_70px_rgba(15,23,42,0.12)]">
+            <Image
+              src="/presenter/4.png"
+              alt="Celine，LINE101Chat 的知識型 AI 分身"
+              fill
+              sizes="(min-width: 1024px) 340px, 88vw"
+              className="object-cover object-top"
+            />
+          </div>
+          <div>
+            <SectionHeading
+              eyebrow="Celine's Persona"
+              title="不是假裝成真人，而是把「像一個人好好說話」做成可控能力"
+              description="Celine 是 LINE101 Avatar 平台的第一個 reference avatar。她示範 persona 不是一句提示詞，而是語氣、觀點、知識、記憶、界線與交接方式的組合。"
+            />
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {[
+                ["她的個性", "溫暖、敏銳、坦率、沉著、務實，偶爾帶一點自然幽默。"],
+                ["她的觀點", "清楚勝過話術；先做一個真的有用的小 MVP，再逐步擴張。"],
+                ["她的知識", "回答 LINE101Chat、RAG、AI 分身與導入問題時，先找核准資料。"],
+                ["她的分寸", "不編造真人背景，不硬答正式承諾；使用者可查看或清除記憶。"],
+              ].map(([title, description]) => (
+                <article
+                  key={title}
+                  className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-5"
+                >
+                  <h2 className="font-black text-slate-950">{title}</h2>
+                  <p className="mt-2 text-sm leading-7 text-slate-600">
+                    {description}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-slate-50 px-5 py-16 sm:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
             eyebrow="Not Just A Chatbot"
@@ -428,7 +475,7 @@ export default function AiAvatarPage() {
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <ButtonLink href="#avatar-demo" variant="line" icon={Bot}>
-                立即試用 AI 分身
+                和 Celine 聊聊
               </ButtonLink>
               <ButtonLink
                 href={lineCtaUrl}
@@ -436,7 +483,7 @@ export default function AiAvatarPage() {
                 variant="secondary"
                 icon={MessageCircle}
               >
-                加入 LINE 試用
+                加入 LINE 和 Celine 對話
               </ButtonLink>
               <ButtonLink href="/free-assessment" variant="dark">
                 預約免費評估
@@ -446,14 +493,14 @@ export default function AiAvatarPage() {
 
           <aside className="rounded-xl border border-emerald-200 bg-white p-5 shadow-sm">
             <p className="text-sm font-black text-emerald-700">
-              LINE AI分身 Demo
+              Celine LINE Demo
             </p>
             <div className="mt-4 flex aspect-square items-center justify-center overflow-hidden rounded-xl border border-dashed border-emerald-300 bg-emerald-50">
               {qrUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={qrUrl}
-                  alt="加入 LINE101Chat AI分身 Demo 的 QR Code"
+                  alt="加入 Celine LINE AI 分身 Demo 的 QR Code"
                   className="h-full w-full object-contain p-3"
                 />
               ) : (
@@ -463,7 +510,7 @@ export default function AiAvatarPage() {
                     aria-hidden="true"
                   />
                   <p className="mt-4 text-lg font-black text-slate-950">
-                    LINE QR Code
+                    Celine LINE QR Code
                   </p>
                   <p className="mt-2 text-sm leading-6 text-slate-600">
                     設定 NEXT_PUBLIC_LINE_AVATAR_QR_URL 後顯示。
@@ -478,7 +525,7 @@ export default function AiAvatarPage() {
               icon={MessageCircle}
               className="mt-4 w-full"
             >
-              加入 LINE 試用
+              加入 Celine 好友
             </ButtonLink>
           </aside>
         </div>

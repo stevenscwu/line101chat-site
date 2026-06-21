@@ -6,6 +6,8 @@ LINE101Chat 正從「RAG-enabled LINE chatbot」擴展為「Knowledge-Grounded A
 
 AI分身可以代表個人、品牌、學校、顧問、門市或公司，在清楚揭露 AI 身分的前提下，透過網站、LINE 與未來的語音或影片通道回覆。
 
+Celine 是 LINE101Chat 的第一個 reference avatar。她在網站與 LINE 使用同一套 persona、可信知識、有限對話記憶與真人交接原則，用來示範 AI 分身如何有辨識度地說話，同時維持資料與身分界線。
+
 ## 不只是一般聊天機器人
 
 LINE101 AI分身具有穩定 persona、核准語氣與角色邊界。它先從可信知識找資料，再由模型組織答案；需要正式承諾、例外判斷或高風險專業意見時，轉交真人。

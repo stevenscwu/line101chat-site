@@ -4,6 +4,7 @@ import path from "node:path";
 import type { RagDocument, RagSnippet } from "@/lib/avatar/types";
 
 const KNOWLEDGE_FILES = [
+  "celine.md",
   "line101chat.md",
   "use-cases.md",
   "pricing-placeholder.md",
@@ -12,6 +13,7 @@ const KNOWLEDGE_FILES = [
 
 const MAX_SNIPPETS = 3;
 const MAX_SNIPPET_LENGTH = 1_300;
+const MIN_RELEVANCE_SCORE = 4;
 let knowledgePromise: Promise<RagDocument[]> | null = null;
 
 function getKnowledgePath(fileName: string) {
@@ -86,6 +88,7 @@ function tokenize(value: string) {
 
 function topicBoost(query: string, document: RagDocument) {
   const topics: Array<[RegExp, RegExp]> = [
+    [/celine|妳是誰|你是誰|個性|persona|分身是誰/iu, /celine|身分|個性|persona|對話方式/iu],
     [/rag|知識庫|來源|pdf|文件/iu, /rag|知識庫|來源|pdf|文件/iu],
     [/學校|招生|系所|教育/iu, /學校|招生|系所|教育/iu],
     [/顧問|老師|診所|房仲|門市|零售|創作者|b2b/iu, /顧問|老師|診所|房仲|門市|零售|創作者|b2b/iu],
@@ -129,7 +132,7 @@ export async function retrieveKnowledge(
       ...document,
       score: scoreDocument(query, document),
     }))
-    .filter((document) => document.score > 0)
+    .filter((document) => document.score >= MIN_RELEVANCE_SCORE)
     .sort((left, right) => right.score - left.score)
     .slice(0, limit)
     .map((document) => ({

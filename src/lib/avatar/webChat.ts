@@ -85,7 +85,7 @@ export async function handleAvatarWebChat(request: NextRequest) {
     return withSessionCookie(
       NextResponse.json({
         ok: true,
-        reply: "已清除這個瀏覽器可用的 AI分身對話記憶。我們可以重新開始。",
+        reply: "好，我已清除這個瀏覽器可用的 Celine 對話記憶。我們可以重新認識。",
         memoryDurable: false,
         memoryMode: "cleared",
         leadIntent: false,

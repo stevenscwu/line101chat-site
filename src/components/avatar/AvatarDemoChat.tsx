@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import {
   type FormEvent,
   type KeyboardEvent,
@@ -9,12 +11,14 @@ import {
 } from "react";
 import {
   AlertCircle,
-  Bot,
+  Brain,
+  ExternalLink,
   Loader2,
   Mic,
   Send,
   Sparkles,
   Square,
+  Trash2,
   UserRound,
   Volume2,
 } from "lucide-react";
@@ -25,6 +29,7 @@ type ChatMessage = {
   content: string;
   isError?: boolean;
   sources?: string[];
+  shouldHandoff?: boolean;
 };
 
 type ChatResponse = {
@@ -32,6 +37,9 @@ type ChatResponse = {
   reply?: string;
   error?: string;
   sources?: string[];
+  shouldHandoff?: boolean;
+  memoryDurable?: boolean;
+  memoryMode?: string;
 };
 
 type SpeechRecognitionEventLike = {
@@ -66,14 +74,14 @@ declare global {
 
 const MAX_MESSAGE_LENGTH = 1_000;
 const quickQuestions = [
-  "你們跟一般 ChatGPT 有什麼不同？",
+  "嗨 Celine，先介紹你自己",
+  "你覺得好的 AI 分身是什麼？",
+  "你會記得我嗎？",
+  "今天工作有點亂，陪我整理一下",
+  "你跟一般 ChatGPT 有什麼不同？",
   "RAG 是什麼？",
   "可以幫學校做招生問答嗎？",
-  "可以幫顧問打造 AI 分身嗎？",
-  "可以串接 Google Drive 嗎？",
-  "可以用本地 Ollama 嗎？",
-  "如何收費？",
-  "我想預約免費評估",
+  "我想打造自己的 AI 分身",
 ];
 
 function createId(prefix: string) {
@@ -89,12 +97,13 @@ export function AvatarDemoChat() {
   const [isListening, setIsListening] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState<boolean | null>(null);
   const [voiceNotice, setVoiceNotice] = useState("");
+  const [memoryDurable, setMemoryDurable] = useState<boolean | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
-      id: "avatar-intro",
+      id: "celine-intro",
       role: "assistant",
       content:
-        "您好，我是 LINE101Chat AI分身，由 LINE101Chat 建立的 AI 產品代表，不是真人。您可以問我 AI分身、RAG、LINE 串接、學校或企業應用，以及本地 Ollama。",
+        "嗨，我是 Celine，LINE101Chat 的知識型 AI 分身，不是真人員工。我可以跟你自然聊，也能根據核准知識回答 AI 分身、RAG、LINE 串接和導入問題。告訴我你真正想弄清楚的事，我不會急著把每句話都變成推銷。",
     },
   ]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -151,9 +160,14 @@ export function AvatarDemoChat() {
       const payload = (await response.json()) as ChatResponse;
 
       if (!response.ok || !payload.reply) {
-        throw new Error(payload.error || "AI分身暫時沒有回覆。");
+        throw new Error(payload.error || "Celine 暫時沒有回覆。");
       }
 
+      setMemoryDurable(
+        payload.memoryMode === "cleared"
+          ? null
+          : Boolean(payload.memoryDurable),
+      );
       setMessages((current) => [
         ...current,
         {
@@ -161,6 +175,7 @@ export function AvatarDemoChat() {
           role: "assistant",
           content: payload.reply || "",
           sources: payload.sources,
+          shouldHandoff: payload.shouldHandoff,
         },
       ]);
     } catch (error) {
@@ -191,6 +206,12 @@ export function AvatarDemoChat() {
       event.preventDefault();
       void sendMessage();
     }
+  }
+
+  async function forgetConversation() {
+    if (isSending) return;
+    await sendMessage("忘記我");
+    setMemoryDurable(null);
   }
 
   function toggleListening() {
@@ -257,20 +278,44 @@ export function AvatarDemoChat() {
       aria-labelledby="avatar-demo-title"
     >
       <header className="border-b border-emerald-100 bg-gradient-to-r from-emerald-50 to-white p-5 sm:p-6">
-        <p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.08em] text-emerald-700">
-          <Sparkles className="h-4 w-4" aria-hidden="true" />
-          Live Knowledge-Grounded Demo
-        </p>
-        <h2
-          id="avatar-demo-title"
-          className="mt-2 text-2xl font-black text-slate-950 sm:text-3xl"
-        >
-          立即試用 LINE101 AI分身
-        </h2>
-        <p className="mt-2 text-sm font-semibold leading-7 text-slate-600">
-          網站與 LINE 共用同一個 persona、RAG 檢索與模型介面。Demo
-          預設可使用不需外部模型的 mock 模式。
-        </p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4">
+            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-[#06c755] bg-white shadow-sm">
+              <Image
+                src="/presenter/4.png"
+                alt=""
+                fill
+                sizes="64px"
+                className="object-cover object-top"
+              />
+              <span className="absolute bottom-0.5 right-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#06c755]" />
+            </div>
+            <div>
+              <p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.08em] text-emerald-700">
+                <Sparkles className="h-4 w-4" aria-hidden="true" />
+                Live Celine Demo
+              </p>
+              <h2
+                id="avatar-demo-title"
+                className="mt-1 text-2xl font-black text-slate-950 sm:text-3xl"
+              >
+                和 Celine 聊聊
+              </h2>
+              <p className="mt-1 text-sm font-semibold leading-6 text-slate-600">
+                LINE101Chat AI 分身 · 有個性 · 有根據 · 可轉真人
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={forgetConversation}
+            disabled={isSending}
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700 transition hover:border-rose-300 hover:text-rose-700 disabled:cursor-wait disabled:opacity-50"
+          >
+            <Trash2 className="h-4 w-4" aria-hidden="true" />
+            忘記這段對話
+          </button>
+        </div>
       </header>
 
       <div className="grid lg:grid-cols-[minmax(0,1fr)_320px]">
@@ -308,12 +353,17 @@ export function AvatarDemoChat() {
                           aria-hidden="true"
                         />
                       ) : (
-                        <Bot
-                          className="h-4 w-4 text-emerald-700"
-                          aria-hidden="true"
-                        />
+                        <span className="relative h-5 w-5 overflow-hidden rounded-full border border-emerald-200">
+                          <Image
+                            src="/presenter/4.png"
+                            alt=""
+                            fill
+                            sizes="20px"
+                            className="object-cover object-top"
+                          />
+                        </span>
                       )}
-                      LINE101Chat AI分身
+                      Celine · AI
                     </div>
                     <p className="whitespace-pre-wrap text-sm leading-7">
                       {message.content}
@@ -322,6 +372,25 @@ export function AvatarDemoChat() {
                       <p className="mt-3 border-t border-slate-100 pt-2 text-[11px] font-semibold leading-5 text-slate-400">
                         已參考 {message.sources.length} 個本地知識片段
                       </p>
+                    ) : null}
+                    {message.shouldHandoff ? (
+                      <div className="mt-3 flex flex-wrap gap-2 border-t border-slate-100 pt-3">
+                        <Link
+                          href="/free-assessment"
+                          className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-[#06c755] px-3 py-2 text-xs font-black text-white transition hover:bg-[#05ae4a]"
+                        >
+                          預約免費評估
+                          <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                        </Link>
+                        <a
+                          href="https://line.me/R/ti/p/%40821jpehj"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex min-h-10 items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-black text-slate-700 transition hover:border-emerald-400 hover:text-emerald-700"
+                        >
+                          加入 Celine LINE
+                        </a>
+                      </div>
                     ) : null}
                   </article>
                 </div>
@@ -335,7 +404,7 @@ export function AvatarDemoChat() {
                     className="h-4 w-4 animate-spin text-emerald-700"
                     aria-hidden="true"
                   />
-                  AI分身正在查找知識並整理回答
+                  Celine 正在找資料，也在想怎麼說得更清楚
                 </div>
               </div>
             ) : null}
@@ -347,7 +416,7 @@ export function AvatarDemoChat() {
             onSubmit={handleSubmit}
           >
             <label className="sr-only" htmlFor="avatar-message">
-              傳訊息給 LINE101Chat AI分身
+              傳訊息給 Celine
             </label>
             <textarea
               id="avatar-message"
@@ -356,7 +425,7 @@ export function AvatarDemoChat() {
               onKeyDown={handleKeyDown}
               maxLength={MAX_MESSAGE_LENGTH}
               className="min-h-24 w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-base leading-7 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-              placeholder="輸入問題，或使用麥克風把語音轉成文字…"
+              placeholder="跟 Celine 說點什麼… Enter 送出，Shift+Enter 換行"
             />
             <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-wrap items-center gap-2">
@@ -380,7 +449,7 @@ export function AvatarDemoChat() {
                   className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700 transition hover:border-emerald-500 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <Volume2 className="h-4 w-4" aria-hidden="true" />
-                  朗讀回覆
+                  讓 Celine 朗讀
                 </button>
                 <span className="text-xs font-semibold text-slate-500">
                   {draft.length}/{MAX_MESSAGE_LENGTH}
@@ -404,7 +473,24 @@ export function AvatarDemoChat() {
         </div>
 
         <aside className="border-t border-emerald-100 bg-white p-5 lg:border-l lg:border-t-0">
-          <h3 className="text-sm font-black text-slate-950">快速試問</h3>
+          <div className="flex items-center gap-2 text-sm font-black text-slate-950">
+            <Brain className="h-5 w-5 text-emerald-700" aria-hidden="true" />
+            對話記憶
+          </div>
+          <p className="mt-3 text-sm leading-7 text-slate-600">
+            {memoryDurable === null
+              ? "第一次送出後，Celine 會說明這個環境的記憶方式。"
+              : memoryDurable
+                ? "已使用去識別化持久記憶，只保存有限近期脈絡與你主動提供的偏好。"
+                : "目前只使用暫時記憶；服務重新啟動後可能不會保留。"}
+          </p>
+          <p className="mt-3 rounded-lg bg-slate-50 p-3 text-xs font-semibold leading-6 text-slate-600">
+            輸入「你記得我什麼？」可查看摘要；輸入「忘記我」可清除。
+          </p>
+
+          <h3 className="mt-6 text-sm font-black text-slate-950">
+            不知道怎麼開始？
+          </h3>
           <div className="mt-3 grid gap-2">
             {quickQuestions.map((question) => (
               <button
@@ -420,7 +506,7 @@ export function AvatarDemoChat() {
           </div>
           <p className="mt-5 rounded-lg bg-amber-50 p-3 text-xs font-semibold leading-6 text-amber-900">
             請勿傳送密碼、權杖、信用卡或不必要的敏感資料。AI
-            會揭露身分，正式報價與專業判斷由真人確認。
+            身分會清楚揭露；正式報價與專業判斷由真人確認。
           </p>
         </aside>
       </div>

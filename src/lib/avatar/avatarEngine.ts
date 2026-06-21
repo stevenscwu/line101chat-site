@@ -29,7 +29,7 @@ export async function generateAvatarReply(
       snippets,
       leadIntent,
     });
-    const leadPrompt = getLeadCapturePrompt(userMessage);
+    const leadPrompt = getLeadCapturePrompt(userMessage, input.history);
     const reply =
       leadIntent && shouldAppendLeadPrompt(result.text, leadPrompt)
         ? `${result.text}\n\n${leadPrompt}`

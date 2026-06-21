@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Bot,
   CheckCircle2,
   FileSearch,
   GraduationCap,
@@ -215,35 +214,41 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
             </p>
             <h2 className="mt-3 text-3xl font-black leading-tight tracking-[0] text-slate-950 sm:text-4xl">
               {isEnglish
-                ? "Knowledge-grounded AI avatars for Taiwan’s LINE-first businesses"
-                : "不只是 LINE 聊天機器人，而是能代表你的知識型 AI 分身"}
+                ? "Meet Celine, LINE101Chat’s knowledge-grounded AI avatar"
+                : "先認識 Celine，再想像你的知識型 AI 分身"}
             </h2>
             <p className="mt-4 max-w-3xl text-base leading-8 text-slate-600">
               {isEnglish
-                ? "Go beyond a LINE chatbot. Use RAG-grounded knowledge and a defined persona to represent a brand, consultant, school, or store across LINE, website chat, and future voice channels."
-                : "不只是 LINE 聊天機器人，而是能代表品牌、顧問、學校或門市的知識型 AI 分身。透過 RAG 串接真實資料，讓 AI 在 LINE、網站與語音中自然回答、收集需求並交接真人。"}
+                ? "Celine is the working proof: a disclosed AI with a recognizable voice, verified knowledge, conversation memory, and human handoff across website chat and LINE."
+                : "Celine 是 LINE101Chat 的實際示範：有辨識度的個性、可信知識、對話記憶與真人交接。她不冒充真人，卻能像一個人好好接住網站與 LINE 裡的問題。"}
             </p>
             <Link
               href="/ai-avatar"
               className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-[#06c755] px-5 py-3 text-sm font-black text-white shadow-sm hover:bg-[#05b54e]"
             >
-              {isEnglish ? "Explore LINE101 Avatar" : "看看 AI 分身"}
+              {isEnglish ? "Talk to Celine" : "和 Celine 聊聊"}
             </Link>
           </div>
           <div className="rounded-lg bg-slate-950 p-5 text-white">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#06c755]">
-                <Bot className="h-6 w-6" aria-hidden="true" />
+              <div className="relative h-12 w-12 overflow-hidden rounded-full border-2 border-[#06c755] bg-white">
+                <Image
+                  src="/presenter/4.png"
+                  alt=""
+                  fill
+                  sizes="48px"
+                  className="object-cover object-top"
+                />
               </div>
               <div>
-                <p className="font-black">LINE101 Avatar</p>
-                <p className="text-xs font-bold text-emerald-300">Persona · RAG · LINE · Web · Voice</p>
+                <p className="font-black">Celine · LINE101 Avatar</p>
+                <p className="text-xs font-bold text-emerald-300">Personality · RAG · Memory · Handoff</p>
               </div>
             </div>
             <p className="mt-5 rounded-lg bg-white/10 p-4 text-sm leading-7 text-slate-200">
               {isEnglish
-                ? "One grounded AI brain can answer through website chat, LINE, and voice while handing formal decisions to a real team."
-                : "同一個知識與 persona brain，可以在網站、LINE 與語音中回答；正式承諾與例外問題則交接真人。"}
+                ? "Warm but direct. Grounded in approved knowledge. Honest about being AI. Ready to hand real decisions to real people."
+                : "溫暖，但不繞路；回答有根據，也坦白自己是 AI。真正需要承諾的事，交給真正的人。"}
             </p>
           </div>
         </div>

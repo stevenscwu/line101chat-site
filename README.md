@@ -6,6 +6,7 @@ consultants, stores, creators, and service teams.
 
 The current investor-facing MVP is **LINE101 Avatar / LINE101 AI分身**:
 
+- Celine as the named, knowledge-grounded reference avatar
 - One knowledge-grounded avatar brain for website chat and LINE
 - A defined persona that discloses it is AI and does not impersonate a human
 - Lightweight markdown RAG with a future vector-database extension point

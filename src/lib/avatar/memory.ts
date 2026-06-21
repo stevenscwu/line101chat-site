@@ -455,11 +455,11 @@ export function buildMemorySummaryReply(record: AvatarMemoryRecord) {
   ].filter(Boolean);
 
   if (!details.length) {
-    return "目前我只保留了最近的對話脈絡，還沒有整理出你的稱呼或偏好。你可以直接告訴我「我叫…」或「請記得…」。";
+    return "目前我只保留了最近的對話脈絡，還沒有整理出你的稱呼或偏好。你可以直接告訴我「我叫…」或「請記得…」；控制權在你手上。";
   }
 
   return [
-    "我目前記得這些：",
+    "我目前記得這些，而且只會在相關時自然使用：",
     ...details.map((detail) => `• ${detail}`),
     "如果你想全部清除，輸入「忘記我」就可以。",
   ].join("\n");
@@ -468,13 +468,13 @@ export function buildMemorySummaryReply(record: AvatarMemoryRecord) {
 export function getMemoryDisclosure(durable: boolean, english = false) {
   if (english) {
     return durable
-      ? "I’m the LINE101Chat AI avatar. To continue relevant conversations, I keep limited pseudonymous recent context and preferences you voluntarily share. Send “forget me” to delete it."
-      : "I’m the LINE101Chat AI avatar. This environment only keeps temporary conversation context. Send “forget me” to clear it.";
+      ? "Memory note: to keep relevant conversations coherent, I store limited pseudonymous recent context and preferences you voluntarily share. Send “forget me” to delete it."
+      : "Memory note: this environment only keeps temporary conversation context. Send “forget me” to clear it.";
   }
 
   return durable
-    ? "我是 LINE101Chat AI分身。為了下次接得上話，我會以去識別方式保存有限的近期對話與你主動告訴我的偏好；輸入「忘記我」可刪除。"
-    : "我是 LINE101Chat AI分身。目前這個環境只會暫時保留本次服務執行期間的對話；輸入「忘記我」可清除。";
+    ? "記憶說明：為了讓相關對話接得上，我會以去識別方式保存有限的近期脈絡與你主動告訴我的偏好；輸入「忘記我」可刪除。"
+    : "記憶說明：這個環境只會暫時保留本次服務執行期間的對話；輸入「忘記我」可清除。";
 }
 
 export const avatarMemoryDefaults = {

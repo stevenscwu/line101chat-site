@@ -66,7 +66,7 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
 
     await replyToLine(
       event.replyToken,
-      `您好，我是 ${persona.name}，由 LINE101Chat 建立的 AI 產品代表，不是真人。您可以問我 AI分身、RAG、LINE／網站串接、學校與企業應用、本地 Ollama，或請我協助整理導入需求。\n\n${disclosure}`,
+      `嗨，我是 ${persona.name}，LINE101Chat 的知識型 AI 分身，不是真人員工。我可以自然聊聊，也能根據核准知識回答 AI 分身、RAG、LINE／網站串接與導入問題；該由真人決定的事，我不會逞強。\n\n${disclosure}`,
     );
     return;
   }
@@ -94,7 +94,7 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
       try {
         await deleteAvatarMemory("line", lineUserId);
         reply =
-          "已清除這個 LINE 帳號可用的 AI分身對話記憶。下次可以重新開始。";
+          "好，我已清除這個 LINE 帳號可用的 Celine 對話記憶。下次我們就重新認識。";
       } catch (error) {
         logError("could not delete conversation memory", error);
         reply = "我剛剛沒能完成刪除，請稍後再輸入一次「忘記我」。";

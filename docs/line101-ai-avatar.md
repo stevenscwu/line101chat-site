@@ -11,6 +11,11 @@ The MVP turns approved knowledge and a defined persona into one reusable avatar
 brain for website chat, LINE, optional browser voice interaction, lead capture,
 human handoff, and future marketing-video avatars.
 
+The default reference avatar is **Celine**, LINE101Chat's disclosed AI digital
+host and product representative. Celine has a stable conversational voice and
+product point of view, but never claims a human biography, body, or first-hand
+experience. She is designed to feel natural without deceiving users.
+
 ## Production routes
 
 ```text
@@ -48,6 +53,7 @@ The MVP knowledge pack is maintained in:
 
 ```text
 content/avatar/knowledge/line101chat.md
+content/avatar/knowledge/celine.md
 content/avatar/knowledge/use-cases.md
 content/avatar/knowledge/pricing-placeholder.md
 content/avatar/knowledge/technical-process.md
@@ -136,7 +142,7 @@ The adapter calls `{OPENAI_COMPATIBLE_BASE_URL}/chat/completions`.
 | `OPENAI_COMPATIBLE_BASE_URL` | Compatible provider only | Provider `/v1`-style base URL. |
 | `OPENAI_COMPATIBLE_API_KEY` | Compatible provider only | Server-only provider key. |
 | `OPENAI_COMPATIBLE_MODEL` | Compatible provider only | Provider model name. |
-| `AVATAR_NAME` | Optional | Persona display name. |
+| `AVATAR_NAME` | Optional | Persona display name; defaults to `Celine`. |
 | `AVATAR_OWNER_NAME` | Optional | Persona owner. |
 | `AVATAR_CONTACT_URL` | Recommended | Human handoff destination. |
 | `AVATAR_SYSTEM_PROMPT` | Optional | Owner-approved persona additions. |

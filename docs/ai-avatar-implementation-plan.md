@@ -33,3 +33,32 @@
 - Do not claim exact AI avatar pricing; use assessment-based pricing language.
 - Do not implement a vector database, paid voice service, or real-time video engine in this MVP.
 - Preserve the existing Celine memory layer as an optional enhancement, while keeping the core avatar platform modular and channel-independent.
+
+## Phase 2: make Celine the product proof
+
+The first platform release established the shared RAG, model, memory, website,
+LINE, voice, and handoff architecture. The next pass makes that architecture
+feel like a believable product through one recognizable representative:
+**Celine, LINE101Chat's knowledge-grounded AI avatar**.
+
+Implementation priorities:
+
+1. Use `Celine` as the default avatar name across the persona, website chat,
+   landing page, memory disclosure, and LINE welcome flow.
+2. Give Celine a stable conversational character: warm, perceptive, candid,
+   calm, practical, and lightly playful, with a clear preference for useful
+   answers over sales language.
+3. Keep the identity boundary explicit. Celine can have a voice and point of
+   view, but must disclose that she is AI and must not invent a human body,
+   biography, private life, or first-hand experience.
+4. Let Celine respond naturally to greetings, brief small talk, thanks,
+   uncertainty, and emotional tone without turning every message into a sales
+   pitch. Product claims still come from retrieved knowledge.
+5. Make lead discovery conversational: ask no more than two useful questions
+   at a time, then offer a visible route to LINE or the free assessment page.
+6. Show Celine's portrait, name, memory controls, grounding status, voice
+   controls, and human-handoff state in the website demo.
+7. Add a Celine knowledge document so future model providers receive the same
+   identity, principles, and boundaries as mock mode.
+8. Keep the generic platform story on `/ai-avatar`, but introduce it through
+   Celine as the working reference avatar rather than through an anonymous bot.
