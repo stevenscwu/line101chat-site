@@ -4,7 +4,9 @@ export type AvatarConversationMessage = {
   createdAt?: string;
 };
 
-export type AvatarChannel = "line" | "web";
+export type AvatarChannel = "website" | "line" | "voice" | "video";
+
+export type AvatarMemoryChannel = "line" | "web";
 
 export type AvatarMemoryProfile = {
   preferredName?: string;
@@ -16,7 +18,7 @@ export type AvatarMemoryProfile = {
 export type AvatarMemoryRecord = {
   version: 1;
   subjectId: string;
-  channel: AvatarChannel;
+  channel: AvatarMemoryChannel;
   createdAt: string;
   updatedAt: string;
   disclosureSentAt?: string;
@@ -33,16 +35,53 @@ export type AvatarMemoryContext = {
 };
 
 export type GenerateAvatarReplyInput = {
-  message: string;
+  userMessage: string;
+  channel: AvatarChannel;
+  userId?: string;
+  context?: Record<string, string | number | boolean | null>;
   history?: AvatarConversationMessage[];
   memory?: AvatarMemoryContext;
+};
+
+export type AvatarReply = {
+  reply: string;
+  provider: LlmProvider;
+  leadIntent: boolean;
+  shouldHandoff: boolean;
+  sources: string[];
 };
 
 export type AvatarPersona = {
   name: string;
   ownerName: string;
+  role: string;
+  language: string;
+  tone: string;
   contactUrl: string;
   systemPrompt: string;
+};
+
+export type RagDocument = {
+  id: string;
+  title: string;
+  source: string;
+  content: string;
+};
+
+export type RagSnippet = {
+  id: string;
+  title: string;
+  source: string;
+  content: string;
+  score: number;
+};
+
+export type LlmProvider = "mock" | "ollama" | "openai-compatible";
+
+export type GenerateLlmReplyInput = GenerateAvatarReplyInput & {
+  persona: AvatarPersona;
+  snippets: RagSnippet[];
+  leadIntent: boolean;
 };
 
 export type LineMessage = {

@@ -1,8 +1,21 @@
-# LINE101Chat Business Website
+# LINE101Chat — Knowledge-Grounded AI Avatar Platform
 
-LINE101Chat is a Taiwan-focused enterprise AI knowledge assistant website for SMEs, schools, education organizations, manufacturers, HR/admin/IT teams, and LINE-based customer service teams.
+LINE101Chat is evolving from a Taiwan-focused RAG LINE chatbot service into a
+Knowledge-Grounded AI Avatar Platform for LINE-first businesses, schools,
+consultants, stores, creators, and service teams.
 
-The site now presents confidential company knowledge search through LINE as the core service and translation as an optional module:
+The current investor-facing MVP is **LINE101 Avatar / LINE101 AI分身**:
+
+- One knowledge-grounded avatar brain for website chat and LINE
+- A defined persona that discloses it is AI and does not impersonate a human
+- Lightweight markdown RAG with a future vector-database extension point
+- Mock, Ollama (`gemma4:26b`), and OpenAI-compatible model adapters
+- Browser-native optional voice input and read-aloud
+- Lead qualification and human handoff
+- A future path to short-form video and real-time avatars
+
+The existing RAG and LINE knowledge-assistant capabilities remain the
+intelligence foundation:
 
 - Enterprise AI Knowledge Assistant for official-document Q&A with source-grounded answers
 - LINE-based company knowledge search with cloud, local, or private deployment options
@@ -38,7 +51,8 @@ https://github.com/stevenscwu/line101chat-site
 - `/document-readiness-checklist` lead magnet page that can be printed or saved as PDF
 - SEO blog and detailed NTUT iFIRST RAG case-study pages
 - `/101recipe` local recipe PDF retrieval page, proxied to the 101recipe bot backend
-- `/ai-avatar` interactive Celine AI persona page with LINE/web chat and privacy-controlled conversation memory
+- `/ai-avatar` investor-facing LINE101 Avatar product page with website chat,
+  LINE integration, optional browser voice controls, and future video roadmap
 
 ## Presenter Assets
 
@@ -103,7 +117,15 @@ OLLAMA_MODEL=gemma4:26b
 OLLAMA_TIMEOUT_MS=45000
 ```
 
-Full setup instructions are in [`docs/line-ai-avatar.md`](docs/line-ai-avatar.md).
+Test the avatar page and API:
+
+```text
+http://localhost:3000/ai-avatar
+POST http://localhost:3000/api/avatar/chat
+```
+
+Full setup instructions are in
+[`docs/line101-ai-avatar.md`](docs/line101-ai-avatar.md).
 
 For the 101recipe page, run the bot backend first:
 
@@ -214,63 +236,40 @@ TRANSLATION_PAYMENTS_ADMIN_TOKEN
 
 Payment records are stored through the local file-backed store in `.data/translation-payments.json` during local development. For production billing, replace the store with a durable database or configure durable storage before accepting real payments.
 
-## LINE AI Avatar
+## LINE101 Avatar
 
-The starter persona is **Celine**, a clearly disclosed AI conversational
-character with a young-adult feminine voice. She is warm, curious, natural,
-thoughtful, and lightly playful without pretending to be human. Everyday
-conversation and continuity are her primary role; LINE101Chat services, AI
-avatars, and RAG are one area of expertise rather than the subject of every
-conversation.
-
-The App Router endpoints are:
+Public routes:
 
 ```text
+GET  /ai-avatar
+POST /api/avatar/chat
 POST /api/line/avatar-webhook
-POST /api/celine/chat
 ```
 
-It verifies the LINE signature before parsing events, handles text messages,
-supports deterministic mock replies and Ollama `/api/chat`, persists bounded
-conversation history, and falls back safely when model generation fails.
+The earlier `POST /api/celine/chat` route remains as a compatibility alias.
+Website and LINE requests both call the same `generateAvatarReply` engine.
 
-Local development stores Celine memory in
-`.data/celine-memory.json`. Raw LINE IDs are never stored: the server derives a
-pseudonymous subject key with HMAC-SHA256 and `CELINE_MEMORY_SECRET`. Users can
-send `你記得我什麼？` to inspect the profile summary and `忘記我` to delete
-their stored conversation and preferences.
-
-Vercel's filesystem is ephemeral, so durable production memory requires an
-Upstash Redis integration. Without Upstash variables the deployed app keeps
-only best-effort in-process memory and tells website users that memory is
-temporary.
-
-Required environment variables:
+Required variables depend on the selected channel and model:
 
 ```text
-LINE_AVATAR_CHANNEL_SECRET
-LINE_AVATAR_CHANNEL_ACCESS_TOKEN
 LLM_PROVIDER
 OLLAMA_BASE_URL
 OLLAMA_MODEL
-OLLAMA_TIMEOUT_MS
-AVATAR_NAME
-AVATAR_OWNER_NAME
-AVATAR_CONTACT_URL
-AVATAR_SYSTEM_PROMPT
-CELINE_MEMORY_SECRET
-CELINE_MEMORY_FILE
-CELINE_MEMORY_RETENTION_DAYS
-CELINE_MEMORY_MAX_MESSAGES
-UPSTASH_REDIS_REST_URL
-UPSTASH_REDIS_REST_TOKEN
+LINE_AVATAR_CHANNEL_SECRET
+LINE_AVATAR_CHANNEL_ACCESS_TOKEN
 NEXT_PUBLIC_LINE_AVATAR_QR_URL
 NEXT_PUBLIC_LINE_AVATAR_ADD_FRIEND_URL
+OPENAI_COMPATIBLE_BASE_URL
+OPENAI_COMPATIBLE_API_KEY
+OPENAI_COMPATIBLE_MODEL
 ```
 
-Vercel cannot call a private Windows `localhost` Ollama server. When
-`LLM_PROVIDER=ollama` in production, `OLLAMA_BASE_URL` must be an HTTPS endpoint
-reachable from Vercel. Keep `LLM_PROVIDER=mock` until that endpoint is ready.
+Use `LLM_PROVIDER=mock` for a deployment-safe deterministic demo. Vercel cannot
+call a private Windows `localhost:11434`; production Ollama needs a protected
+HTTPS endpoint, private server, secure tunnel, or hosted compatible provider.
+
+Never commit `.env`, LINE credentials, API keys, Vercel tokens, private keys, or
+local credentials.
 
 ## Future Integrations
 

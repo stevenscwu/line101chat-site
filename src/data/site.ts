@@ -49,6 +49,7 @@ export const site = {
 
 export const navItems = [
   { label: "首頁", href: "/" },
+  { label: "AI分身", href: "/ai-avatar" },
   { label: "服務說明", href: "/services" },
   { label: "AI 知識助理", href: "/rag-chatbot" },
   { label: "案例 / Demo", href: "/case-studies" },
@@ -459,6 +460,16 @@ export function localizePath(href: string, locale: Locale): string {
 
 export function alternateLocalePath(pathname: string): string {
   const locale = getLocaleFromPathname(pathname);
+
+  if (
+    locale === "zh" &&
+    ["/ai-avatar", "/ai-knowledge-assistant", "/case-studies/101recipe"].some(
+      (route) => pathname === route || pathname.startsWith(`${route}/`),
+    )
+  ) {
+    return "/en";
+  }
+
   return localizePath(pathname, locale === "en" ? "zh" : "en");
 }
 

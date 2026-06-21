@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { generateAvatarReply } from "@/lib/avatar/llm";
+import { generateAvatarReply } from "@/lib/avatar/avatarEngine";
 import { replyToLine, verifyLineSignature } from "@/lib/avatar/line";
 import {
   buildMemorySummaryReply,
@@ -16,6 +16,7 @@ import {
   getAvatarPersona,
   getSafeFallbackReply,
   getUnsupportedMessageReply,
+  isEnglishMessage,
 } from "@/lib/avatar/persona";
 import type {
   LineWebhookBody,
@@ -65,7 +66,7 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
 
     await replyToLine(
       event.replyToken,
-      `嗨，我是 ${persona.name}，一位喜歡自然聊天、也能幫你整理想法的 AI，不是真人。你可以聊日常、工作、學習或任何正在想的事；如果剛好想了解 AI 分身、LINE chatbot 或 RAG，我也很熟。\n\n${disclosure}`,
+      `您好，我是 ${persona.name}，由 LINE101Chat 建立的 AI 產品代表，不是真人。您可以問我 AI分身、RAG、LINE／網站串接、學校與企業應用、本地 Ollama，或請我協助整理導入需求。\n\n${disclosure}`,
     );
     return;
   }
@@ -81,11 +82,19 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
   } else {
     const message = event.message.text || "";
 
+    if (message.length > 1_000) {
+      await replyToLine(
+        event.replyToken,
+        "訊息較長，請先縮短到 1,000 字內，或分成幾段傳送，我會逐步協助。",
+      );
+      return;
+    }
+
     if (lineUserId && isForgetMemoryCommand(message)) {
       try {
         await deleteAvatarMemory("line", lineUserId);
         reply =
-          "好，我已經清除這個 LINE 帳號在 Celine 記憶庫中的對話與偏好。下次我們就從新的自我介紹開始。";
+          "已清除這個 LINE 帳號可用的 AI分身對話記憶。下次可以重新開始。";
       } catch (error) {
         logError("could not delete conversation memory", error);
         reply = "我剛剛沒能完成刪除，請稍後再輸入一次「忘記我」。";
@@ -95,31 +104,47 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
     }
 
     try {
-      const memory = lineUserId
-        ? await loadAvatarMemory("line", lineUserId)
-        : null;
+      let memory: Awaited<ReturnType<typeof loadAvatarMemory>> | null = null;
+
+      if (lineUserId) {
+        try {
+          memory = await loadAvatarMemory("line", lineUserId);
+        } catch (error) {
+          logError("memory unavailable; continuing without memory", error);
+        }
+      }
 
       if (memory && isMemorySummaryCommand(message)) {
         reply = buildMemorySummaryReply(memory.record);
       } else {
-        reply = await generateAvatarReply({
-          message,
+        const result = await generateAvatarReply({
+          userMessage: message,
+          channel: "line",
+          userId: lineUserId || undefined,
           history: memory?.record.messages || [],
           memory: memory?.context,
         });
+        reply = result.reply;
       }
 
       if (memory) {
         const isFirstReply = !memory.record.disclosureSentAt;
         const replyToStore = isFirstReply
-          ? `${getMemoryDisclosure(memory.context.durable)}\n\n${reply}`
+          ? `${getMemoryDisclosure(
+              memory.context.durable,
+              isEnglishMessage(message),
+            )}\n\n${reply}`
           : reply;
 
-        await saveAvatarConversationTurn(
-          memory.record,
-          message,
-          replyToStore,
-        );
+        try {
+          await saveAvatarConversationTurn(
+            memory.record,
+            message,
+            replyToStore,
+          );
+        } catch (error) {
+          logError("memory save unavailable", error);
+        }
         reply = replyToStore;
       }
     } catch (error) {

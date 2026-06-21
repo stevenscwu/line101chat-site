@@ -1,22 +1,9 @@
 import type { Metadata } from "next";
-import { Manrope, Noto_Sans_TC } from "next/font/google";
 
 import "@/app/globals.css";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { site } from "@/data/site";
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-  display: "swap",
-});
-
-const notoSansTc = Noto_Sans_TC({
-  subsets: ["latin"],
-  variable: "--font-noto-sans-tc",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -53,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-Hant-TW" className={`${manrope.variable} ${notoSansTc.variable}`}>
+    <html lang="zh-Hant-TW">
       <body className="min-h-screen bg-[var(--surface-light)] text-[var(--text-primary)] antialiased">
         <Header />
         {children}

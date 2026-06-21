@@ -5,8 +5,8 @@ import path from "node:path";
 import { Redis } from "@upstash/redis";
 
 import type {
-  AvatarChannel,
   AvatarConversationMessage,
+  AvatarMemoryChannel,
   AvatarMemoryContext,
   AvatarMemoryProfile,
   AvatarMemoryRecord,
@@ -70,7 +70,7 @@ function getMemorySecret() {
   return "celine-local-development-only";
 }
 
-function getSubjectId(channel: AvatarChannel, externalId: string) {
+function getSubjectId(channel: AvatarMemoryChannel, externalId: string) {
   return createHmac("sha256", getMemorySecret())
     .update(`${channel}:${externalId}`)
     .digest("hex");
@@ -124,7 +124,7 @@ function getRedis() {
 }
 
 function createEmptyRecord(
-  channel: AvatarChannel,
+  channel: AvatarMemoryChannel,
   subjectId: string,
 ): AvatarMemoryRecord {
   const now = new Date().toISOString();
@@ -150,7 +150,7 @@ function isExpired(record: AvatarMemoryRecord) {
 
 function normalizeRecord(
   record: AvatarMemoryRecord,
-  channel: AvatarChannel,
+  channel: AvatarMemoryChannel,
   subjectId: string,
 ) {
   const profile = record.profile || { interests: [], facts: [] };
@@ -207,7 +207,7 @@ function queueLocalWrite(operation: () => Promise<void>) {
 }
 
 async function loadRecordBySubject(
-  channel: AvatarChannel,
+  channel: AvatarMemoryChannel,
   subjectId: string,
 ): Promise<AvatarMemoryRecord | null> {
   const mode = getStorageMode();
@@ -370,7 +370,7 @@ export function isMemorySummaryCommand(message: string) {
 }
 
 export async function loadAvatarMemory(
-  channel: AvatarChannel,
+  channel: AvatarMemoryChannel,
   externalId: string,
 ) {
   const subjectId = getSubjectId(channel, externalId);
@@ -421,7 +421,7 @@ export async function saveAvatarConversationTurn(
 }
 
 export async function markMemoryDisclosure(
-  channel: AvatarChannel,
+  channel: AvatarMemoryChannel,
   externalId: string,
 ) {
   const { record } = await loadAvatarMemory(channel, externalId);
@@ -437,7 +437,7 @@ export async function markMemoryDisclosure(
 }
 
 export async function deleteAvatarMemory(
-  channel: AvatarChannel,
+  channel: AvatarMemoryChannel,
   externalId: string,
 ) {
   await deleteRecordBySubject(getSubjectId(channel, externalId));
@@ -465,10 +465,16 @@ export function buildMemorySummaryReply(record: AvatarMemoryRecord) {
   ].join("\n");
 }
 
-export function getMemoryDisclosure(durable: boolean) {
+export function getMemoryDisclosure(durable: boolean, english = false) {
+  if (english) {
+    return durable
+      ? "I’m the LINE101Chat AI avatar. To continue relevant conversations, I keep limited pseudonymous recent context and preferences you voluntarily share. Send “forget me” to delete it."
+      : "I’m the LINE101Chat AI avatar. This environment only keeps temporary conversation context. Send “forget me” to clear it.";
+  }
+
   return durable
-    ? "我是 AI Celine。為了下次接得上話，我會以去識別方式保存有限的近期對話與你主動告訴我的偏好；輸入「忘記我」可刪除。"
-    : "我是 AI Celine。目前這個環境只會暫時保留本次服務執行期間的對話；輸入「忘記我」可清除。";
+    ? "我是 LINE101Chat AI分身。為了下次接得上話，我會以去識別方式保存有限的近期對話與你主動告訴我的偏好；輸入「忘記我」可刪除。"
+    : "我是 LINE101Chat AI分身。目前這個環境只會暫時保留本次服務執行期間的對話；輸入「忘記我」可清除。";
 }
 
 export const avatarMemoryDefaults = {
