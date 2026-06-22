@@ -62,7 +62,7 @@ function getTimeoutMs() {
 function normalizeHistory(history: AvatarConversationMessage[] = []) {
   return history
     .filter((item) => item.content.trim())
-    .slice(-8)
+    .slice(-12)
     .map((item) => ({
       role: item.role,
       content: item.content.trim(),
@@ -101,7 +101,7 @@ function buildSystemMessages(input: GenerateLlmReplyInput) {
           {
             role: "system",
             content:
-              "The user shows commercial intent. Answer the immediate question naturally, but do not produce a long intake form. The application will add the next one or two discovery questions.",
+              "The user has explicitly shown commercial intent. Stay relationship-first: answer what they said, acknowledge their situation, then ask at most one natural discovery question. Mention the LINE101Chat team or contact path only after being useful; never output a long intake form.",
           },
         ]
       : []),
@@ -147,8 +147,8 @@ function createEnglishMockReply(input: GenerateLlmReplyInput) {
 
   if (/^(hi|hello|hey)[!,.?\s]*$/iu.test(message)) {
     return hasPreviousConversation(input)
-      ? `Hi${name ? `, ${name}` : ""}—good to see you again. Do you want a direct business answer, help shaping an idea, or a quick look at what an AI avatar could do?`
-      : "Hi, I’m Celine from LINE101Chat. I’m warm but fairly direct: tell me what you’re trying to make easier, and I’ll help you turn it into a practical next step.";
+      ? `Hi${name ? `, ${name}` : ""}—good to see you again. How’s your day going?`
+      : "Hi, I’m Celine. Nice to meet you—how’s your day going?";
   }
 
   if (/tired|stressed|overwhelmed|bad day/iu.test(message)) {
@@ -178,7 +178,7 @@ function createEnglishMockReply(input: GenerateLlmReplyInput) {
   const snippet = conciseSnippet(input);
   return snippet
     ? `Here’s the grounded version: ${snippet}\n\nIf you tell me the organization and the first conversation you want to improve, I can make this much more concrete.`
-    : "I don’t have enough approved knowledge to make a confident claim yet. Give me a little more context—are you exploring this for a person, school, brand, store, or company?";
+    : "I’m listening. Tell me the unpolished version—what’s on your mind?";
 }
 
 function createChineseMockReply(input: GenerateLlmReplyInput) {
@@ -204,9 +204,13 @@ function createChineseMockReply(input: GenerateLlmReplyInput) {
 
   if (/^(你好|您好|嗨|哈囉|哈啰|安安|hi|hello|hey)[!！。.?\s]*$/iu.test(message)) {
     if (hasPreviousConversation(input)) {
-      return `嗨${name ? `，${name}` : ""}，又見面了。今天想直接處理一個問題、一起整理想法，還是看看 AI 分身能替你做什麼？`;
+      return `嗨${name ? `，${name}` : ""}，又見面了。今天過得怎麼樣？`;
     }
-    return "嗨，我是 Celine，來自 LINE101Chat。我個性溫和，但回答不太繞路——告訴我你現在最想弄清楚什麼，我來幫你把它變成下一步。";
+    return "嗨，我是 Celine，很高興認識你。今天過得怎麼樣？";
+  }
+
+  if (/好熱|天氣.*熱|熱死|悶熱|提不起勁/iu.test(message)) {
+    return "真的，這種熱很容易把人的電量一起蒸發掉。先別逼自己馬上進入高效率模式，喝點冰的、找個涼的地方喘口氣也很好——你今天是工作累，還是單純被天氣打敗？";
   }
 
   if (
@@ -283,7 +287,7 @@ function createChineseMockReply(input: GenerateLlmReplyInput) {
   const snippet = conciseSnippet(input);
   return snippet
     ? `我先把有根據的部分說清楚：${snippet}\n\n如果你告訴我這是替哪一類組織、最想改善哪一段對話，我可以把答案收得更實際。`
-    : "這題我目前沒有找到足夠的核准知識，硬答就不像我了。你可以多給我一點背景：你想代表的是個人、品牌、學校、門市還是公司？";
+    : "我有在聽。你不用先整理成完整問題，照你現在想到的方式說就好。";
 }
 
 function createMockReply(input: GenerateLlmReplyInput) {
@@ -337,7 +341,7 @@ async function callOllama(input: GenerateLlmReplyInput) {
         ...normalizeHistory(input.history),
         { role: "user", content: input.userMessage.trim() },
       ],
-      options: { temperature: 0.55, num_ctx: 8_192 },
+      options: { temperature: 0.7, num_ctx: 8_192 },
     }),
   });
 
@@ -404,10 +408,27 @@ export async function generateLlmReply(input: GenerateLlmReplyInput) {
   }
 
   if (provider === "ollama") {
-    return { text: await callOllama(input), provider };
+    try {
+      return { text: await callOllama(input), provider };
+    } catch (error) {
+      console.warn("[avatar-llm] Ollama unavailable; using mock fallback", {
+        errorType: error instanceof Error ? error.name : "UnknownError",
+      });
+      return { text: createMockReply(input), provider: "mock" as const };
+    }
   }
 
-  return { text: await callOpenAiCompatible(input), provider };
+  try {
+    return { text: await callOpenAiCompatible(input), provider };
+  } catch (error) {
+    console.warn(
+      "[avatar-llm] OpenAI-compatible provider unavailable; using mock fallback",
+      {
+        errorType: error instanceof Error ? error.name : "UnknownError",
+      },
+    );
+    return { text: createMockReply(input), provider: "mock" as const };
+  }
 }
 
 export const avatarLlmDefaults = {

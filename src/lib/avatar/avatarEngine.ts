@@ -1,4 +1,4 @@
-import { detectLeadIntent, getLeadCapturePrompt } from "@/lib/avatar/lead";
+import { detectLeadIntent } from "@/lib/avatar/lead";
 import { generateLlmReply, getLlmProvider } from "@/lib/avatar/llm";
 import { getAvatarPersona, getSafeFallbackReply } from "@/lib/avatar/persona";
 import { retrieveKnowledge } from "@/lib/avatar/rag";
@@ -6,11 +6,6 @@ import type {
   AvatarReply,
   GenerateAvatarReplyInput,
 } from "@/lib/avatar/types";
-
-function shouldAppendLeadPrompt(reply: string, prompt: string) {
-  const promptMarker = prompt.split("\n")[0];
-  return !reply.includes(promptMarker);
-}
 
 export async function generateAvatarReply(
   input: GenerateAvatarReplyInput,
@@ -29,14 +24,8 @@ export async function generateAvatarReply(
       snippets,
       leadIntent,
     });
-    const leadPrompt = getLeadCapturePrompt(userMessage, input.history);
-    const reply =
-      leadIntent && shouldAppendLeadPrompt(result.text, leadPrompt)
-        ? `${result.text}\n\n${leadPrompt}`
-        : result.text;
-
     return {
-      reply,
+      reply: result.text,
       provider: result.provider,
       leadIntent,
       shouldHandoff: leadIntent,
@@ -56,10 +45,10 @@ export async function generateAvatarReply(
     });
 
     return {
-      reply: getSafeFallbackReply(persona),
+      reply: getSafeFallbackReply(),
       provider: "mock",
       leadIntent,
-      shouldHandoff: true,
+      shouldHandoff: leadIntent,
       sources,
     };
   }

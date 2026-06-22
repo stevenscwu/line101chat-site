@@ -77,14 +77,14 @@ declare global {
 
 const MAX_MESSAGE_LENGTH = 1_000;
 const quickQuestions = [
-  "嗨 Celine，先介紹你自己",
+  "今天好熱，有點提不起勁",
+  "最近工作有點累，陪我聊一下",
+  "我叫 Steven，你會記得我嗎？",
+  "你平常喜歡聊什麼？",
+  "我腦中有一個生意點子",
   "你覺得好的 AI 分身是什麼？",
-  "你會記得我嗎？",
-  "今天工作有點亂，陪我整理一下",
-  "你跟一般 ChatGPT 有什麼不同？",
-  "RAG 是什麼？",
-  "可以幫學校做招生問答嗎？",
-  "我想打造自己的 AI 分身",
+  "什麼情況適合用 LINE101Chat？",
+  "我想讓客戶在 LINE 上更容易找到答案",
 ];
 
 function createId(prefix: string) {
@@ -110,7 +110,7 @@ export function AvatarDemoChat() {
       id: "celine-intro",
       role: "assistant",
       content:
-        "嗨，我是 Celine，很高興認識你。你可以直接跟我聊工作、整理想法，或問 LINE101Chat、AI 分身、RAG 和 LINE 串接。告訴我你現在最想弄清楚什麼？",
+        "嗨，我是 Celine，很高興認識你。今天過得怎麼樣？想隨便聊聊、整理腦中的事，或剛好對 LINE101Chat 好奇，都可以慢慢說。",
     },
   ]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -348,7 +348,7 @@ export function AvatarDemoChat() {
                 和 Celine 聊聊
               </h2>
               <p className="mt-1 text-sm font-semibold leading-6 text-slate-600">
-                LINE101 虛擬代表 · 有個性 · 有根據 · 可接續
+                先聊，再談正事 · 有個性 · 有記憶 · 可接續
               </p>
             </div>
           </div>

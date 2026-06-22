@@ -143,7 +143,12 @@ export async function retrieveKnowledge(
 
 export function formatKnowledgeContext(snippets: RagSnippet[]) {
   if (!snippets.length) {
-    return "No verified knowledge snippet matched this question. Be transparent and ask a clarifying question.";
+    return [
+      "No LINE101Chat product knowledge was retrieved for this turn.",
+      "If the user is chatting casually, discussing life or work, asking general knowledge, or sharing a feeling, respond naturally using your general conversational ability.",
+      "Do not mention missing knowledge and do not force the topic toward business.",
+      "Only say you lack verified information when the user is asking for a specific factual claim about LINE101Chat, pricing, deployment, customers, policy, or another fact that requires owner-approved knowledge.",
+    ].join("\n");
   }
 
   return [

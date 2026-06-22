@@ -462,7 +462,7 @@ function extractProfile(
     /(?:我叫|叫我|我的名字是|可以叫我|I(?:'m| am)|my name is)\s*([A-Za-z\u3400-\u9fff·・]{1,24})/iu,
   );
   const interestMatch = compact.match(
-    /(?:我喜歡|我喜欢|我對.+?有興趣|我对.+?有兴趣|I (?:like|love|am interested in))\s*([^。！？!?\n]{1,60})/iu,
+    /(?:我(?:平常)?喜歡|我(?:平常)?喜欢|平常喜歡|平常喜欢|我對.+?有興趣|我对.+?有兴趣|I (?:like|love|am interested in))\s*([^。！？!?\n]{1,60})/iu,
   );
 
   if (nameMatch?.[1]) {

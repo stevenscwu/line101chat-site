@@ -154,7 +154,7 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
       }
     } catch (error) {
       logError("LLM reply failed; using safe fallback", error);
-      reply = getSafeFallbackReply(persona);
+      reply = getSafeFallbackReply();
     }
   }
 

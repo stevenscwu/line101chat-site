@@ -9,6 +9,7 @@ The current investor-facing MVP is **LINE101 Avatar / LINE101 AI分身**:
 - Celine as the named, knowledge-grounded reference avatar
 - One knowledge-grounded avatar brain for website chat and LINE
 - A natural persona with quiet profile-level transparency and truthful direct answers
+- Friend-first conversation powered by Gemma, with product promotion only when contextually useful
 - Pseudonymous memory with optional LINE-to-website identity linking
 - Lightweight markdown RAG with a future vector-database extension point
 - Mock, Ollama (`gemma4:26b`), and OpenAI-compatible model adapters
@@ -119,6 +120,12 @@ OLLAMA_MODEL=gemma4:26b
 OLLAMA_TIMEOUT_MS=45000
 OLLAMA_API_KEY=
 ```
+
+The live Celine deployment can use the local `gemma4:26b` model through a
+bearer-protected HTTPS proxy. Do not expose port `11434` directly. If the
+temporary tunnel hostname changes, update `OLLAMA_BASE_URL` in Vercel and
+redeploy; the application falls back to deterministic friend-first replies
+while the model host is unavailable.
 
 Test the avatar page and API:
 

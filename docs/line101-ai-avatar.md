@@ -18,6 +18,12 @@ than with a repeated AI disclaimer; the interface identifies her as a virtual
 representative, and direct questions about whether she is human or AI are
 answered truthfully.
 
+Celine follows a friend-first conversation policy: she responds to everyday
+topics, feelings, interests, and general questions with the model's normal
+conversational ability. RAG constrains factual LINE101Chat claims; it is not a
+gate that blocks ordinary conversation. LINE101Chat is mentioned only when the
+user asks about a relevant problem or the product can genuinely help.
+
 ## Production routes
 
 ```text
@@ -117,6 +123,29 @@ OLLAMA_API_KEY=
 
 Then ensure the configured Ollama-compatible model is available and the server
 is running. Model tags depend on the selected registry or private server.
+
+### Protected local Gemma bridge
+
+The current Windows host runs `gemma4:26b` in Ollama and exposes only a narrow,
+bearer-protected `/api/chat` proxy through the existing LINE101Chat ngrok
+router. The proxy forces the approved model, disables streaming, bounds prompt
+size and context, and limits concurrent requests. Raw Ollama remains bound to
+localhost and is never exposed directly.
+
+Production configuration uses:
+
+```env
+LLM_PROVIDER=ollama
+OLLAMA_BASE_URL=https://<current-router-domain>/line101-avatar/ollama
+OLLAMA_MODEL=gemma4:26b
+OLLAMA_API_KEY=<server-only proxy secret>
+LLM_TIMEOUT_MS=55000
+```
+
+The temporary ngrok hostname changes when the tunnel is recreated. Update
+`OLLAMA_BASE_URL` in Vercel and redeploy after such a change. If the workstation,
+Ollama, router, or tunnel is offline, the application falls back to its
+deterministic friend-first replies instead of exposing an error.
 
 ### OpenAI-compatible mode
 
