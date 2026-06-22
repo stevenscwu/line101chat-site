@@ -28,6 +28,17 @@ function normalizeBaseUrl(value: string) {
   return value.trim().replace(/\/+$/, "");
 }
 
+function normalizeRelationshipLanguage(value: string) {
+  return value
+    .replace(
+      /(?:單純)?想找個人陪你(?:說說話|聊聊|放空)?/gu,
+      "想找個地方說說話",
+    )
+    .replace(/我(?:會)?永遠(?:都)?在(?:這裡)?/gu, "你想聊時，我願意聽")
+    .replace(/我都在這裡/gu, "我願意聽")
+    .replace(/我會一直陪著你/gu, "我可以陪你聊一會兒");
+}
+
 function validateHttpUrl(value: string, name: string) {
   const parsed = new URL(value);
   if (!["http:", "https:"].includes(parsed.protocol)) {
@@ -356,7 +367,10 @@ async function callOllama(input: GenerateLlmReplyInput) {
   const payload = (await response.json()) as OllamaChatResponse;
   const content = payload.message?.content || payload.response;
   if (!content?.trim()) throw new Error("Ollama returned an empty reply.");
-  return content.trim().slice(0, MAX_REPLY_LENGTH);
+  return normalizeRelationshipLanguage(content.trim()).slice(
+    0,
+    MAX_REPLY_LENGTH,
+  );
 }
 
 async function callOpenAiCompatible(input: GenerateLlmReplyInput) {
@@ -401,7 +415,10 @@ async function callOpenAiCompatible(input: GenerateLlmReplyInput) {
   if (!content?.trim()) {
     throw new Error("OpenAI-compatible provider returned an empty reply.");
   }
-  return content.trim().slice(0, MAX_REPLY_LENGTH);
+  return normalizeRelationshipLanguage(content.trim()).slice(
+    0,
+    MAX_REPLY_LENGTH,
+  );
 }
 
 export async function generateLlmReply(input: GenerateLlmReplyInput) {
