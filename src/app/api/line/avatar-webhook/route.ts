@@ -4,19 +4,18 @@ import { generateAvatarReply } from "@/lib/avatar/avatarEngine";
 import { replyToLine, verifyLineSignature } from "@/lib/avatar/line";
 import {
   buildMemorySummaryReply,
+  createAvatarWebLinkCode,
   deleteAvatarMemory,
-  getMemoryDisclosure,
+  isCreateWebLinkCommand,
   isForgetMemoryCommand,
   isMemorySummaryCommand,
   loadAvatarMemory,
-  markMemoryDisclosure,
   saveAvatarConversationTurn,
 } from "@/lib/avatar/memory";
 import {
   getAvatarPersona,
   getSafeFallbackReply,
   getUnsupportedMessageReply,
-  isEnglishMessage,
 } from "@/lib/avatar/persona";
 import type {
   LineWebhookBody,
@@ -52,13 +51,9 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
   }
 
   if (event.type === "follow") {
-    let disclosure = getMemoryDisclosure(false);
-
     if (lineUserId) {
       try {
-        const { context } = await loadAvatarMemory("line", lineUserId);
-        disclosure = getMemoryDisclosure(context.durable);
-        await markMemoryDisclosure("line", lineUserId);
+        await loadAvatarMemory("line", lineUserId);
       } catch (error) {
         logError("could not initialize conversation memory", error);
       }
@@ -66,7 +61,7 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
 
     await replyToLine(
       event.replyToken,
-      `嗨，我是 ${persona.name}，LINE101Chat 的知識型 AI 分身，不是真人員工。我可以自然聊聊，也能根據核准知識回答 AI 分身、RAG、LINE／網站串接與導入問題；該由真人決定的事，我不會逞強。\n\n${disclosure}`,
+      `嗨，我是 ${persona.name}，很高興認識你。你可以直接跟我聊工作、整理想法，或問 LINE101Chat、AI 分身、RAG 和 LINE／網站串接。你現在最想弄清楚什麼？`,
     );
     return;
   }
@@ -103,6 +98,25 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
       return;
     }
 
+    if (isCreateWebLinkCommand(message)) {
+      if (!lineUserId) {
+        reply =
+          "網站記憶連結需要一對一 LINE 身分。請先到 Celine 的 LINE 好友聊天室，再傳一次「連結網站」。";
+      } else {
+        try {
+          const link = await createAvatarWebLinkCode("line", lineUserId);
+          reply = link.durable
+            ? `可以。請在 10 分鐘內回到 line101chat.com/ai-avatar，在「連結 LINE 記憶」輸入這組碼：\n\n${link.code}\n\n連結後，網站和 LINE 就能接續同一段對話。`
+            : `我已產生暫時連結碼：${link.code}。不過目前伺服器尚未啟用持久資料庫，服務重啟後可能失效；建議稍後再試或先繼續在 LINE 聊。`;
+        } catch (error) {
+          logError("could not create website link code", error);
+          reply = "目前無法產生網站連結碼，請稍後再傳一次「連結網站」。";
+        }
+      }
+      await replyToLine(event.replyToken, reply);
+      return;
+    }
+
     try {
       let memory: Awaited<ReturnType<typeof loadAvatarMemory>> | null = null;
 
@@ -128,24 +142,15 @@ async function handleEvent(event: LineWebhookEvent, index: number) {
       }
 
       if (memory) {
-        const isFirstReply = !memory.record.disclosureSentAt;
-        const replyToStore = isFirstReply
-          ? `${getMemoryDisclosure(
-              memory.context.durable,
-              isEnglishMessage(message),
-            )}\n\n${reply}`
-          : reply;
-
         try {
           await saveAvatarConversationTurn(
             memory.record,
             message,
-            replyToStore,
+            reply,
           );
         } catch (error) {
           logError("memory save unavailable", error);
         }
-        reply = replyToStore;
       }
     } catch (error) {
       logError("LLM reply failed; using safe fallback", error);

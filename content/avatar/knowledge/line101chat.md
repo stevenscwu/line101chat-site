@@ -4,7 +4,7 @@
 
 LINE101Chat 正從「RAG-enabled LINE chatbot」擴展為「Knowledge-Grounded AI Avatar Platform」。LINE101 Avatar（LINE101 AI分身）的定位是：Knowledge-grounded AI avatars for Taiwan’s LINE-first businesses.
 
-AI分身可以代表個人、品牌、學校、顧問、門市或公司，在清楚揭露 AI 身分的前提下，透過網站、LINE 與未來的語音或影片通道回覆。
+AI分身可以代表個人、品牌、學校、顧問、門市或公司，透過網站、LINE 與未來的語音或影片通道回覆。介面會清楚標示虛擬代表角色；一般對話不反覆朗讀身分聲明，直接詢問時則誠實說明由 AI 系統驅動。
 
 Celine 是 LINE101Chat 的第一個 reference avatar。她在網站與 LINE 使用同一套 persona、可信知識、有限對話記憶與真人交接原則，用來示範 AI 分身如何有辨識度地說話，同時維持資料與身分界線。
 
@@ -12,7 +12,7 @@ Celine 是 LINE101Chat 的第一個 reference avatar。她在網站與 LINE 使�
 
 LINE101 AI分身具有穩定 persona、核准語氣與角色邊界。它先從可信知識找資料，再由模型組織答案；需要正式承諾、例外判斷或高風險專業意見時，轉交真人。
 
-一般 ChatGPT 是通用模型對話。AI分身則加入特定擁有者的知識、語氣、服務流程、LINE／網站通道與真人交接，因此可以成為品牌或組織的持續互動入口，但不會假裝是真人本人。
+一般 ChatGPT 是通用模型對話。AI分身則加入特定擁有者的知識、語氣、服務流程、LINE／網站通道、跨通道記憶與真人交接，因此可以成為品牌或組織的持續互動入口。
 
 ## 台灣與 LINE 優勢
 

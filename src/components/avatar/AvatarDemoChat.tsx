@@ -13,6 +13,7 @@ import {
   AlertCircle,
   Brain,
   ExternalLink,
+  Link2,
   Loader2,
   Mic,
   Send,
@@ -40,6 +41,8 @@ type ChatResponse = {
   shouldHandoff?: boolean;
   memoryDurable?: boolean;
   memoryMode?: string;
+  linkedToLine?: boolean;
+  message?: string;
 };
 
 type SpeechRecognitionEventLike = {
@@ -98,12 +101,16 @@ export function AvatarDemoChat() {
   const [voiceSupported, setVoiceSupported] = useState<boolean | null>(null);
   const [voiceNotice, setVoiceNotice] = useState("");
   const [memoryDurable, setMemoryDurable] = useState<boolean | null>(null);
+  const [linkedToLine, setLinkedToLine] = useState(false);
+  const [linkCode, setLinkCode] = useState("");
+  const [linkNotice, setLinkNotice] = useState("");
+  const [isLinking, setIsLinking] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "celine-intro",
       role: "assistant",
       content:
-        "嗨，我是 Celine，LINE101Chat 的知識型 AI 分身，不是真人員工。我可以跟你自然聊，也能根據核准知識回答 AI 分身、RAG、LINE 串接和導入問題。告訴我你真正想弄清楚的事，我不會急著把每句話都變成推銷。",
+        "嗨，我是 Celine，很高興認識你。你可以直接跟我聊工作、整理想法，或問 LINE101Chat、AI 分身、RAG 和 LINE 串接。告訴我你現在最想弄清楚什麼？",
     },
   ]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -168,6 +175,7 @@ export function AvatarDemoChat() {
           ? null
           : Boolean(payload.memoryDurable),
       );
+      setLinkedToLine(Boolean(payload.linkedToLine));
       setMessages((current) => [
         ...current,
         {
@@ -212,6 +220,44 @@ export function AvatarDemoChat() {
     if (isSending) return;
     await sendMessage("忘記我");
     setMemoryDurable(null);
+    setLinkedToLine(false);
+    setLinkCode("");
+    setLinkNotice("");
+  }
+
+  async function connectLineMemory(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const code = linkCode.trim();
+    if (!code || isLinking) return;
+
+    setIsLinking(true);
+    setLinkNotice("");
+
+    try {
+      const response = await fetch("/api/avatar/link", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const payload = (await response.json()) as ChatResponse;
+
+      if (!response.ok || !payload.ok) {
+        throw new Error(payload.error || "連結沒有成功，請重新取得連結碼。");
+      }
+
+      setLinkedToLine(true);
+      setMemoryDurable(Boolean(payload.memoryDurable));
+      setLinkCode("");
+      setLinkNotice(
+        payload.message || "已連結 LINE，網站可以接續同一段對話。",
+      );
+    } catch (error) {
+      setLinkNotice(
+        error instanceof Error ? error.message : "連結沒有成功，請稍後再試。",
+      );
+    } finally {
+      setIsLinking(false);
+    }
   }
 
   function toggleListening() {
@@ -302,7 +348,7 @@ export function AvatarDemoChat() {
                 和 Celine 聊聊
               </h2>
               <p className="mt-1 text-sm font-semibold leading-6 text-slate-600">
-                LINE101Chat AI 分身 · 有個性 · 有根據 · 可轉真人
+                LINE101 虛擬代表 · 有個性 · 有根據 · 可接續
               </p>
             </div>
           </div>
@@ -363,7 +409,7 @@ export function AvatarDemoChat() {
                           />
                         </span>
                       )}
-                      Celine · AI
+                      Celine · LINE101
                     </div>
                     <p className="whitespace-pre-wrap text-sm leading-7">
                       {message.content}
@@ -478,8 +524,10 @@ export function AvatarDemoChat() {
             對話記憶
           </div>
           <p className="mt-3 text-sm leading-7 text-slate-600">
-            {memoryDurable === null
-              ? "第一次送出後，Celine 會說明這個環境的記憶方式。"
+            {linkedToLine
+              ? "已連結 LINE。Celine 會用同一個去識別化身分，在網站與 LINE 接續近期脈絡。"
+              : memoryDurable === null
+                ? "網站會用安全 session 辨識這個瀏覽器；連結 LINE 後，也能跨裝置接續。"
               : memoryDurable
                 ? "已使用去識別化持久記憶，只保存有限近期脈絡與你主動提供的偏好。"
                 : "目前只使用暫時記憶；服務重新啟動後可能不會保留。"}
@@ -487,6 +535,54 @@ export function AvatarDemoChat() {
           <p className="mt-3 rounded-lg bg-slate-50 p-3 text-xs font-semibold leading-6 text-slate-600">
             輸入「你記得我什麼？」可查看摘要；輸入「忘記我」可清除。
           </p>
+
+          <form
+            className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50/70 p-4"
+            onSubmit={connectLineMemory}
+          >
+            <label
+              htmlFor="line-memory-code"
+              className="flex items-center gap-2 text-sm font-black text-slate-950"
+            >
+              <Link2 className="h-4 w-4 text-emerald-700" aria-hidden="true" />
+              連結 LINE 記憶
+            </label>
+            <p className="mt-2 text-xs font-semibold leading-5 text-slate-600">
+              在 Celine 的 LINE 聊天室傳送「連結網站」，再把 10
+              分鐘內有效的連結碼貼到這裡。
+            </p>
+            <div className="mt-3 flex gap-2">
+              <input
+                id="line-memory-code"
+                value={linkCode}
+                onChange={(event) =>
+                  setLinkCode(event.target.value.toUpperCase())
+                }
+                autoComplete="one-time-code"
+                inputMode="text"
+                maxLength={16}
+                placeholder={linkedToLine ? "已連結" : "輸入連結碼"}
+                disabled={linkedToLine || isLinking}
+                className="min-w-0 flex-1 rounded-lg border border-emerald-200 bg-white px-3 py-2 text-sm font-black uppercase tracking-wider text-slate-950 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 disabled:bg-slate-100"
+              />
+              <button
+                type="submit"
+                disabled={linkedToLine || isLinking || !linkCode.trim()}
+                className="inline-flex min-h-10 items-center justify-center rounded-lg bg-emerald-700 px-3 py-2 text-xs font-black text-white transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+              >
+                {isLinking ? "連結中" : linkedToLine ? "已連結" : "連結"}
+              </button>
+            </div>
+            {linkNotice ? (
+              <p
+                className={`mt-3 text-xs font-semibold leading-5 ${
+                  linkedToLine ? "text-emerald-800" : "text-rose-700"
+                }`}
+              >
+                {linkNotice}
+              </p>
+            ) : null}
+          </form>
 
           <h3 className="mt-6 text-sm font-black text-slate-950">
             不知道怎麼開始？
@@ -505,8 +601,8 @@ export function AvatarDemoChat() {
             ))}
           </div>
           <p className="mt-5 rounded-lg bg-amber-50 p-3 text-xs font-semibold leading-6 text-amber-900">
-            請勿傳送密碼、權杖、信用卡或不必要的敏感資料。AI
-            身分會清楚揭露；正式報價與專業判斷由真人確認。
+            請勿傳送密碼、權杖、信用卡或不必要的敏感資料。Celine 是
+            LINE101 的虛擬代表；正式報價與專業判斷由團隊確認。
           </p>
         </aside>
       </div>

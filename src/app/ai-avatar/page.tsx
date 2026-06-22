@@ -74,7 +74,7 @@ const useCases = [
 
 const differentiators: IconCard[] = [
   { title: "有 persona", description: "有清楚角色、邊界與一致的回覆方式。", icon: UserRound },
-  { title: "用擁有者的語氣", description: "依核准 tone of voice 回答，不是假裝成真人。", icon: Mic2 },
+  { title: "用擁有者的語氣", description: "依核准 tone of voice 回答，同時保留清楚的角色邊界。", icon: Mic2 },
   { title: "根據可信知識", description: "先從 FAQ、PDF、網站與 SOP 找資料，再生成回答。", icon: FileSearch },
   { title: "跨 LINE、網站與語音", description: "同一個 AI brain 可延伸到不同互動入口。", icon: Network },
   { title: "能交接真人", description: "正式承諾、例外或高風險問題不硬答。", icon: Handshake },
@@ -120,7 +120,7 @@ export default function AiAvatarPage() {
             <h1 className="mt-6 max-w-5xl text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
               我是 Celine
               <span className="block text-[#55e486]">
-                LINE101Chat 的知識型 AI 分身
+                LINE101Chat 的知識型虛擬代表
               </span>
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-9 text-slate-300">
@@ -128,7 +128,7 @@ export default function AiAvatarPage() {
               我能在網站與 LINE 接住問題、了解需求，並在需要承諾或專業判斷時交給真人。
             </p>
             <p className="mt-4 max-w-3xl text-sm font-semibold leading-7 text-slate-400">
-              我是 AI，不是真人員工。像真人一樣好好對話，不代表要假裝成人。
+              網站與 LINE 共用同一套 persona、可信知識與對話記憶，讓每次互動都接得起來。
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <ButtonLink href="#avatar-demo" variant="line" icon={Bot}>
@@ -153,7 +153,7 @@ export default function AiAvatarPage() {
               <div className="relative aspect-[16/11] overflow-hidden">
                 <Image
                   src="/presenter/4.png"
-                  alt="Celine，LINE101Chat 的知識型 AI 分身品牌形象"
+                  alt="Celine，LINE101Chat 的知識型虛擬代表"
                   fill
                   loading="eager"
                   fetchPriority="high"
@@ -163,7 +163,7 @@ export default function AiAvatarPage() {
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/80 to-transparent p-5 pt-20 text-white">
                   <p className="text-2xl font-black">Celine</p>
                   <p className="mt-1 text-sm font-bold text-emerald-200">
-                    LINE101Chat AI 分身 · Online
+                    LINE101Chat 虛擬代表 · Online
                   </p>
                 </div>
               </div>
@@ -172,7 +172,7 @@ export default function AiAvatarPage() {
                   AI 分身是不是只是 chatbot 換個名字？
                 </div>
                 <div className="max-w-[90%] rounded-2xl rounded-bl-sm bg-white px-4 py-3 text-slate-700 shadow-sm">
-                  如果只是換名字，確實沒什麼意思。我的差別是有固定個性、可信知識、記憶邊界和真人交接——能代表品牌，但不冒充真人。
+                  如果只是換名字，確實沒什麼意思。我的差別是有固定個性、可信知識、跨通道記憶和真人交接——能把每次對話接成一段關係。
                 </div>
                 <div className="ml-auto max-w-[82%] rounded-2xl rounded-br-sm bg-[#06c755] px-4 py-3 font-semibold text-white">
                   那妳的個性呢？
@@ -184,7 +184,7 @@ export default function AiAvatarPage() {
               <div className="border-t border-emerald-100 bg-white px-5 py-4">
                 <p className="flex items-center gap-2 text-xs font-black text-emerald-700">
                   <ShieldCheck className="h-4 w-4" aria-hidden="true" />
-                  AI 身分清楚揭露 · 回答可追溯 · 重要事項轉真人
+                  虛擬代表清楚標示 · 回答可追溯 · 重要事項轉真人
                 </p>
               </div>
             </div>
@@ -204,7 +204,7 @@ export default function AiAvatarPage() {
           <div className="relative mx-auto aspect-[4/5] w-full max-w-[340px] overflow-hidden rounded-[1.75rem] border border-emerald-200 bg-emerald-50 shadow-[0_24px_70px_rgba(15,23,42,0.12)]">
             <Image
               src="/presenter/4.png"
-              alt="Celine，LINE101Chat 的知識型 AI 分身"
+              alt="Celine，LINE101Chat 的知識型虛擬代表"
               fill
               sizes="(min-width: 1024px) 340px, 88vw"
               className="object-cover object-top"
@@ -213,8 +213,8 @@ export default function AiAvatarPage() {
           <div>
             <SectionHeading
               eyebrow="Celine's Persona"
-              title="不是假裝成真人，而是把「像一個人好好說話」做成可控能力"
-              description="Celine 是 LINE101 Avatar 平台的第一個 reference avatar。她示範 persona 不是一句提示詞，而是語氣、觀點、知識、記憶、界線與交接方式的組合。"
+              title="像一個人好好說話，也保留清楚的角色界線"
+              description="Celine 是 LINE101 Avatar 平台的第一個 reference avatar。她示範 persona 不是一句提示詞，而是語氣、觀點、知識、跨通道記憶、界線與交接方式的組合。"
             />
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               {[
@@ -398,7 +398,7 @@ export default function AiAvatarPage() {
               ["模型", "Mock / Ollama gemma4:26b / OpenAI-compatible"],
               ["知識", "Markdown MVP，可替換向量資料庫"],
               ["通道", "Website + LINE，Voice MVP"],
-              ["安全", "LINE 簽章、AI 身分揭露、無 secrets logging"],
+              ["安全", "LINE 簽章、虛擬代表標示、無 secrets logging"],
             ].map(([title, description]) => (
               <article
                 key={title}

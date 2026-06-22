@@ -1,4 +1,4 @@
-import { createHmac } from "node:crypto";
+import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -15,16 +15,25 @@ import type {
 type MemoryDatabase = {
   version: 1;
   records: Record<string, AvatarMemoryRecord>;
+  linkCodes?: Record<string, MemoryLinkCodeRecord>;
 };
 
 type StorageMode = AvatarMemoryContext["storageMode"];
+type MemoryLinkCodeRecord = {
+  subjectId: string;
+  expiresAt: string;
+};
 
 const DEFAULT_MEMORY_FILE = ".data/celine-memory.json";
 const DEFAULT_RETENTION_DAYS = 90;
 const DEFAULT_MAX_MESSAGES = 40;
+const DEFAULT_LINK_CODE_MINUTES = 10;
 const MAX_STORED_MESSAGE_LENGTH = 1_500;
 const MEMORY_KEY_PREFIX = "celine:memory:v1";
+const LINK_CODE_KEY_PREFIX = "celine:link:v1";
+const PERSON_TOKEN_PREFIX = "celine-person-v1";
 const globalMemory = new Map<string, AvatarMemoryRecord>();
+const globalLinkCodes = new Map<string, MemoryLinkCodeRecord>();
 
 let localWriteQueue = Promise.resolve();
 let warnedAboutDevelopmentSecret = false;
@@ -74,6 +83,35 @@ function getSubjectId(channel: AvatarMemoryChannel, externalId: string) {
   return createHmac("sha256", getMemorySecret())
     .update(`${channel}:${externalId}`)
     .digest("hex");
+}
+
+function signPersonSubject(subjectId: string) {
+  return createHmac("sha256", getMemorySecret())
+    .update(`${PERSON_TOKEN_PREFIX}:${subjectId}`)
+    .digest("hex");
+}
+
+export function createAvatarPersonToken(subjectId: string) {
+  return `${subjectId}.${signPersonSubject(subjectId)}`;
+}
+
+function parseAvatarPersonToken(token?: string) {
+  if (!token) return null;
+  const [subjectId, signature] = token.split(".");
+
+  if (
+    !/^[a-f0-9]{64}$/u.test(subjectId || "") ||
+    !/^[a-f0-9]{64}$/u.test(signature || "")
+  ) {
+    return null;
+  }
+
+  const expected = Buffer.from(signPersonSubject(subjectId), "hex");
+  const received = Buffer.from(signature, "hex");
+  return expected.length === received.length &&
+    timingSafeEqual(expected, received)
+    ? subjectId
+    : null;
 }
 
 function getRedisConfig() {
@@ -132,6 +170,7 @@ function createEmptyRecord(
     version: 1,
     subjectId,
     channel,
+    linkedChannels: [channel],
     createdAt: now,
     updatedAt: now,
     profile: {
@@ -157,8 +196,11 @@ function normalizeRecord(
   return {
     ...record,
     version: 1 as const,
-    channel,
+    channel: record.channel || channel,
     subjectId,
+    linkedChannels: Array.from(
+      new Set([...(record.linkedChannels || []), record.channel || channel]),
+    ),
     profile: {
       preferredName: profile.preferredName?.slice(0, 40),
       language: profile.language,
@@ -179,14 +221,14 @@ async function readLocalDatabase(): Promise<MemoryDatabase> {
     const parsed = JSON.parse(content) as MemoryDatabase;
     return parsed.version === 1 && parsed.records
       ? parsed
-      : { version: 1, records: {} };
+      : { version: 1, records: {}, linkCodes: {} };
   } catch (error) {
     if (
       error instanceof Error &&
       "code" in error &&
       error.code === "ENOENT"
     ) {
-      return { version: 1, records: {} };
+      return { version: 1, records: {}, linkCodes: {} };
     }
     throw error;
   }
@@ -281,6 +323,111 @@ async function deleteRecordBySubject(subjectId: string) {
   } else {
     globalMemory.delete(subjectId);
   }
+}
+
+function normalizeLinkCode(code: string) {
+  return code.toUpperCase().replace(/[^A-Z0-9]/gu, "");
+}
+
+function createLinkCode() {
+  const alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+  const bytes = randomBytes(8);
+  return Array.from(bytes, (byte) => alphabet[byte % alphabet.length]).join("");
+}
+
+function isLinkCodeExpired(record: MemoryLinkCodeRecord) {
+  return Date.parse(record.expiresAt) <= Date.now();
+}
+
+async function saveLinkCode(code: string, record: MemoryLinkCodeRecord) {
+  const mode = getStorageMode();
+  const normalizedCode = normalizeLinkCode(code);
+
+  if (mode === "upstash") {
+    await getRedis().set(`${LINK_CODE_KEY_PREFIX}:${normalizedCode}`, record, {
+      ex: DEFAULT_LINK_CODE_MINUTES * 60,
+    });
+  } else if (mode === "local") {
+    await queueLocalWrite(async () => {
+      const database = await readLocalDatabase();
+      database.linkCodes ||= {};
+      database.linkCodes[normalizedCode] = record;
+      await writeLocalDatabase(database);
+    });
+  } else {
+    globalLinkCodes.set(normalizedCode, record);
+  }
+}
+
+async function consumeLinkCode(code: string) {
+  const mode = getStorageMode();
+  const normalizedCode = normalizeLinkCode(code);
+  let record: MemoryLinkCodeRecord | null = null;
+
+  if (mode === "upstash") {
+    record = await getRedis().getdel<MemoryLinkCodeRecord>(
+      `${LINK_CODE_KEY_PREFIX}:${normalizedCode}`,
+    );
+  } else if (mode === "local") {
+    await queueLocalWrite(async () => {
+      const database = await readLocalDatabase();
+      record = database.linkCodes?.[normalizedCode] || null;
+      if (database.linkCodes) {
+        delete database.linkCodes[normalizedCode];
+      }
+      await writeLocalDatabase(database);
+    });
+  } else {
+    record = globalLinkCodes.get(normalizedCode) || null;
+    globalLinkCodes.delete(normalizedCode);
+  }
+
+  return record && !isLinkCodeExpired(record) ? record : null;
+}
+
+function mergeMemoryRecords(
+  primary: AvatarMemoryRecord,
+  secondary: AvatarMemoryRecord,
+) {
+  const primaryCreatedAt = Date.parse(primary.createdAt);
+  const secondaryCreatedAt = Date.parse(secondary.createdAt);
+  const createdAt =
+    Number.isFinite(primaryCreatedAt) &&
+    Number.isFinite(secondaryCreatedAt) &&
+    primaryCreatedAt > secondaryCreatedAt
+      ? secondary.createdAt
+      : primary.createdAt;
+  const messages = [...secondary.messages, ...primary.messages]
+    .sort(
+      (left, right) =>
+        (Date.parse(left.createdAt || "") || 0) -
+        (Date.parse(right.createdAt || "") || 0),
+    )
+    .slice(-getMaxMessages());
+
+  return {
+    ...primary,
+    createdAt,
+    updatedAt: new Date().toISOString(),
+    linkedChannels: Array.from(
+      new Set([
+        ...(primary.linkedChannels || [primary.channel]),
+        ...(secondary.linkedChannels || [secondary.channel]),
+      ]),
+    ),
+    profile: {
+      preferredName:
+        primary.profile.preferredName || secondary.profile.preferredName,
+      language: primary.profile.language || secondary.profile.language,
+      interests: Array.from(
+        new Set([...secondary.profile.interests, ...primary.profile.interests]),
+      ).slice(-8),
+      facts: Array.from(
+        new Set([...secondary.profile.facts, ...primary.profile.facts]),
+      ).slice(-12),
+    },
+    messages,
+  } satisfies AvatarMemoryRecord;
 }
 
 function redactSensitiveText(value: string) {
@@ -382,11 +529,104 @@ export async function loadAvatarMemory(
   return {
     record,
     context: {
+      subjectId: record.subjectId,
       preferredName: record.profile.preferredName,
       interests: record.profile.interests,
       facts: record.profile.facts,
       storageMode,
       durable: storageMode !== "ephemeral",
+      linkedToLine: Boolean(record.linkedChannels?.includes("line")),
+    } satisfies AvatarMemoryContext,
+  };
+}
+
+export async function loadAvatarWebMemory(
+  externalId: string,
+  personToken?: string,
+) {
+  const linkedSubjectId = parseAvatarPersonToken(personToken);
+
+  if (!linkedSubjectId) {
+    return loadAvatarMemory("web", externalId);
+  }
+
+  const record =
+    (await loadRecordBySubject("line", linkedSubjectId)) ||
+    createEmptyRecord("line", linkedSubjectId);
+  const storageMode = getStorageMode();
+
+  return {
+    record,
+    context: {
+      subjectId: record.subjectId,
+      preferredName: record.profile.preferredName,
+      interests: record.profile.interests,
+      facts: record.profile.facts,
+      storageMode,
+      durable: storageMode !== "ephemeral",
+      linkedToLine: true,
+    } satisfies AvatarMemoryContext,
+  };
+}
+
+export async function createAvatarWebLinkCode(
+  channel: AvatarMemoryChannel,
+  externalId: string,
+) {
+  const subjectId = getSubjectId(channel, externalId);
+  const record =
+    (await loadRecordBySubject(channel, subjectId)) ||
+    createEmptyRecord(channel, subjectId);
+  const code = createLinkCode();
+  const expiresAt = new Date(
+    Date.now() + DEFAULT_LINK_CODE_MINUTES * 60 * 1_000,
+  ).toISOString();
+
+  await saveRecord(record);
+  await saveLinkCode(code, { subjectId, expiresAt });
+
+  return {
+    code,
+    expiresAt,
+    durable: getStorageMode() !== "ephemeral",
+  };
+}
+
+export async function linkWebMemoryToCode(
+  externalId: string,
+  code: string,
+) {
+  const link = await consumeLinkCode(code);
+
+  if (!link) {
+    return null;
+  }
+
+  const websiteSubjectId = getSubjectId("web", externalId);
+  const lineRecord =
+    (await loadRecordBySubject("line", link.subjectId)) ||
+    createEmptyRecord("line", link.subjectId);
+  const websiteRecord =
+    (await loadRecordBySubject("web", websiteSubjectId)) ||
+    createEmptyRecord("web", websiteSubjectId);
+  const merged = mergeMemoryRecords(lineRecord, websiteRecord);
+
+  await saveRecord(merged);
+  if (websiteSubjectId !== link.subjectId) {
+    await deleteRecordBySubject(websiteSubjectId);
+  }
+
+  return {
+    token: createAvatarPersonToken(link.subjectId),
+    record: merged,
+    context: {
+      subjectId: merged.subjectId,
+      preferredName: merged.profile.preferredName,
+      interests: merged.profile.interests,
+      facts: merged.profile.facts,
+      storageMode: getStorageMode(),
+      durable: getStorageMode() !== "ephemeral",
+      linkedToLine: true,
     } satisfies AvatarMemoryContext,
   };
 }
@@ -414,26 +654,9 @@ export async function saveAvatarConversationTurn(
   await saveRecord({
     ...record,
     updatedAt: now,
-    disclosureSentAt: record.disclosureSentAt || now,
     profile: extractProfile(record.profile, userMessage),
     messages,
   });
-}
-
-export async function markMemoryDisclosure(
-  channel: AvatarMemoryChannel,
-  externalId: string,
-) {
-  const { record } = await loadAvatarMemory(channel, externalId);
-
-  if (!record.disclosureSentAt) {
-    const now = new Date().toISOString();
-    await saveRecord({
-      ...record,
-      disclosureSentAt: now,
-      updatedAt: now,
-    });
-  }
 }
 
 export async function deleteAvatarMemory(
@@ -441,6 +664,16 @@ export async function deleteAvatarMemory(
   externalId: string,
 ) {
   await deleteRecordBySubject(getSubjectId(channel, externalId));
+}
+
+export async function deleteAvatarMemoryRecord(record: AvatarMemoryRecord) {
+  await deleteRecordBySubject(record.subjectId);
+}
+
+export function isCreateWebLinkCommand(message: string) {
+  return /^(?:(?:連結|連接|同步)\s*(?:網站|網頁|web)|link\s*(?:website|web))[。.!！\s]*$/iu.test(
+    message.trim(),
+  );
 }
 
 export function buildMemorySummaryReply(record: AvatarMemoryRecord) {
@@ -465,20 +698,9 @@ export function buildMemorySummaryReply(record: AvatarMemoryRecord) {
   ].join("\n");
 }
 
-export function getMemoryDisclosure(durable: boolean, english = false) {
-  if (english) {
-    return durable
-      ? "Memory note: to keep relevant conversations coherent, I store limited pseudonymous recent context and preferences you voluntarily share. Send “forget me” to delete it."
-      : "Memory note: this environment only keeps temporary conversation context. Send “forget me” to clear it.";
-  }
-
-  return durable
-    ? "記憶說明：為了讓相關對話接得上，我會以去識別方式保存有限的近期脈絡與你主動告訴我的偏好；輸入「忘記我」可刪除。"
-    : "記憶說明：這個環境只會暫時保留本次服務執行期間的對話；輸入「忘記我」可清除。";
-}
-
 export const avatarMemoryDefaults = {
   localFile: DEFAULT_MEMORY_FILE,
   retentionDays: DEFAULT_RETENTION_DAYS,
   maxMessages: DEFAULT_MAX_MESSAGES,
+  linkCodeMinutes: DEFAULT_LINK_CODE_MINUTES,
 };

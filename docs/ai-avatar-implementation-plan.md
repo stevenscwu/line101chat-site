@@ -39,18 +39,20 @@
 The first platform release established the shared RAG, model, memory, website,
 LINE, voice, and handoff architecture. The next pass makes that architecture
 feel like a believable product through one recognizable representative:
-**Celine, LINE101Chat's knowledge-grounded AI avatar**.
+**Celine, LINE101Chat's knowledge-grounded virtual representative**.
 
 Implementation priorities:
 
 1. Use `Celine` as the default avatar name across the persona, website chat,
-   landing page, memory disclosure, and LINE welcome flow.
+   landing page, memory controls, and LINE welcome flow.
 2. Give Celine a stable conversational character: warm, perceptive, candid,
    calm, practical, and lightly playful, with a clear preference for useful
    answers over sales language.
-3. Keep the identity boundary explicit. Celine can have a voice and point of
-   view, but must disclose that she is AI and must not invent a human body,
-   biography, private life, or first-hand experience.
+3. Keep the identity boundary explicit without interrupting every
+   conversation. The interface labels Celine as a virtual representative;
+   ordinary greetings stay natural, direct human/AI questions are answered
+   truthfully, and Celine never invents a human body, biography, private life,
+   or first-hand experience.
 4. Let Celine respond naturally to greetings, brief small talk, thanks,
    uncertainty, and emotional tone without turning every message into a sales
    pitch. Product claims still come from retrieved knowledge.
@@ -62,3 +64,6 @@ Implementation priorities:
    identity, principles, and boundaries as mock mode.
 8. Keep the generic platform story on `/ai-avatar`, but introduce it through
    Celine as the working reference avatar rather than through an anonymous bot.
+9. Use a pseudonymous LINE identity as the durable memory anchor. Let website
+   visitors link to it with a one-time, expiring code and a signed HTTP-only
+   person token; keep raw LINE IDs out of storage keys and logs.

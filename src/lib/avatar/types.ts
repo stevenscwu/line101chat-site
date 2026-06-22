@@ -19,19 +19,21 @@ export type AvatarMemoryRecord = {
   version: 1;
   subjectId: string;
   channel: AvatarMemoryChannel;
+  linkedChannels?: AvatarMemoryChannel[];
   createdAt: string;
   updatedAt: string;
-  disclosureSentAt?: string;
   profile: AvatarMemoryProfile;
   messages: AvatarConversationMessage[];
 };
 
 export type AvatarMemoryContext = {
+  subjectId?: string;
   preferredName?: string;
   interests: string[];
   facts: string[];
   storageMode: "local" | "upstash" | "ephemeral";
   durable: boolean;
+  linkedToLine?: boolean;
 };
 
 export type GenerateAvatarReplyInput = {

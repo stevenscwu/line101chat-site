@@ -8,7 +8,8 @@ The current investor-facing MVP is **LINE101 Avatar / LINE101 AI分身**:
 
 - Celine as the named, knowledge-grounded reference avatar
 - One knowledge-grounded avatar brain for website chat and LINE
-- A defined persona that discloses it is AI and does not impersonate a human
+- A natural persona with quiet profile-level transparency and truthful direct answers
+- Pseudonymous memory with optional LINE-to-website identity linking
 - Lightweight markdown RAG with a future vector-database extension point
 - Mock, Ollama (`gemma4:26b`), and OpenAI-compatible model adapters
 - Browser-native optional voice input and read-aloud
@@ -116,6 +117,7 @@ LLM_PROVIDER=ollama
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=gemma4:26b
 OLLAMA_TIMEOUT_MS=45000
+OLLAMA_API_KEY=
 ```
 
 Test the avatar page and API:
@@ -244,6 +246,7 @@ Public routes:
 ```text
 GET  /ai-avatar
 POST /api/avatar/chat
+POST /api/avatar/link
 POST /api/line/avatar-webhook
 ```
 
@@ -256,6 +259,7 @@ Required variables depend on the selected channel and model:
 LLM_PROVIDER
 OLLAMA_BASE_URL
 OLLAMA_MODEL
+OLLAMA_API_KEY
 LINE_AVATAR_CHANNEL_SECRET
 LINE_AVATAR_CHANNEL_ACCESS_TOKEN
 NEXT_PUBLIC_LINE_AVATAR_QR_URL
@@ -263,15 +267,24 @@ NEXT_PUBLIC_LINE_AVATAR_ADD_FRIEND_URL
 OPENAI_COMPATIBLE_BASE_URL
 OPENAI_COMPATIBLE_API_KEY
 OPENAI_COMPATIBLE_MODEL
+CELINE_MEMORY_SECRET
+UPSTASH_REDIS_REST_URL
+UPSTASH_REDIS_REST_TOKEN
 ```
 
 Use `LLM_PROVIDER=mock` for a deployment-safe deterministic demo. Vercel cannot
 call a private Windows `localhost:11434`; production Ollama needs a protected
 HTTPS endpoint, private server, secure tunnel, or hosted compatible provider.
 
+For durable production memory, connect an Upstash Redis database and provide
+the REST URL/token variables. LINE user IDs are HMAC-pseudonymized before they
+are used as memory keys. A user can send `連結網站` to Celine on LINE, then
+enter the one-time code on `/ai-avatar` to let the website continue the same
+conversation. Codes expire after 10 minutes and are consumed once.
+
 Never commit `.env`, LINE credentials, API keys, Vercel tokens, private keys, or
 local credentials.
 
 ## Future Integrations
 
-The contact form opens the visitor's email app with a prefilled message to `steven@line101chat.com` and provides a copy fallback. Beyond the LINE AI avatar webhook and existing local proxy/payment routes, the site has no general CRM, server-side email sender, booking system, or durable production database. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.
+The contact form opens the visitor's email app with a prefilled message to `steven@line101chat.com` and provides a copy fallback. Beyond the optional Upstash-backed Celine memory, LINE AI avatar webhook, and existing local proxy/payment routes, the site has no general CRM, server-side email sender, or booking system. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.

@@ -137,14 +137,18 @@ function createEnglishMockReply(input: GenerateLlmReplyInput) {
   const message = input.userMessage;
   const name = preferredName(input);
 
-  if (/who are you|tell me about yourself|are you (?:a )?(?:human|real)/iu.test(message)) {
-    return "I’m Celine, LINE101Chat’s knowledge-grounded AI avatar—not a human employee or the founder. My job is to make complex AI ideas feel practical, answer from approved knowledge, and know when a real person should take over.";
+  if (/are you (?:a )?(?:human|real|ai)|are you a bot/iu.test(message)) {
+    return "I’m LINE101Chat’s virtual representative, powered by AI rather than a human employee. I speak naturally and keep useful context, but I won’t invent a human biography or make commitments that belong to the team.";
+  }
+
+  if (/who are you|tell me about yourself/iu.test(message)) {
+    return "I’m Celine, LINE101Chat’s virtual representative and business knowledge guide. I help people make sense of AI avatars, RAG, LINE integrations, and practical first projects—usually with a direct answer and a useful next question.";
   }
 
   if (/^(hi|hello|hey)[!,.?\s]*$/iu.test(message)) {
     return hasPreviousConversation(input)
       ? `Hi${name ? `, ${name}` : ""}—good to see you again. Do you want a direct business answer, help shaping an idea, or a quick look at what an AI avatar could do?`
-      : "Hi, I’m Celine—LINE101Chat’s AI avatar. I’m warm but fairly direct: tell me what you’re trying to make easier, and I’ll help you turn it into a practical next step.";
+      : "Hi, I’m Celine from LINE101Chat. I’m warm but fairly direct: tell me what you’re trying to make easier, and I’ll help you turn it into a practical next step.";
   }
 
   if (/tired|stressed|overwhelmed|bad day/iu.test(message)) {
@@ -156,7 +160,7 @@ function createEnglishMockReply(input: GenerateLlmReplyInput) {
   }
 
   if (/what do you (?:like|believe)|your opinion|good ai avatar/iu.test(message)) {
-    return "My bias is that a good AI avatar should have a recognizable voice, trusted knowledge, and the judgment to stop. Looking human is optional; being useful and honest is not.";
+    return "My bias is that a good AI avatar should have a recognizable voice, trusted knowledge, and the judgment to stop. A polished face is optional; being useful and honest is not.";
   }
 
   if (/price|pricing|cost|quote/iu.test(message)) {
@@ -168,7 +172,7 @@ function createEnglishMockReply(input: GenerateLlmReplyInput) {
   }
 
   if (/chatgpt|different/iu.test(message)) {
-    return "The key difference is responsibility. A generic ChatGPT session starts from a broad model; I have an approved persona, verified LINE101Chat knowledge, channel rules, memory boundaries, and a human handoff path—so I can represent one business without pretending to be a real person.";
+    return "The key difference is responsibility. A generic ChatGPT session starts from a broad model; I have an approved persona, verified LINE101Chat knowledge, channel rules, memory boundaries, and a human handoff path—so I can represent one business consistently.";
   }
 
   const snippet = conciseSnippet(input);
@@ -186,19 +190,23 @@ function createChineseMockReply(input: GenerateLlmReplyInput) {
     return "我先把界線說清楚：目前知識庫不足以對特定市場或產業下法律／合規結論，我也不能代替律師。你可以告訴我實際市場與使用情境，我幫你整理要交給 LINE101Chat 團隊和法律專業人士確認的問題。";
   }
 
-  if (/你是誰|妳是誰|介紹(?:一下)?你自己|介紹(?:一下)?妳自己|你是真人|妳是真人|是真人嗎|是不是\s*ai/iu.test(message)) {
-    return "我是 Celine，LINE101Chat 的知識型 AI 分身，不是真人員工，也不是創辦人本人。我的工作是把複雜的 AI 概念說人話、根據核准知識回答，還有在該由真人接手時不逞強。";
+  if (/你是真人|妳是真人|是真人嗎|是人嗎|是不是\s*ai|你是\s*ai|妳是\s*ai|機器人嗎/iu.test(message)) {
+    return "我是 LINE101Chat 的虛擬代表，由 AI 系統驅動，不是真人員工。聊天可以很自然，但我不會編造真人經歷；需要正式承諾或專業判斷時，我會交給團隊接手。";
+  }
+
+  if (/你是誰|妳是誰|介紹(?:一下)?你自己|介紹(?:一下)?妳自己/iu.test(message)) {
+    return "我是 Celine，LINE101Chat 的虛擬代表和商務知識顧問。我的工作是把 AI 分身、RAG、LINE 串接這些事說清楚，也陪你把模糊想法整理成可以開始驗證的一小步。";
   }
 
   if (/你幾歲|妳幾歲|年齡|生日|住哪|外貌|長怎樣/iu.test(message)) {
-    return "我沒有真人年齡、住處或身體喔，我是 AI。你看到的形象是 Celine 的品牌視覺；真正固定的是我的說話方式、知識範圍和做事原則。";
+    return "我沒有真人年齡、住處或身體。你看到的是 Celine 的品牌形象；真正固定的是我的說話方式、知識範圍和做事原則。";
   }
 
   if (/^(你好|您好|嗨|哈囉|哈啰|安安|hi|hello|hey)[!！。.?\s]*$/iu.test(message)) {
     if (hasPreviousConversation(input)) {
       return `嗨${name ? `，${name}` : ""}，又見面了。今天想直接處理一個問題、一起整理想法，還是看看 AI 分身能替你做什麼？`;
     }
-    return "嗨，我是 Celine，LINE101Chat 的 AI 分身。我個性溫和，但回答不太繞路——告訴我你現在最想弄清楚什麼，我來幫你把它變成下一步。";
+    return "嗨，我是 Celine，來自 LINE101Chat。我個性溫和，但回答不太繞路——告訴我你現在最想弄清楚什麼，我來幫你把它變成下一步。";
   }
 
   if (
@@ -214,11 +222,11 @@ function createChineseMockReply(input: GenerateLlmReplyInput) {
   }
 
   if (/你喜歡|妳喜歡|你的看法|妳的看法|你覺得好的\s*ai\s*分身|什麼是好的\s*ai\s*分身/iu.test(message)) {
-    return "我偏好的 AI 分身，不是最會裝成人的那種，而是有聲音、有知識、有分寸。外表像不像真人是加分題；回答有沒有根據、知不知道何時停手，才是必答題。";
+    return "我偏好的 AI 分身，是有聲音、有知識、有分寸。外表是否精緻是加分題；回答有沒有根據、知不知道何時停手，才是必答題。";
   }
 
   if (/會記得我|記得我嗎|對話記憶|memory/iu.test(message)) {
-    return "可以記得有限、由你主動提供的稱呼與近期脈絡，但控制權要在你手上。你可以問我「你記得我什麼？」查看摘要，也可以輸入「忘記我」清除；我不會把記憶假裝成真人關係。";
+    return "可以記得有限、由你主動提供的稱呼與近期脈絡，但控制權要在你手上。你可以問我「你記得我什麼？」查看摘要，也可以輸入「忘記我」清除；如果從 LINE 取得連結碼，網站也能接續同一段脈絡。";
   }
 
   if (/(我叫|叫我|我的名字是|可以叫我)\s*/u.test(message)) {
@@ -238,7 +246,7 @@ function createChineseMockReply(input: GenerateLlmReplyInput) {
   }
 
   if (/顧問|老師|個人品牌|幫.+(?:做|打造).+分身|打造.+分身/iu.test(message)) {
-    return "可以。做法不是複製一個「假本人」，而是先定義哪些語氣、知識與判斷可以授權給 AI。它能回答服務、課程與合作常見問題；需要本人經驗、承諾或敏感判斷時，就交回真人。";
+    return "可以。做法是先定義哪些語氣、知識與判斷可以授權給虛擬代表。它能回答服務、課程與合作常見問題；需要本人經驗、承諾或敏感判斷時，就交回真人。";
   }
 
   if (/google\s*drive|雲端硬碟/iu.test(message)) {
@@ -309,6 +317,7 @@ async function callOllama(input: GenerateLlmReplyInput) {
   );
   const parsedUrl = validateHttpUrl(baseUrl, "OLLAMA_BASE_URL");
   const model = process.env.OLLAMA_MODEL?.trim() || DEFAULT_OLLAMA_MODEL;
+  const apiKey = process.env.OLLAMA_API_KEY?.trim();
 
   if (process.env.NODE_ENV === "production" && parsedUrl.protocol !== "https:") {
     throw new Error("Production Ollama endpoint must use HTTPS.");
@@ -316,7 +325,10 @@ async function callOllama(input: GenerateLlmReplyInput) {
 
   const response = await fetchWithTimeout(`${baseUrl}/api/chat`, {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: {
+      ...(apiKey ? { authorization: `Bearer ${apiKey}` } : {}),
+      "content-type": "application/json",
+    },
     body: JSON.stringify({
       model,
       stream: false,
@@ -325,7 +337,7 @@ async function callOllama(input: GenerateLlmReplyInput) {
         ...normalizeHistory(input.history),
         { role: "user", content: input.userMessage.trim() },
       ],
-      options: { temperature: 0.35, num_ctx: 8_192 },
+      options: { temperature: 0.55, num_ctx: 8_192 },
     }),
   });
 

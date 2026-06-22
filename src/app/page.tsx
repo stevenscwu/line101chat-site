@@ -214,13 +214,13 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
             </p>
             <h2 className="mt-3 text-3xl font-black leading-tight tracking-[0] text-slate-950 sm:text-4xl">
               {isEnglish
-                ? "Meet Celine, LINE101Chat’s knowledge-grounded AI avatar"
+                ? "Meet Celine, LINE101Chat’s knowledge-grounded virtual representative"
                 : "先認識 Celine，再想像你的知識型 AI 分身"}
             </h2>
             <p className="mt-4 max-w-3xl text-base leading-8 text-slate-600">
               {isEnglish
-                ? "Celine is the working proof: a disclosed AI with a recognizable voice, verified knowledge, conversation memory, and human handoff across website chat and LINE."
-                : "Celine 是 LINE101Chat 的實際示範：有辨識度的個性、可信知識、對話記憶與真人交接。她不冒充真人，卻能像一個人好好接住網站與 LINE 裡的問題。"}
+                ? "Celine is the working proof: a recognizable virtual representative with verified knowledge, cross-channel memory, and human handoff across website chat and LINE."
+                : "Celine 是 LINE101Chat 的實際示範：有辨識度的個性、可信知識、跨通道記憶與真人交接。她能自然接住網站與 LINE 裡的問題，也知道什麼時候該交給團隊。"}
             </p>
             <Link
               href="/ai-avatar"
@@ -247,7 +247,7 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
             </div>
             <p className="mt-5 rounded-lg bg-white/10 p-4 text-sm leading-7 text-slate-200">
               {isEnglish
-                ? "Warm but direct. Grounded in approved knowledge. Honest about being AI. Ready to hand real decisions to real people."
+                ? "Warm but direct. Grounded in approved knowledge. Clearly presented as LINE101’s virtual representative, with real decisions handed to the team."
                 : "溫暖，但不繞路；回答有根據，也坦白自己是 AI。真正需要承諾的事，交給真正的人。"}
             </p>
           </div>
