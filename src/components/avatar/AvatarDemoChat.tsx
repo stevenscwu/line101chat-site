@@ -11,17 +11,12 @@ import {
 } from "react";
 import {
   AlertCircle,
-  Brain,
   ExternalLink,
-  Link2,
   Loader2,
-  Mic,
   Send,
   Sparkles,
-  Square,
   Trash2,
   UserRound,
-  Volume2,
 } from "lucide-react";
 
 type ChatMessage = {
@@ -39,99 +34,44 @@ type ChatResponse = {
   error?: string;
   sources?: string[];
   shouldHandoff?: boolean;
-  memoryDurable?: boolean;
-  memoryMode?: string;
-  linkedToLine?: boolean;
-  message?: string;
 };
-
-type SpeechRecognitionEventLike = {
-  results: ArrayLike<{
-    0: { transcript: string };
-  }>;
-};
-
-type SpeechRecognitionErrorEventLike = {
-  error: string;
-};
-
-type SpeechRecognitionLike = {
-  lang: string;
-  interimResults: boolean;
-  continuous: boolean;
-  onresult: ((event: SpeechRecognitionEventLike) => void) | null;
-  onerror: ((event: SpeechRecognitionErrorEventLike) => void) | null;
-  onend: (() => void) | null;
-  start: () => void;
-  stop: () => void;
-};
-
-type SpeechRecognitionConstructor = new () => SpeechRecognitionLike;
-
-declare global {
-  interface Window {
-    SpeechRecognition?: SpeechRecognitionConstructor;
-    webkitSpeechRecognition?: SpeechRecognitionConstructor;
-  }
-}
 
 const MAX_MESSAGE_LENGTH = 1_000;
+const lineAddFriendUrl =
+  process.env.NEXT_PUBLIC_LINE_AVATAR_ADD_FRIEND_URL ||
+  "https://line.me/R/ti/p/%40821jpehj";
+
 const quickQuestions = [
-  "今天好熱，有點提不起勁",
-  "最近工作有點累，陪我聊一下",
-  "我叫 Steven，你會記得我嗎？",
-  "你平常喜歡聊什麼？",
-  "我腦中有一個生意點子",
-  "你覺得好的 AI 分身是什麼？",
-  "什麼情況適合用 LINE101Chat？",
-  "我想讓客戶在 LINE 上更容易找到答案",
+  "你好",
+  "你是真人嗎？",
+  "LINE101Chat 的 AI 分身適合什麼情境？",
+  "我想做一個 LINE 客服 AI 分身，價格怎麼算？",
 ];
 
 function createId(prefix: string) {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return `${prefix}-${crypto.randomUUID()}`;
   }
+
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
 export function AvatarDemoChat() {
   const [draft, setDraft] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const [isListening, setIsListening] = useState(false);
-  const [voiceSupported, setVoiceSupported] = useState<boolean | null>(null);
-  const [voiceNotice, setVoiceNotice] = useState("");
-  const [memoryDurable, setMemoryDurable] = useState<boolean | null>(null);
-  const [linkedToLine, setLinkedToLine] = useState(false);
-  const [linkCode, setLinkCode] = useState("");
-  const [linkNotice, setLinkNotice] = useState("");
-  const [isLinking, setIsLinking] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "celine-intro",
       role: "assistant",
       content:
-        "嗨，我是 Celine，很高興認識你。今天過得怎麼樣？想隨便聊聊、整理腦中的事，或剛好對 LINE101Chat 好奇，都可以慢慢說。",
+        "嗨，我是 Celine。這是 Phase 1 demo，你可以測試問候、身分界線、LINE101Chat 產品問題，或直接說明你想做的 LINE AI 分身情境。",
     },
   ]);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
-
-  useEffect(() => {
-    const Recognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-    setVoiceSupported(Boolean(Recognition && window.speechSynthesis));
-  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, isSending]);
-
-  useEffect(() => {
-    return () => {
-      recognitionRef.current?.stop();
-      window.speechSynthesis?.cancel();
-    };
-  }, []);
 
   async function sendMessage(messageText = draft) {
     const message = messageText.trim();
@@ -156,7 +96,6 @@ export function AvatarDemoChat() {
     ]);
     setDraft("");
     setIsSending(true);
-    setVoiceNotice("");
 
     try {
       const response = await fetch("/api/avatar/chat", {
@@ -170,18 +109,13 @@ export function AvatarDemoChat() {
         throw new Error(payload.error || "Celine 暫時沒有回覆。");
       }
 
-      setMemoryDurable(
-        payload.memoryMode === "cleared"
-          ? null
-          : Boolean(payload.memoryDurable),
-      );
-      setLinkedToLine(Boolean(payload.linkedToLine));
+      const reply = payload.reply;
       setMessages((current) => [
         ...current,
         {
           id: createId("assistant"),
           role: "assistant",
-          content: payload.reply || "",
+          content: reply,
           sources: payload.sources,
           shouldHandoff: payload.shouldHandoff,
         },
@@ -219,136 +153,40 @@ export function AvatarDemoChat() {
   async function forgetConversation() {
     if (isSending) return;
     await sendMessage("忘記我");
-    setMemoryDurable(null);
-    setLinkedToLine(false);
-    setLinkCode("");
-    setLinkNotice("");
-  }
-
-  async function connectLineMemory(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const code = linkCode.trim();
-    if (!code || isLinking) return;
-
-    setIsLinking(true);
-    setLinkNotice("");
-
-    try {
-      const response = await fetch("/api/avatar/link", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ code }),
-      });
-      const payload = (await response.json()) as ChatResponse;
-
-      if (!response.ok || !payload.ok) {
-        throw new Error(payload.error || "連結沒有成功，請重新取得連結碼。");
-      }
-
-      setLinkedToLine(true);
-      setMemoryDurable(Boolean(payload.memoryDurable));
-      setLinkCode("");
-      setLinkNotice(
-        payload.message || "已連結 LINE，網站可以接續同一段對話。",
-      );
-    } catch (error) {
-      setLinkNotice(
-        error instanceof Error ? error.message : "連結沒有成功，請稍後再試。",
-      );
-    } finally {
-      setIsLinking(false);
-    }
-  }
-
-  function toggleListening() {
-    if (isListening) {
-      recognitionRef.current?.stop();
-      return;
-    }
-
-    const Recognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!Recognition) {
-      setVoiceNotice("此瀏覽器不支援語音辨識，請改用文字輸入。");
-      setVoiceSupported(false);
-      return;
-    }
-
-    const recognition = new Recognition();
-    recognition.lang = "zh-TW";
-    recognition.interimResults = false;
-    recognition.continuous = false;
-    recognition.onresult = (event) => {
-      const transcript = event.results[0]?.[0]?.transcript || "";
-      setDraft(transcript);
-      setVoiceNotice("已將語音轉成文字，確認後即可送出。");
-    };
-    recognition.onerror = (event) => {
-      setVoiceNotice(
-        event.error === "not-allowed"
-          ? "麥克風權限未開啟，請允許權限或改用文字輸入。"
-          : "語音辨識沒有成功，請再試一次或改用文字輸入。",
-      );
-      setIsListening(false);
-    };
-    recognition.onend = () => setIsListening(false);
-    recognitionRef.current = recognition;
-    setIsListening(true);
-    setVoiceNotice("正在聆聽，請開始說話。");
-    recognition.start();
-  }
-
-  function speakLatestReply() {
-    const latestReply = [...messages]
-      .reverse()
-      .find((message) => message.role === "assistant" && !message.isError);
-
-    if (!latestReply || !window.speechSynthesis) {
-      setVoiceNotice("此瀏覽器不支援語音朗讀。");
-      return;
-    }
-
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(latestReply.content);
-    utterance.lang = "zh-TW";
-    utterance.rate = 1;
-    window.speechSynthesis.speak(utterance);
-    setVoiceNotice("正在朗讀最新回覆。");
   }
 
   return (
     <section
       id="avatar-demo"
-      className="overflow-hidden rounded-[1.75rem] border border-emerald-200 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.12)]"
+      className="overflow-hidden rounded-xl border border-emerald-200 bg-white shadow-[0_24px_70px_rgba(15,23,42,0.12)]"
       aria-labelledby="avatar-demo-title"
     >
-      <header className="border-b border-emerald-100 bg-gradient-to-r from-emerald-50 to-white p-5 sm:p-6">
+      <header className="border-b border-emerald-100 bg-white p-5 sm:p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-[#06c755] bg-white shadow-sm">
+            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-[#06c755] bg-white shadow-sm">
               <Image
                 src="/presenter/4.png"
                 alt=""
                 fill
-                sizes="64px"
+                sizes="56px"
                 className="object-cover object-top"
               />
-              <span className="absolute bottom-0.5 right-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-[#06c755]" />
+              <span className="absolute bottom-0.5 right-0.5 h-3 w-3 rounded-full border-2 border-white bg-[#06c755]" />
             </div>
             <div>
               <p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.08em] text-emerald-700">
                 <Sparkles className="h-4 w-4" aria-hidden="true" />
-                Live Celine Demo
+                Live Website Demo
               </p>
               <h2
                 id="avatar-demo-title"
                 className="mt-1 text-2xl font-black text-slate-950 sm:text-3xl"
               >
-                和 Celine 聊聊
+                Talk to Celine
               </h2>
               <p className="mt-1 text-sm font-semibold leading-6 text-slate-600">
-                先聊，再談正事 · 有個性 · 有記憶 · 可接續
+                One focused Phase 1 flow: chat, qualify, hand off.
               </p>
             </div>
           </div>
@@ -359,13 +197,13 @@ export function AvatarDemoChat() {
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700 transition hover:border-rose-300 hover:text-rose-700 disabled:cursor-wait disabled:opacity-50"
           >
             <Trash2 className="h-4 w-4" aria-hidden="true" />
-            忘記這段對話
+            Clear demo memory
           </button>
         </div>
       </header>
 
-      <div className="grid lg:grid-cols-[minmax(0,1fr)_320px]">
-        <div className="flex min-h-[620px] flex-col bg-[#f5faf7]">
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="flex min-h-[560px] flex-col bg-[#f5faf7]">
           <div
             className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-6"
             aria-live="polite"
@@ -376,7 +214,7 @@ export function AvatarDemoChat() {
                   <div className="max-w-[88%] rounded-2xl rounded-br-sm bg-[#06c755] px-4 py-3 text-white shadow-sm sm:max-w-[72%]">
                     <div className="mb-1 flex items-center gap-2 text-xs font-black text-emerald-50">
                       <UserRound className="h-4 w-4" aria-hidden="true" />
-                      您
+                      You
                     </div>
                     <p className="whitespace-pre-wrap text-sm font-semibold leading-7">
                       {message.content}
@@ -416,7 +254,8 @@ export function AvatarDemoChat() {
                     </p>
                     {message.sources?.length ? (
                       <p className="mt-3 border-t border-slate-100 pt-2 text-[11px] font-semibold leading-5 text-slate-400">
-                        已參考 {message.sources.length} 個本地知識片段
+                        Used {message.sources.length} local knowledge source
+                        {message.sources.length > 1 ? "s" : ""}
                       </p>
                     ) : null}
                     {message.shouldHandoff ? (
@@ -425,16 +264,19 @@ export function AvatarDemoChat() {
                           href="/free-assessment"
                           className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-[#06c755] px-3 py-2 text-xs font-black text-white transition hover:bg-[#05ae4a]"
                         >
-                          預約免費評估
-                          <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                          Book free assessment
+                          <ExternalLink
+                            className="h-3.5 w-3.5"
+                            aria-hidden="true"
+                          />
                         </Link>
                         <a
-                          href="https://line.me/R/ti/p/%40821jpehj"
+                          href={lineAddFriendUrl}
                           target="_blank"
                           rel="noreferrer"
                           className="inline-flex min-h-10 items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-black text-slate-700 transition hover:border-emerald-400 hover:text-emerald-700"
                         >
-                          加入 Celine LINE
+                          Add Celine on LINE
                         </a>
                       </div>
                     ) : null}
@@ -450,7 +292,7 @@ export function AvatarDemoChat() {
                     className="h-4 w-4 animate-spin text-emerald-700"
                     aria-hidden="true"
                   />
-                  Celine 正在找資料，也在想怎麼說得更清楚
+                  Celine is preparing a reply
                 </div>
               </div>
             ) : null}
@@ -462,7 +304,7 @@ export function AvatarDemoChat() {
             onSubmit={handleSubmit}
           >
             <label className="sr-only" htmlFor="avatar-message">
-              傳訊息給 Celine
+              Message Celine
             </label>
             <textarea
               id="avatar-message"
@@ -470,124 +312,34 @@ export function AvatarDemoChat() {
               onChange={(event) => setDraft(event.target.value)}
               onKeyDown={handleKeyDown}
               maxLength={MAX_MESSAGE_LENGTH}
-              className="min-h-24 w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-base leading-7 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-              placeholder="跟 Celine 說點什麼… Enter 送出，Shift+Enter 換行"
+              className="min-h-24 w-full resize-none rounded-lg border border-slate-300 bg-white px-4 py-3 text-base leading-7 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              placeholder="Ask Celine about the demo, LINE use cases, pricing, or identity boundaries"
             />
             <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={toggleListening}
-                  disabled={voiceSupported === false}
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700 transition hover:border-emerald-500 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {isListening ? (
-                    <Square className="h-4 w-4" aria-hidden="true" />
-                  ) : (
-                    <Mic className="h-4 w-4" aria-hidden="true" />
-                  )}
-                  {isListening ? "停止聆聽" : "語音輸入"}
-                </button>
-                <button
-                  type="button"
-                  onClick={speakLatestReply}
-                  disabled={voiceSupported === false}
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700 transition hover:border-emerald-500 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <Volume2 className="h-4 w-4" aria-hidden="true" />
-                  讓 Celine 朗讀
-                </button>
-                <span className="text-xs font-semibold text-slate-500">
-                  {draft.length}/{MAX_MESSAGE_LENGTH}
-                </span>
-              </div>
+              <span className="text-xs font-semibold text-slate-500">
+                {draft.length}/{MAX_MESSAGE_LENGTH}
+              </span>
               <button
                 type="submit"
                 disabled={!draft.trim() || isSending}
                 className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#06c755] px-5 py-3 text-sm font-black text-white transition hover:bg-[#05ae4a] disabled:cursor-not-allowed disabled:bg-slate-300"
               >
                 <Send className="h-4 w-4" aria-hidden="true" />
-                傳送
+                Send
               </button>
             </div>
-            {voiceNotice ? (
-              <p className="mt-3 text-xs font-semibold leading-6 text-slate-500">
-                {voiceNotice}
-              </p>
-            ) : null}
           </form>
         </div>
 
         <aside className="border-t border-emerald-100 bg-white p-5 lg:border-l lg:border-t-0">
-          <div className="flex items-center gap-2 text-sm font-black text-slate-950">
-            <Brain className="h-5 w-5 text-emerald-700" aria-hidden="true" />
-            對話記憶
-          </div>
-          <p className="mt-3 text-sm leading-7 text-slate-600">
-            {linkedToLine
-              ? "已連結 LINE。Celine 會用同一個去識別化身分，在網站與 LINE 接續近期脈絡。"
-              : memoryDurable === null
-                ? "網站會用安全 session 辨識這個瀏覽器；連結 LINE 後，也能跨裝置接續。"
-              : memoryDurable
-                ? "已使用去識別化持久記憶，只保存有限近期脈絡與你主動提供的偏好。"
-                : "目前只使用暫時記憶；服務重新啟動後可能不會保留。"}
-          </p>
-          <p className="mt-3 rounded-lg bg-slate-50 p-3 text-xs font-semibold leading-6 text-slate-600">
-            輸入「你記得我什麼？」可查看摘要；輸入「忘記我」可清除。
-          </p>
-
-          <form
-            className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50/70 p-4"
-            onSubmit={connectLineMemory}
-          >
-            <label
-              htmlFor="line-memory-code"
-              className="flex items-center gap-2 text-sm font-black text-slate-950"
-            >
-              <Link2 className="h-4 w-4 text-emerald-700" aria-hidden="true" />
-              連結 LINE 記憶
-            </label>
-            <p className="mt-2 text-xs font-semibold leading-5 text-slate-600">
-              在 Celine 的 LINE 聊天室傳送「連結網站」，再把 10
-              分鐘內有效的連結碼貼到這裡。
-            </p>
-            <div className="mt-3 flex gap-2">
-              <input
-                id="line-memory-code"
-                value={linkCode}
-                onChange={(event) =>
-                  setLinkCode(event.target.value.toUpperCase())
-                }
-                autoComplete="one-time-code"
-                inputMode="text"
-                maxLength={16}
-                placeholder={linkedToLine ? "已連結" : "輸入連結碼"}
-                disabled={linkedToLine || isLinking}
-                className="min-w-0 flex-1 rounded-lg border border-emerald-200 bg-white px-3 py-2 text-sm font-black uppercase tracking-wider text-slate-950 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 disabled:bg-slate-100"
-              />
-              <button
-                type="submit"
-                disabled={linkedToLine || isLinking || !linkCode.trim()}
-                className="inline-flex min-h-10 items-center justify-center rounded-lg bg-emerald-700 px-3 py-2 text-xs font-black text-white transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:bg-slate-300"
-              >
-                {isLinking ? "連結中" : linkedToLine ? "已連結" : "連結"}
-              </button>
-            </div>
-            {linkNotice ? (
-              <p
-                className={`mt-3 text-xs font-semibold leading-5 ${
-                  linkedToLine ? "text-emerald-800" : "text-rose-700"
-                }`}
-              >
-                {linkNotice}
-              </p>
-            ) : null}
-          </form>
-
-          <h3 className="mt-6 text-sm font-black text-slate-950">
-            不知道怎麼開始？
+          <h3 className="text-sm font-black text-slate-950">
+            Phase 1 demo script
           </h3>
-          <div className="mt-3 grid gap-2">
+          <p className="mt-2 text-sm leading-7 text-slate-600">
+            Use these prompts to verify the MVP before touching LINE webhook
+            settings or production deployment.
+          </p>
+          <div className="mt-4 grid gap-2">
             {quickQuestions.map((question) => (
               <button
                 key={question}
@@ -601,8 +353,9 @@ export function AvatarDemoChat() {
             ))}
           </div>
           <p className="mt-5 rounded-lg bg-amber-50 p-3 text-xs font-semibold leading-6 text-amber-900">
-            請勿傳送密碼、權杖、信用卡或不必要的敏感資料。Celine 是
-            LINE101 的虛擬代表；正式報價與專業判斷由團隊確認。
+            Do not send passwords, tokens, customer private data, or payment
+            details. Celine is a virtual representative; real quotes and
+            commitments still go through the LINE101Chat team.
           </p>
         </aside>
       </div>

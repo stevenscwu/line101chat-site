@@ -26,6 +26,16 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
+export async function GET() {
+  return NextResponse.json({
+    ok: true,
+    phase: "phase-1",
+    route: "/api/line/avatar-webhook",
+    expectedMethod: "POST",
+    check: "Use LINE Developers webhook verification for the signed POST check.",
+  });
+}
+
 function logError(label: string, error: unknown) {
   const details =
     error instanceof Error
