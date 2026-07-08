@@ -180,28 +180,28 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
             <p className="text-sm font-black uppercase tracking-[0.08em] text-emerald-300">
-              {isEnglish ? "9-Second LINE AI Demo" : "9 秒 LINE AI 知識助理短片"}
+              {isEnglish ? "New short story" : "新短片｜叮咚地獄"}
             </p>
             <h2 className="mt-4 text-3xl font-black leading-tight tracking-[0] sm:text-4xl">
-              {isEnglish ? "Stop answering the same LINE questions by hand" : "別再手動回答一樣的 LINE 問題"}
+              {isEnglish ? "The lunch break every Taiwan SME owner knows" : "叮咚地獄：老闆的一分鐘"}
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
               {isEnglish
-                ? "Turn your FAQs, PDFs, SOPs, and website content into a LINE AI assistant that answers repeated customer questions automatically."
-                : "把 FAQ、PDF、SOP 和網站資料交給 LINE101Chat。客戶一問，AI 就能根據你的知識內容直接回答。"}
+                ? "A 30-second mini-story: repeated LINE questions interrupt lunch, LINE101Chat handles the routine answers, and the owner still handles the questions that need judgment."
+                : "一支 30 秒小故事：午餐才剛打開，LINE 問題就開始叮咚。重複問題交給 LINE101Chat，真正需要判斷的，還是交給人。"}
             </p>
             <Link
               href={localizePath("/book-demo", locale)}
               className="mt-7 inline-flex min-h-11 items-center justify-center rounded-lg bg-[#06c755] px-5 py-3 text-sm font-black text-slate-950 shadow-sm hover:bg-[#40d878]"
             >
-              {isEnglish ? "Discuss your AI assistant" : "預約討論 AI 助理"}
+              {isEnglish ? "Plan a small FAQ PoC" : "用一份 FAQ 做小型 PoC"}
             </Link>
           </div>
 
           <ViewportPromoVideo
-            src="/videos/line101chat-hook-promo-9s.mp4"
-            poster="/videos/line101chat-hook-promo-9s-poster.png"
-            ariaLabel={isEnglish ? "LINE101Chat promotional video" : "LINE101Chat LINE AI 知識助理宣傳短片"}
+            src="/videos/line101chat-dingdong-hell-short-04.mp4"
+            poster="/videos/line101chat-dingdong-hell-short-04-poster.png"
+            ariaLabel={isEnglish ? "LINE101Chat dingdong hell short story video" : "LINE101Chat 叮咚地獄短片"}
           />
         </div>
       </section>
