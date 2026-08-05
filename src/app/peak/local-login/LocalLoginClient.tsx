@@ -6,6 +6,8 @@ export function LocalLoginClient() {
   const [message, setMessage] = useState("正在驗證本機一次性登入連結…");
 
   useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get("next");
+    const destination = requested === "/peak/password" ? requested : "/peak";
     const token = window.location.hash.slice(1);
     window.history.replaceState(null, "", "/peak/local-login");
     if (!token) {
@@ -21,7 +23,7 @@ export function LocalLoginClient() {
     }).then((response) => {
       if (!response.ok) throw new Error("rejected");
       setMessage("登入成功，正在開啟 Peak OS…");
-      window.location.replace("/peak");
+      window.location.replace(destination);
     }).catch(() => {
       window.location.replace("/peak/login?error=link");
     });

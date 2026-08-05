@@ -2,7 +2,9 @@
 param(
     [string]$PeakEnvPath = 'C:\Users\Steven\Projects\telegram-personal-assistant\.env',
     [string]$CredentialPath = 'C:\Users\Steven\.peak-os\credentials\peak-dashboard-login.clixml',
-    [string]$DashboardUrl = 'https://line101chat.com'
+    [string]$DashboardUrl = 'https://line101chat.com',
+    [ValidateSet('/peak', '/peak/password')]
+    [string]$Destination = '/peak'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -40,7 +42,8 @@ try {
 finally {
     $hmac.Dispose()
 }
-$url = "$($DashboardUrl.TrimEnd('/'))/peak/local-login#$encoded.$signature"
+$next = [Uri]::EscapeDataString($Destination)
+$url = "$($DashboardUrl.TrimEnd('/'))/peak/local-login?next=$next#$encoded.$signature"
 Start-Process $url
 Write-Host 'Opened a one-time Peak OS sign-in link. It expires in two minutes and cannot be reused.' -ForegroundColor Green
 

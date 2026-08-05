@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { createSession, hasValidOrigin, setSessionCookie, verifySubmittedPassword } from "@/lib/peak/auth";
 import { isPeakDashboardEnabled, requirePeakServerConfig } from "@/lib/peak/config";
-import { allowAttempt } from "@/lib/peak/store";
+import { allowAttempt, loadOwnerPasswordHash } from "@/lib/peak/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,7 +27,9 @@ export async function POST(request: NextRequest) {
   const email = String(form.get("email") || "").trim().toLowerCase();
   const password = String(form.get("password") || "");
   const emailAllowed = config.ownerEmails.has(email);
-  const passwordValid = verifySubmittedPassword(password, config.passwordHash);
+  let passwordHash: string;
+  try { passwordHash = await loadOwnerPasswordHash(config.passwordHash); } catch { return NextResponse.redirect(loginUrl(request, "unavailable"), 303); }
+  const passwordValid = verifySubmittedPassword(password, passwordHash);
   if (!emailAllowed || !passwordValid) {
     console.warn("peak_owner_login_failed", {
       emailAllowed,

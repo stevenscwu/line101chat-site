@@ -6,6 +6,8 @@ import sitemap from "@/app/sitemap";
 import { POST as ingestSnapshot } from "@/app/api/peak/v1/snapshot/route";
 import { GET as readSummary } from "@/app/api/peak/v1/summary/route";
 import { POST as localLogin } from "@/app/api/peak/v1/local-login/route";
+import { POST as updatePassword } from "@/app/api/peak/v1/password/route";
+import { POST as passwordLogin } from "@/app/api/peak/v1/login/route";
 import {
   PEAK_SESSION_COOKIE,
   createPasswordHash,
@@ -121,6 +123,24 @@ describe("Peak owner authentication", () => {
     expect(accepted.status).toBe(200);
     expect(accepted.cookies.get(PEAK_SESSION_COOKIE)?.value).toBeTruthy();
     expect((await localLogin(request())).status).toBe(401);
+  });
+
+  it("lets an authenticated owner set the durable dashboard password", async () => {
+    configureAuth();
+    const session = createSession("owner@example.com");
+    const changed = await updatePassword(new NextRequest("https://line101chat.com/api/peak/v1/password", {
+      method: "POST",
+      headers: { origin: "https://line101chat.com", cookie: `${PEAK_SESSION_COOKIE}=${session}`, "content-type": "application/json" },
+      body: JSON.stringify({ password: "my browser password", confirmation: "my browser password" }),
+    }));
+    expect(changed.status).toBe(200);
+    const loggedIn = await passwordLogin(new NextRequest("https://line101chat.com/api/peak/v1/login", {
+      method: "POST",
+      headers: { origin: "https://line101chat.com", "content-type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ email: "owner@example.com", password: "my browser password" }),
+    }));
+    expect(loggedIn.status).toBe(303);
+    expect(loggedIn.cookies.get(PEAK_SESSION_COOKIE)?.value).toBeTruthy();
   });
 });
 

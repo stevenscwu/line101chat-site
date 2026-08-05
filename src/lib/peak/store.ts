@@ -8,16 +8,19 @@ import { parsePeakSnapshot } from "@/lib/peak/validation";
 
 const SNAPSHOT_PATH = "peak/dashboard/v1/owner.json";
 const REPLAY_PATH = "peak/security/replay-window.json";
+const OWNER_PASSWORD_PATH = "peak/security/owner-password.json";
 const SECURITY_STATE_SECONDS = 10 * 60;
 const MAX_WRITE_RETRIES = 4;
 const globalStore = globalThis as typeof globalThis & {
   peakSnapshot?: StoredPeakSnapshot;
   peakRate?: Map<string, { count: number; expires: number }>;
+  peakOwnerPasswordHash?: string;
 };
 
 type BlobRecord<T> = { value: T; etag: string };
 type ReplayState = { nonces: Record<string, number> };
 type RateState = { count: number; expiresAt: number };
+type OwnerPasswordState = { version: 1; hash: string; updatedAt: string };
 
 function usesPrivateBlob() {
   return process.env.NODE_ENV === "production";
@@ -95,6 +98,30 @@ export async function loadPeakSnapshot() {
   const snapshot = parsePeakSnapshot(candidate.snapshot);
   if (!snapshot || typeof candidate.receivedAt !== "string" || !Number.isFinite(Date.parse(candidate.receivedAt))) return null;
   return { snapshot, receivedAt: candidate.receivedAt } satisfies StoredPeakSnapshot;
+}
+
+export async function loadOwnerPasswordHash(fallback: string) {
+  requireDurableProductionStore();
+  const hash = usesPrivateBlob()
+    ? (await readJsonBlob<OwnerPasswordState>(OWNER_PASSWORD_PATH))?.value.hash
+    : globalStore.peakOwnerPasswordHash;
+  return typeof hash === "string" && hash.startsWith("pbkdf2-sha512$") ? hash : fallback;
+}
+
+export async function saveOwnerPasswordHash(hash: string) {
+  if (!hash.startsWith("pbkdf2-sha512$")) throw new Error("Invalid password hash.");
+  requireDurableProductionStore();
+  if (usesPrivateBlob()) {
+    await put(OWNER_PASSWORD_PATH, JSON.stringify({ version: 1, hash, updatedAt: new Date().toISOString() }), {
+      access: "private",
+      addRandomSuffix: false,
+      allowOverwrite: true,
+      cacheControlMaxAge: 60,
+      contentType: "application/json",
+    });
+    return;
+  }
+  globalStore.peakOwnerPasswordHash = hash;
 }
 
 export async function consumeReplayNonce(nonce: string) {
