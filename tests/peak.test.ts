@@ -12,7 +12,7 @@ import {
   verifyPassword,
   verifySession,
 } from "@/lib/peak/auth";
-import { getPeakRedisConfig } from "@/lib/peak/config";
+import { hasPeakPrivateBlobConfig } from "@/lib/peak/config";
 import { parsePeakSnapshot } from "@/lib/peak/validation";
 
 const original = { ...process.env };
@@ -99,18 +99,13 @@ describe("Peak owner authentication", () => {
 });
 
 describe("Peak dashboard payload", () => {
-  it("uses Vercel's managed Upstash KV environment names", () => {
-    delete process.env.PEAK_DASHBOARD_UPSTASH_REDIS_REST_URL;
-    delete process.env.PEAK_DASHBOARD_UPSTASH_REDIS_REST_TOKEN;
-    delete process.env.UPSTASH_REDIS_REST_URL;
-    delete process.env.UPSTASH_REDIS_REST_TOKEN;
-    process.env.KV_REST_API_URL = "https://private-redis.example";
-    process.env.KV_REST_API_TOKEN = "managed-token";
-
-    expect(getPeakRedisConfig()).toEqual({
-      url: "https://private-redis.example",
-      token: "managed-token",
-    });
+  it("recognizes Vercel private Blob credentials without Upstash", () => {
+    delete process.env.BLOB_READ_WRITE_TOKEN;
+    delete process.env.VERCEL_OIDC_TOKEN;
+    delete process.env.BLOB_STORE_ID;
+    expect(hasPeakPrivateBlobConfig()).toBe(false);
+    process.env.BLOB_READ_WRITE_TOKEN = "vercel-managed-test-token";
+    expect(hasPeakPrivateBlobConfig()).toBe(true);
   });
 
   it("preserves unknown wellbeing as null rather than zero", () => {
@@ -157,6 +152,17 @@ describe("Peak dashboard route boundary", () => {
       },
     }));
     expect(accepted.status).toBe(200);
+    const replayed = await ingestSnapshot(new NextRequest("https://line101chat.com/api/peak/v1/snapshot", {
+      method: "POST",
+      body,
+      headers: {
+        "content-type": "application/json",
+        "x-peak-timestamp": timestamp,
+        "x-peak-nonce": nonce,
+        "x-peak-signature": signature,
+      },
+    }));
+    expect(replayed.status).toBe(401);
     const token = createSession("owner@example.com");
     const response = await readSummary(new NextRequest("https://line101chat.com/api/peak/v1/summary", {
       headers: { cookie: `${PEAK_SESSION_COOKIE}=${token}` },

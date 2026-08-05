@@ -24,16 +24,11 @@ export function requirePeakServerConfig() {
   return { ownerEmails, passwordHash, sessionSecret };
 }
 
-export function getPeakRedisConfig() {
-  const url =
-    process.env.PEAK_DASHBOARD_UPSTASH_REDIS_REST_URL?.trim() ||
-    process.env.UPSTASH_REDIS_REST_URL?.trim() ||
-    process.env.KV_REST_API_URL?.trim();
-  const token =
-    process.env.PEAK_DASHBOARD_UPSTASH_REDIS_REST_TOKEN?.trim() ||
-    process.env.UPSTASH_REDIS_REST_TOKEN?.trim() ||
-    process.env.KV_REST_API_TOKEN?.trim();
-  return url && token ? { url, token } : null;
+export function hasPeakPrivateBlobConfig() {
+  const staticToken = process.env.BLOB_READ_WRITE_TOKEN?.trim();
+  const oidcToken = process.env.VERCEL_OIDC_TOKEN?.trim();
+  const storeId = process.env.BLOB_STORE_ID?.trim();
+  return Boolean(staticToken || (oidcToken && storeId));
 }
 
 export function requireSyncSecret() {

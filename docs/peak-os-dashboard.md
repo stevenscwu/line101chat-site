@@ -48,16 +48,27 @@ PEAK_DASHBOARD_PASSWORD_HASH=pbkdf2-sha512$310000$...
 PEAK_DASHBOARD_SESSION_SECRET=<independent-random-secret>
 PEAK_DASHBOARD_SYNC_SECRET=<independent-random-secret-shared-with-Peak-OS>
 PEAK_DASHBOARD_STALE_AFTER_MINUTES=30
-PEAK_DASHBOARD_UPSTASH_REDIS_REST_URL=<private-store-url>
-PEAK_DASHBOARD_UPSTASH_REDIS_REST_TOKEN=<private-store-token>
 ```
 
-When Upstash for Redis is connected through the Vercel Marketplace, the generated
-`KV_REST_API_URL` and `KV_REST_API_TOKEN` variables are accepted directly. Do not copy
-their values into source files or duplicate them unless a dedicated store is required.
+Connect a **private Vercel Blob** store to the project. Vercel supplies the
+`BLOB_READ_WRITE_TOKEN`, or short-lived OIDC credentials with a store ID, directly to the
+deployment. Do not copy those values into source files or ordinary local configuration.
 
-Production fails closed if durable private storage is missing. The general Upstash settings are
-accepted as a fallback, but a separate database or restricted token is preferable.
+Production fails closed if durable private storage is missing. Dashboard snapshots, replay-window
+state, and rate-limit state use private objects and are never delivered directly to browsers.
+
+Create and connect the store from the linked project:
+
+```powershell
+npx --yes vercel@latest blob create-store peak-os-private --access private --region sin1 --yes
+```
+
+The password itself is stored only in the owner's DPAPI-protected local credential. To select a new
+password and synchronize its hash to Vercel, run:
+
+```powershell
+.\scripts\Set-PeakDashboardPassword.ps1
+```
 
 ## Routes
 
