@@ -295,3 +295,12 @@ local credentials.
 ## Future Integrations
 
 The contact form opens the visitor's email app with a prefilled message to `steven@line101chat.com` and provides a copy fallback. Beyond the optional Upstash-backed Celine memory, LINE AI avatar webhook, and existing local proxy/payment routes, the site has no general CRM, server-side email sender, or booking system. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.
+
+## Private Peak OS Dashboard
+
+`/peak` is an owner-authenticated, dynamically rendered executive dashboard. It receives a
+privacy-minimized snapshot through signed outbound synchronization from the local Peak OS worker;
+it never opens the live SQLite database or exposes a Windows inbound port. The feature is disabled
+by default and is not included in navigation or the sitemap. See
+[`docs/peak-os-dashboard.md`](docs/peak-os-dashboard.md) for setup, security, testing, first login,
+rotation, incident response, and rollback.
