@@ -12,7 +12,7 @@ import {
   verifyPassword,
   verifySession,
 } from "@/lib/peak/auth";
-import { hasPeakPrivateBlobConfig } from "@/lib/peak/config";
+import { getSingleOwnerEmail, hasPeakPrivateBlobConfig } from "@/lib/peak/config";
 import { parsePeakSnapshot } from "@/lib/peak/validation";
 
 const original = { ...process.env };
@@ -80,6 +80,13 @@ function snapshot() {
 }
 
 describe("Peak owner authentication", () => {
+  it("prefills the sole owner email without choosing among multiple owners", () => {
+    process.env.PEAK_DASHBOARD_OWNER_EMAILS = " Owner@Example.com ";
+    expect(getSingleOwnerEmail()).toBe("owner@example.com");
+    process.env.PEAK_DASHBOARD_OWNER_EMAILS = "owner@example.com,backup@example.com";
+    expect(getSingleOwnerEmail()).toBe("");
+  });
+
   it("verifies the server-side password hash without exposing the password", () => {
     const encoded = createPasswordHash("correct horse battery staple");
     expect(verifyPassword("correct horse battery staple", encoded)).toBe(true);

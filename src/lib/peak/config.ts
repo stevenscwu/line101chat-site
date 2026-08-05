@@ -13,6 +13,11 @@ export function getOwnerEmails() {
   );
 }
 
+export function getSingleOwnerEmail() {
+  const ownerEmails = [...getOwnerEmails()];
+  return ownerEmails.length === 1 ? ownerEmails[0] : "";
+}
+
 export function requirePeakServerConfig() {
   if (!isPeakDashboardEnabled()) throw new Error("Peak dashboard is disabled.");
   const ownerEmails = getOwnerEmails();

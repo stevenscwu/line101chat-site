@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import { PEAK_SESSION_COOKIE, verifySession } from "@/lib/peak/auth";
-import { isPeakDashboardEnabled } from "@/lib/peak/config";
+import { getSingleOwnerEmail, isPeakDashboardEnabled } from "@/lib/peak/config";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -15,13 +15,14 @@ export default async function PeakLoginPage({ searchParams }: { searchParams: Pr
   if (!isPeakDashboardEnabled()) notFound();
   const token = (await cookies()).get(PEAK_SESSION_COOKIE)?.value;
   if (verifySession(token)) redirect("/peak");
+  const ownerEmail = getSingleOwnerEmail();
   const error = (await searchParams).error;
   const message = error === "limited"
     ? "嘗試次數過多，請稍後再試。"
     : error === "unavailable"
       ? "擁有者驗證尚未完成設定。"
       : error
-        ? "登入資料無效。"
+        ? "登入資料無效。電子郵件已保留；密碼基於安全考量不會保留，請重新輸入或貼上。"
         : null;
   return (
     <main className="min-h-[72vh] bg-slate-950 px-5 py-16 text-slate-100">
@@ -32,7 +33,7 @@ export default async function PeakLoginPage({ searchParams }: { searchParams: Pr
         {message ? <p role="alert" className="mt-5 rounded-xl border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-100">{message}</p> : null}
         <form action="/api/peak/v1/login" method="post" className="mt-7 space-y-5">
           <label className="block text-sm font-medium">擁有者電子郵件
-            <input name="email" type="email" autoComplete="username" required maxLength={254} className="mt-2 w-full rounded-xl border border-slate-600 bg-slate-950 px-4 py-3 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30" />
+            <input name="email" type="email" autoComplete="username" required maxLength={254} defaultValue={ownerEmail} className="mt-2 w-full rounded-xl border border-slate-600 bg-slate-950 px-4 py-3 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30" />
           </label>
           <label className="block text-sm font-medium">密碼
             <input name="password" type="password" autoComplete="current-password" required minLength={12} maxLength={256} className="mt-2 w-full rounded-xl border border-slate-600 bg-slate-950 px-4 py-3 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30" />
