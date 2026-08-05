@@ -5,6 +5,7 @@ import { NextRequest } from "next/server";
 import sitemap from "@/app/sitemap";
 import { POST as ingestSnapshot } from "@/app/api/peak/v1/snapshot/route";
 import { GET as readSummary } from "@/app/api/peak/v1/summary/route";
+import { POST as localLogin } from "@/app/api/peak/v1/local-login/route";
 import {
   PEAK_SESSION_COOKIE,
   createPasswordHash,
@@ -14,6 +15,7 @@ import {
   verifySession,
 } from "@/lib/peak/auth";
 import { getSingleOwnerEmail, hasPeakPrivateBlobConfig } from "@/lib/peak/config";
+import { createLocalLoginToken } from "@/lib/peak/local-login";
 import { parsePeakSnapshot } from "@/lib/peak/validation";
 
 const original = { ...process.env };
@@ -104,6 +106,21 @@ describe("Peak owner authentication", () => {
     expect(verifySession(token, now + 9 * 60 * 60 * 1_000)).toBeNull();
     process.env.PEAK_DASHBOARD_OWNER_EMAILS = "someone-else@example.com";
     expect(verifySession(token, now + 60_000)).toBeNull();
+  });
+
+  it("accepts a short-lived local token once and rejects replay", async () => {
+    configureAuth();
+    process.env.PEAK_DASHBOARD_SYNC_SECRET = "y".repeat(64);
+    const token = createLocalLoginToken("owner@example.com", process.env.PEAK_DASHBOARD_SYNC_SECRET);
+    const request = () => new NextRequest("https://line101chat.com/api/peak/v1/local-login", {
+      method: "POST",
+      headers: { origin: "https://line101chat.com", "content-type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
+    const accepted = await localLogin(request());
+    expect(accepted.status).toBe(200);
+    expect(accepted.cookies.get(PEAK_SESSION_COOKIE)?.value).toBeTruthy();
+    expect((await localLogin(request())).status).toBe(401);
   });
 });
 
