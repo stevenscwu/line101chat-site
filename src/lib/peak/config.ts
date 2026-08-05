@@ -27,10 +27,12 @@ export function requirePeakServerConfig() {
 export function getPeakRedisConfig() {
   const url =
     process.env.PEAK_DASHBOARD_UPSTASH_REDIS_REST_URL?.trim() ||
-    process.env.UPSTASH_REDIS_REST_URL?.trim();
+    process.env.UPSTASH_REDIS_REST_URL?.trim() ||
+    process.env.KV_REST_API_URL?.trim();
   const token =
     process.env.PEAK_DASHBOARD_UPSTASH_REDIS_REST_TOKEN?.trim() ||
-    process.env.UPSTASH_REDIS_REST_TOKEN?.trim();
+    process.env.UPSTASH_REDIS_REST_TOKEN?.trim() ||
+    process.env.KV_REST_API_TOKEN?.trim();
   return url && token ? { url, token } : null;
 }
 

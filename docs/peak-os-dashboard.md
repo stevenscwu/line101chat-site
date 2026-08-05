@@ -52,6 +52,10 @@ PEAK_DASHBOARD_UPSTASH_REDIS_REST_URL=<private-store-url>
 PEAK_DASHBOARD_UPSTASH_REDIS_REST_TOKEN=<private-store-token>
 ```
 
+When Upstash for Redis is connected through the Vercel Marketplace, the generated
+`KV_REST_API_URL` and `KV_REST_API_TOKEN` variables are accepted directly. Do not copy
+their values into source files or duplicate them unless a dedicated store is required.
+
 Production fails closed if durable private storage is missing. The general Upstash settings are
 accepted as a fallback, but a separate database or restricted token is preferable.
 
