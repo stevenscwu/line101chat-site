@@ -39,6 +39,12 @@ export function verifyPassword(password: string, encoded: string) {
   }
 }
 
+export function verifySubmittedPassword(password: string, encoded: string) {
+  if (verifyPassword(password, encoded)) return true;
+  const trimmed = password.trim();
+  return trimmed !== password && verifyPassword(trimmed, encoded);
+}
+
 export function createPasswordHash(password: string) {
   const salt = randomBytes(24);
   const iterations = 310_000;

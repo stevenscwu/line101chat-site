@@ -10,6 +10,7 @@ import {
   createPasswordHash,
   createSession,
   verifyPassword,
+  verifySubmittedPassword,
   verifySession,
 } from "@/lib/peak/auth";
 import { getSingleOwnerEmail, hasPeakPrivateBlobConfig } from "@/lib/peak/config";
@@ -91,6 +92,7 @@ describe("Peak owner authentication", () => {
     const encoded = createPasswordHash("correct horse battery staple");
     expect(verifyPassword("correct horse battery staple", encoded)).toBe(true);
     expect(verifyPassword("wrong password", encoded)).toBe(false);
+    expect(verifySubmittedPassword("  correct horse battery staple\r\n", encoded)).toBe(true);
     expect(encoded).not.toContain("correct horse");
   });
 

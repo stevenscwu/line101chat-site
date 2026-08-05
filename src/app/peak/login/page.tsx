@@ -5,6 +5,8 @@ import { notFound, redirect } from "next/navigation";
 import { PEAK_SESSION_COOKIE, verifySession } from "@/lib/peak/auth";
 import { getSingleOwnerEmail, isPeakDashboardEnabled } from "@/lib/peak/config";
 
+import { PasswordInput } from "./PasswordInput";
+
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Peak OS 擁有者登入",
@@ -35,9 +37,7 @@ export default async function PeakLoginPage({ searchParams }: { searchParams: Pr
           <label className="block text-sm font-medium">擁有者電子郵件
             <input name="email" type="email" autoComplete="username" required maxLength={254} defaultValue={ownerEmail} className="mt-2 w-full rounded-xl border border-slate-600 bg-slate-950 px-4 py-3 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30" />
           </label>
-          <label className="block text-sm font-medium">密碼
-            <input name="password" type="password" autoComplete="current-password" required minLength={12} maxLength={256} className="mt-2 w-full rounded-xl border border-slate-600 bg-slate-950 px-4 py-3 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/30" />
-          </label>
+          <PasswordInput />
           <button type="submit" className="w-full rounded-xl bg-emerald-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:ring-offset-2 focus:ring-offset-slate-900">安全登入</button>
         </form>
       </section>

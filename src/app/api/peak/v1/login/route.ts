@@ -2,7 +2,7 @@ import { createHmac } from "node:crypto";
 
 import { NextRequest, NextResponse } from "next/server";
 
-import { createSession, hasValidOrigin, setSessionCookie, verifyPassword } from "@/lib/peak/auth";
+import { createSession, hasValidOrigin, setSessionCookie, verifySubmittedPassword } from "@/lib/peak/auth";
 import { isPeakDashboardEnabled, requirePeakServerConfig } from "@/lib/peak/config";
 import { allowAttempt } from "@/lib/peak/store";
 
@@ -27,9 +27,13 @@ export async function POST(request: NextRequest) {
   const email = String(form.get("email") || "").trim().toLowerCase();
   const password = String(form.get("password") || "");
   const emailAllowed = config.ownerEmails.has(email);
-  const passwordValid = verifyPassword(password, config.passwordHash);
+  const passwordValid = verifySubmittedPassword(password, config.passwordHash);
   if (!emailAllowed || !passwordValid) {
-    console.warn("peak_owner_login_failed");
+    console.warn("peak_owner_login_failed", {
+      emailAllowed,
+      passwordValid,
+      hadSurroundingWhitespace: password !== password.trim(),
+    });
     return NextResponse.redirect(loginUrl(request, "invalid"), 303);
   }
   const response = NextResponse.redirect(new URL("/peak", request.url), 303);
