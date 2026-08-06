@@ -14,6 +14,26 @@ function ConvertTo-Base64Url {
     [Convert]::ToBase64String($Value).TrimEnd('=').Replace('+', '-').Replace('/', '_')
 }
 
+function New-CryptographicRandomBytes {
+    param([Parameter(Mandatory)][ValidateRange(1, 1024)][int]$Length)
+
+    $bytes = New-Object byte[] $Length
+    $generator = [Security.Cryptography.RandomNumberGenerator]::Create()
+    try {
+        $generator.GetBytes($bytes)
+    }
+    finally {
+        $generator.Dispose()
+    }
+    return ,$bytes
+}
+
+function ConvertTo-LowerHex {
+    param([Parameter(Mandatory)][byte[]]$Value)
+
+    [BitConverter]::ToString($Value).Replace('-', '').ToLowerInvariant()
+}
+
 $secretLine = Get-Content -LiteralPath $PeakEnvPath | Where-Object {
     $_ -match '^PEAK_DASHBOARD_SYNC_SECRET='
 } | Select-Object -Last 1
@@ -31,13 +51,13 @@ $payload = [ordered]@{
     email = $credential.UserName.Trim().ToLowerInvariant()
     iat = $now
     exp = $now + 120
-    nonce = [Convert]::ToHexString([Security.Cryptography.RandomNumberGenerator]::GetBytes(16)).ToLowerInvariant()
+    nonce = ConvertTo-LowerHex (New-CryptographicRandomBytes 16)
 }
 $json = $payload | ConvertTo-Json -Compress
 $encoded = ConvertTo-Base64Url ([Text.Encoding]::UTF8.GetBytes($json))
 $hmac = [Security.Cryptography.HMACSHA256]::new([Text.Encoding]::UTF8.GetBytes($secret))
 try {
-    $signature = [Convert]::ToHexString($hmac.ComputeHash([Text.Encoding]::UTF8.GetBytes($encoded))).ToLowerInvariant()
+    $signature = ConvertTo-LowerHex ($hmac.ComputeHash([Text.Encoding]::UTF8.GetBytes($encoded)))
 }
 finally {
     $hmac.Dispose()

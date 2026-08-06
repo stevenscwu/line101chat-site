@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { createHmac, randomBytes } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { NextRequest } from "next/server";
 
 import sitemap from "@/app/sitemap";
@@ -116,6 +118,25 @@ function snapshot() {
 }
 
 describe("Peak owner authentication", () => {
+  it("keeps password recovery scripts compatible with Windows PowerShell", () => {
+    const scripts = [
+      "Set-PeakDashboardPassword.ps1",
+      "Open-PeakDashboard.ps1",
+      "Initialize-PeakDashboardPassword.ps1",
+      "New-PeakDashboardPasswordHash.ps1",
+    ];
+    const unsupported = [
+      "RandomNumberGenerator]::GetBytes",
+      "RandomNumberGenerator]::Fill",
+      "Convert]::ToHexString",
+      "WebRequestSession]::new",
+    ];
+    for (const script of scripts) {
+      const source = readFileSync(join(process.cwd(), "scripts", script), "utf8");
+      for (const marker of unsupported) expect(source).not.toContain(marker);
+    }
+  });
+
   it("prefills the sole owner email without choosing among multiple owners", () => {
     process.env.PEAK_DASHBOARD_OWNER_EMAILS = " Owner@Example.com ";
     expect(getSingleOwnerEmail()).toBe("owner@example.com");

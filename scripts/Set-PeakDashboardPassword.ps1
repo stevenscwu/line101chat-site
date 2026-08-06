@@ -29,6 +29,26 @@ function ConvertTo-Base64Url {
     [Convert]::ToBase64String($Value).TrimEnd('=').Replace('+', '-').Replace('/', '_')
 }
 
+function New-CryptographicRandomBytes {
+    param([Parameter(Mandatory)][ValidateRange(1, 1024)][int]$Length)
+
+    $bytes = New-Object byte[] $Length
+    $generator = [Security.Cryptography.RandomNumberGenerator]::Create()
+    try {
+        $generator.GetBytes($bytes)
+    }
+    finally {
+        $generator.Dispose()
+    }
+    return ,$bytes
+}
+
+function ConvertTo-LowerHex {
+    param([Parameter(Mandatory)][byte[]]$Value)
+
+    [BitConverter]::ToString($Value).Replace('-', '').ToLowerInvariant()
+}
+
 function New-LocalLoginToken {
     param(
         [Parameter(Mandatory)][string]$Email,
@@ -41,9 +61,7 @@ function New-LocalLoginToken {
         email = $Email.Trim().ToLowerInvariant()
         iat = $now
         exp = $now + 120
-        nonce = [Convert]::ToHexString(
-            [Security.Cryptography.RandomNumberGenerator]::GetBytes(16)
-        ).ToLowerInvariant()
+        nonce = ConvertTo-LowerHex (New-CryptographicRandomBytes 16)
     }
     $encoded = ConvertTo-Base64Url (
         [Text.Encoding]::UTF8.GetBytes(($payload | ConvertTo-Json -Compress))
@@ -52,9 +70,9 @@ function New-LocalLoginToken {
         [Text.Encoding]::UTF8.GetBytes($Secret)
     )
     try {
-        $signature = [Convert]::ToHexString(
+        $signature = ConvertTo-LowerHex (
             $hmac.ComputeHash([Text.Encoding]::UTF8.GetBytes($encoded))
-        ).ToLowerInvariant()
+        )
     }
     finally {
         $hmac.Dispose()
@@ -100,11 +118,10 @@ try {
     }
 
     $baseUrl = $DashboardUrl.TrimEnd('/')
-    $session = [Microsoft.PowerShell.Commands.WebRequestSession]::new()
     $token = New-LocalLoginToken -Email $OwnerEmail -Secret $syncSecret
     $recovery = Invoke-WebRequest -UseBasicParsing -Method Post `
         -Uri "$baseUrl/api/peak/v1/local-login" `
-        -WebSession $session `
+        -SessionVariable recoverySession `
         -Headers @{ Origin = $baseUrl } `
         -ContentType 'application/json' `
         -Body (@{ token = $token } | ConvertTo-Json -Compress)
@@ -115,7 +132,7 @@ try {
     $body = @{ password = $password; confirmation = $confirmation } | ConvertTo-Json -Compress
     $update = Invoke-WebRequest -UseBasicParsing -Method Post `
         -Uri "$baseUrl/api/peak/v1/password" `
-        -WebSession $session `
+        -WebSession $recoverySession `
         -Headers @{ Origin = $baseUrl } `
         -ContentType 'application/json' `
         -Body $body

@@ -12,6 +12,26 @@ function ConvertTo-Base64Url {
     [Convert]::ToBase64String($Value).TrimEnd('=').Replace('+', '-').Replace('/', '_')
 }
 
+function New-CryptographicRandomBytes {
+    param([Parameter(Mandatory)][ValidateRange(1, 1024)][int]$Length)
+
+    $bytes = New-Object byte[] $Length
+    $generator = [Security.Cryptography.RandomNumberGenerator]::Create()
+    try {
+        $generator.GetBytes($bytes)
+    }
+    finally {
+        $generator.Dispose()
+    }
+    return ,$bytes
+}
+
+function ConvertTo-LowerHex {
+    param([Parameter(Mandatory)][byte[]]$Value)
+
+    [BitConverter]::ToString($Value).Replace('-', '').ToLowerInvariant()
+}
+
 $secretLine = Get-Content -LiteralPath $PeakEnvPath | Where-Object { $_ -match '^PEAK_DASHBOARD_SYNC_SECRET=' } | Select-Object -Last 1
 if (-not $secretLine) { throw 'Peak dashboard synchronization is not configured.' }
 $syncSecret = ($secretLine -split '=', 2)[1].Trim().Trim('"').Trim("'")
@@ -21,16 +41,16 @@ $credential = Import-Clixml -LiteralPath $CredentialPath
 $password = $credential.GetNetworkCredential().Password
 if ($password.Length -lt 12 -or $password.Length -gt 256) { throw 'The protected credential contains an invalid password length.' }
 
-$salt = [Security.Cryptography.RandomNumberGenerator]::GetBytes(24)
+$salt = New-CryptographicRandomBytes 24
 $derive = [Security.Cryptography.Rfc2898DeriveBytes]::new($password, $salt, 310000, [Security.Cryptography.HashAlgorithmName]::SHA512)
 try { $digest = $derive.GetBytes(64) } finally { $derive.Dispose() }
 $hash = 'pbkdf2-sha512$310000$' + (ConvertTo-Base64Url $salt) + '$' + (ConvertTo-Base64Url $digest)
 $body = @{ password_hash = $hash } | ConvertTo-Json -Compress
 $timestamp = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds().ToString()
-$nonce = [Convert]::ToHexString([Security.Cryptography.RandomNumberGenerator]::GetBytes(16)).ToLowerInvariant()
+$nonce = ConvertTo-LowerHex (New-CryptographicRandomBytes 16)
 $signed = "$timestamp.$nonce.$body"
 $hmac = [Security.Cryptography.HMACSHA256]::new([Text.Encoding]::UTF8.GetBytes($syncSecret))
-try { $signature = [Convert]::ToHexString($hmac.ComputeHash([Text.Encoding]::UTF8.GetBytes($signed))).ToLowerInvariant() } finally { $hmac.Dispose() }
+try { $signature = ConvertTo-LowerHex ($hmac.ComputeHash([Text.Encoding]::UTF8.GetBytes($signed))) } finally { $hmac.Dispose() }
 
 try {
     $response = Invoke-WebRequest -UseBasicParsing -Method Post -Uri "$($DashboardUrl.TrimEnd('/'))/api/peak/v1/password/bootstrap" -ContentType 'application/json' -Body $body -Headers @{

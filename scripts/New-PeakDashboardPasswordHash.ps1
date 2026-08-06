@@ -9,7 +9,13 @@ try {
         throw 'Use a password containing at least 12 characters.'
     }
     $salt = New-Object byte[] 24
-    [Security.Cryptography.RandomNumberGenerator]::Fill($salt)
+    $generator = [Security.Cryptography.RandomNumberGenerator]::Create()
+    try {
+        $generator.GetBytes($salt)
+    }
+    finally {
+        $generator.Dispose()
+    }
     $iterations = 310000
     $derive = [Security.Cryptography.Rfc2898DeriveBytes]::new(
         $password,
