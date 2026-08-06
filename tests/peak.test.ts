@@ -8,6 +8,7 @@ import sitemap from "@/app/sitemap";
 import { POST as ingestSnapshot } from "@/app/api/peak/v1/snapshot/route";
 import { GET as readSummary } from "@/app/api/peak/v1/summary/route";
 import { POST as localLogin } from "@/app/api/peak/v1/local-login/route";
+import { POST as telegramLogin } from "@/app/api/peak/v1/telegram-login/route";
 import { POST as updatePassword } from "@/app/api/peak/v1/password/route";
 import { POST as passwordLogin } from "@/app/api/peak/v1/login/route";
 import { POST as passwordLogout } from "@/app/api/peak/v1/logout/route";
@@ -21,11 +22,16 @@ import {
   inspectSession,
   loginAttemptKey,
   verifyPassword,
+  verifyAdminSession,
   verifySubmittedPassword,
   verifySession,
 } from "@/lib/peak/auth";
 import { getSingleOwnerEmail, hasPeakPrivateBlobConfig } from "@/lib/peak/config";
 import { createLocalLoginToken } from "@/lib/peak/local-login";
+import {
+  createTelegramLoginToken,
+  verifyTelegramLoginToken,
+} from "@/lib/peak/telegram-login";
 import { parseExecutiveState } from "@/lib/peak/executive-validation";
 import { allowAttempt, resetPeakStoreForTests, resolveOwnerPasswordState } from "@/lib/peak/store";
 import { parsePeakSnapshot } from "@/lib/peak/validation";
@@ -42,6 +48,23 @@ function configureAuth() {
   process.env.PEAK_DASHBOARD_OWNER_EMAILS = "owner@example.com";
   process.env.PEAK_DASHBOARD_SESSION_SECRET = "s".repeat(64);
   process.env.PEAK_DASHBOARD_PASSWORD_HASH = createPasswordHash("correct horse battery staple");
+  process.env.PEAK_DASHBOARD_LOGIN_SECRET = "t".repeat(64);
+}
+
+function signSessionPayload(payload: Record<string, unknown>) {
+  const encoded = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const signature = createHmac("sha256", process.env.PEAK_DASHBOARD_SESSION_SECRET as string)
+    .update(encoded)
+    .digest("base64url");
+  return `${encoded}.${signature}`;
+}
+
+function signTelegramPayload(payload: Record<string, unknown>) {
+  const encoded = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const signature = createHmac("sha256", process.env.PEAK_DASHBOARD_LOGIN_SECRET as string)
+    .update(encoded)
+    .digest("hex");
+  return `${encoded}.${signature}`;
 }
 
 function executiveState() {
@@ -157,10 +180,45 @@ describe("Peak owner authentication", () => {
     const now = Date.parse("2026-08-04T08:00:00Z");
     const token = createSession("owner@example.com", now);
     expect(verifySession(token, now + 60_000)?.email).toBe("owner@example.com");
+    expect(verifyAdminSession(token, now + 60_000)?.scope).toBe("admin");
+    const cockpit = createSession("owner@example.com", now, "cockpit");
+    expect(verifySession(cockpit, now + 60_000)?.scope).toBe("cockpit");
+    expect(verifyAdminSession(cockpit, now + 60_000)).toBeNull();
     expect(verifySession(token, now + 9 * 60 * 60 * 1_000)).toBeNull();
     expect(inspectSession(token, now + 9 * 60 * 60 * 1_000).status).toBe("expired");
     process.env.PEAK_DASHBOARD_OWNER_EMAILS = "someone-else@example.com";
     expect(verifySession(token, now + 60_000)).toBeNull();
+  });
+
+  it("strictly validates signed session fields while retaining legacy admin sessions", () => {
+    configureAuth();
+    const now = Date.parse("2026-08-06T05:00:00Z");
+    const issuedAt = Math.floor(now / 1_000);
+    const base = {
+      v: 2,
+      aud: "peak_dashboard",
+      purpose: "owner_session",
+      scope: "cockpit",
+      email: "owner@example.com",
+      iat: issuedAt,
+      exp: issuedAt + 60,
+      jti: "a".repeat(32),
+    };
+    expect(verifySession(`${signSessionPayload(base)}.extra`, now)).toBeNull();
+    expect(verifySession(signSessionPayload({ ...base, iat: String(issuedAt) }), now)).toBeNull();
+    expect(verifySession(signSessionPayload({ ...base, exp: issuedAt }), now)).toBeNull();
+    expect(verifySession(signSessionPayload({ ...base, email: "Owner@Example.com" }), now)).toBeNull();
+    expect(verifySession(signSessionPayload({ ...base, jti: "short" }), now)).toBeNull();
+    expect(verifySession(signSessionPayload({ ...base, unexpected: true }), now)).toBeNull();
+
+    const legacy = signSessionPayload({
+      v: 1,
+      email: "owner@example.com",
+      iat: issuedAt,
+      exp: issuedAt + 60,
+      jti: "b".repeat(32),
+    });
+    expect(verifyAdminSession(legacy, now)?.scope).toBe("admin");
   });
 
   it("restores the durable verifier after a simulated fresh process and fails closed on corruption", () => {
@@ -234,6 +292,71 @@ describe("Peak owner authentication", () => {
     expect(accepted.status).toBe(200);
     expect(accepted.cookies.get(PEAK_SESSION_COOKIE)?.value).toBeTruthy();
     expect((await localLogin(request())).status).toBe(401);
+  });
+
+  it("accepts a one-time Telegram token as a cockpit session without password configuration", async () => {
+    configureAuth();
+    delete process.env.PEAK_DASHBOARD_PASSWORD_HASH;
+    const token = createTelegramLoginToken(process.env.PEAK_DASHBOARD_LOGIN_SECRET as string);
+    const request = () => new NextRequest("https://line101chat.com/api/peak/v1/telegram-login", {
+      method: "POST",
+      headers: { origin: "https://line101chat.com", "content-type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
+
+    const accepted = await telegramLogin(request());
+    expect(accepted.status).toBe(200);
+    const session = accepted.cookies.get(PEAK_SESSION_COOKIE)?.value;
+    expect(verifySession(session)?.scope).toBe("cockpit");
+    expect(verifyAdminSession(session)).toBeNull();
+    expect((await telegramLogin(request())).status).toBe(401);
+  });
+
+  it("rejects malformed Telegram claims and ambiguous owner configuration", async () => {
+    configureAuth();
+    const now = Date.parse("2026-08-06T05:00:00Z");
+    const issuedAt = Math.floor(now / 1_000);
+    const claims = {
+      v: 2,
+      sub: "telegram_owner",
+      purpose: "cockpit_read",
+      aud: "peak_dashboard",
+      iat: issuedAt,
+      exp: issuedAt + 120,
+      nonce: "c".repeat(32),
+    };
+    expect(verifyTelegramLoginToken(signTelegramPayload(claims), process.env.PEAK_DASHBOARD_LOGIN_SECRET as string, now)?.nonce).toBe("c".repeat(32));
+    expect(verifyTelegramLoginToken(signTelegramPayload({ ...claims, purpose: "admin" }), process.env.PEAK_DASHBOARD_LOGIN_SECRET as string, now)).toBeNull();
+    expect(verifyTelegramLoginToken(signTelegramPayload({ ...claims, extra: true }), process.env.PEAK_DASHBOARD_LOGIN_SECRET as string, now)).toBeNull();
+
+    process.env.PEAK_DASHBOARD_OWNER_EMAILS = "owner@example.com,other@example.com";
+    const token = createTelegramLoginToken(process.env.PEAK_DASHBOARD_LOGIN_SECRET as string);
+    const response = await telegramLogin(new NextRequest("https://line101chat.com/api/peak/v1/telegram-login", {
+      method: "POST",
+      headers: { origin: "https://line101chat.com", "content-type": "application/json" },
+      body: JSON.stringify({ token }),
+    }));
+    expect(response.status).toBe(503);
+  });
+
+  it("keeps cockpit sessions read-only while allowing dashboard reads", async () => {
+    configureAuth();
+    const session = createSession("owner@example.com", Date.now(), "cockpit");
+    const headers = {
+      origin: "https://line101chat.com",
+      cookie: `${PEAK_SESSION_COOKIE}=${session}`,
+      "content-type": "application/json",
+    };
+    const denied = await updatePassword(new NextRequest("https://line101chat.com/api/peak/v1/password", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ password: "new safe browser password", confirmation: "new safe browser password" }),
+    }));
+    expect(denied.status).toBe(401);
+    const summary = await readSummary(new NextRequest("https://line101chat.com/api/peak/v1/summary", {
+      headers: { cookie: `${PEAK_SESSION_COOKIE}=${session}` },
+    }));
+    expect(summary.status).not.toBe(401);
   });
 
   it("clears the current address lockout after trusted recovery and successful login", async () => {

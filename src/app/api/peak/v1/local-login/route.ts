@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { createSession, hasValidOrigin, loginAttemptKey, setSessionCookie } from "@/lib/peak/auth";
-import { isPeakDashboardEnabled, requirePeakServerConfig, requireSyncSecret } from "@/lib/peak/config";
+import { isPeakDashboardEnabled, requirePeakSessionConfig, requireSyncSecret } from "@/lib/peak/config";
 import { verifyLocalLoginToken } from "@/lib/peak/local-login";
 import { consumeReplayNonce, resetAttempts } from "@/lib/peak/store";
 
@@ -31,10 +31,10 @@ export async function POST(request: NextRequest) {
     return reject(400);
   }
   let secret: string;
-  let config: ReturnType<typeof requirePeakServerConfig>;
+  let config: ReturnType<typeof requirePeakSessionConfig>;
   try {
     secret = requireSyncSecret();
-    config = requirePeakServerConfig();
+    config = requirePeakSessionConfig();
   } catch {
     return reject(503);
   }

@@ -2,21 +2,15 @@
 
 import { useEffect, useState } from "react";
 
-import { localLoginFragmentStatus } from "@/lib/peak/login-copy";
+import { telegramLoginFragmentStatus } from "@/lib/peak/login-copy";
 
-export function LocalLoginClient() {
-  const [message, setMessage] = useState("正在驗證本機一次性登入連結…");
+export function TelegramAccessClient() {
+  const [message, setMessage] = useState("正在驗證 Telegram 一次性登入連結…");
 
   useEffect(() => {
-    const requested = new URLSearchParams(window.location.search).get("next");
-    const destination = requested === "/peak/password" || requested === "/peak" ? requested : "/peak-os";
     const token = window.location.hash.slice(1);
-    window.history.replaceState(null, "", "/peak/local-login");
-    if (!token) {
-      window.location.replace("/peak/login?error=link");
-      return;
-    }
-    const fragmentStatus = localLoginFragmentStatus(token);
+    window.history.replaceState(null, "", "/peak/access");
+    const fragmentStatus = telegramLoginFragmentStatus(token);
     if (fragmentStatus === "expired") {
       window.location.replace("/peak/login?error=link-expired");
       return;
@@ -25,7 +19,8 @@ export function LocalLoginClient() {
       window.location.replace("/peak/login?error=link");
       return;
     }
-    void fetch("/api/peak/v1/local-login", {
+
+    void fetch("/api/peak/v1/telegram-login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token }),
@@ -33,8 +28,8 @@ export function LocalLoginClient() {
       cache: "no-store",
     }).then((response) => {
       if (!response.ok) throw new Error(response.status >= 500 ? "server" : "rejected");
-      setMessage("登入成功，正在開啟 Peak OS…");
-      window.location.replace(destination);
+      setMessage("登入成功，正在開啟唯讀 Peak OS 儀表板…");
+      window.location.replace("/peak-os");
     }).catch((error: unknown) => {
       window.location.replace(error instanceof Error && error.message === "server"
         ? "/peak/login?error=server"

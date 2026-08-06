@@ -50,7 +50,7 @@ function currentEpochMilliseconds() {
   return Date.now();
 }
 
-function Dashboard({ data, receivedAt, currentTime }: { data: PeakSnapshot; receivedAt: string; currentTime: number }) {
+function Dashboard({ data, receivedAt, currentTime, canAdminister }: { data: PeakSnapshot; receivedAt: string; currentTime: number; canAdminister: boolean }) {
   const staleMinutes = Number(process.env.PEAK_DASHBOARD_STALE_AFTER_MINUTES || 30);
   const syncAge = currentTime - Date.parse(receivedAt);
   const snapshotStale = !Number.isFinite(syncAge) || syncAge > staleMinutes * 60_000;
@@ -59,7 +59,7 @@ function Dashboard({ data, receivedAt, currentTime }: { data: PeakSnapshot; rece
       <header className="rounded-3xl bg-slate-950 p-6 text-white shadow-xl sm:p-8">
         <div className="flex flex-wrap items-start justify-between gap-5">
           <div><p className="text-sm font-semibold tracking-[0.18em] text-emerald-300">PEAK OS</p><h1 className="mt-2 text-3xl font-bold sm:text-4xl">Build the Next Peak</h1><p className="mt-3 max-w-3xl text-sm text-slate-300">{data.guidingQuestion}</p></div>
-          <div className="text-right text-sm text-slate-300"><p>{new Intl.DateTimeFormat("zh-TW", { dateStyle: "full", timeZone: "Asia/Taipei" }).format(new Date())}</p><p className="mt-1">同步：{formatDate(receivedAt)} {snapshotStale ? "· 已過期" : ""}</p><div className="mt-3 flex items-center justify-end gap-2"><a href="/peak/password" className="rounded-lg border border-slate-600 px-3 py-1.5 text-xs hover:border-slate-300">設定密碼</a><form action="/api/peak/v1/logout" method="post"><button className="rounded-lg border border-slate-600 px-3 py-1.5 text-xs hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-300">登出</button></form></div></div>
+          <div className="text-right text-sm text-slate-300"><p>{new Intl.DateTimeFormat("zh-TW", { dateStyle: "full", timeZone: "Asia/Taipei" }).format(new Date())}</p><p className="mt-1">同步：{formatDate(receivedAt)} {snapshotStale ? "· 已過期" : ""}</p><div className="mt-3 flex items-center justify-end gap-2">{canAdminister ? <a href="/peak/password" className="rounded-lg border border-slate-600 px-3 py-1.5 text-xs hover:border-slate-300">設定密碼</a> : null}<form action="/api/peak/v1/logout" method="post"><button className="rounded-lg border border-slate-600 px-3 py-1.5 text-xs hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-300">登出</button></form></div></div>
         </div>
         {snapshotStale ? <p role="status" className="mt-5 rounded-xl border border-amber-400/40 bg-amber-400/10 p-3 text-sm text-amber-100">Peak OS 目前可能無法連線。最後成功同步：{formatDate(receivedAt)}。畫面資料可能已過期。</p> : null}
       </header>
@@ -94,9 +94,10 @@ function Dashboard({ data, receivedAt, currentTime }: { data: PeakSnapshot; rece
 export default async function PeakDashboardPage() {
   if (!isPeakDashboardEnabled()) notFound();
   const token = (await cookies()).get(PEAK_SESSION_COOKIE)?.value;
-  if (!verifySession(token)) redirect("/peak/login");
+  const session = verifySession(token);
+  if (!session) redirect("/peak/login");
   let record: StoredPeakSnapshot | null = null;
   try { record = await loadPeakSnapshot(); } catch { /* Render the safe offline state below. */ }
-  if (record) return <Dashboard data={record.snapshot} receivedAt={record.receivedAt} currentTime={currentEpochMilliseconds()} />;
+  if (record) return <Dashboard data={record.snapshot} receivedAt={record.receivedAt} currentTime={currentEpochMilliseconds()} canAdminister={session.scope === "admin"} />;
   return <main className="min-h-[70vh] bg-slate-100 px-5 py-16"><section className="mx-auto max-w-2xl rounded-3xl bg-white p-8 shadow-sm"><p className="text-sm font-semibold text-amber-700">PEAK OS OFFLINE</p><h1 className="mt-2 text-3xl font-bold">目前無法取得 Peak OS 資料</h1><p className="mt-4 text-slate-600">尚未收到安全同步快照，或私人儲存服務暫時無法使用。沒有資料不代表數值為零。</p><form action="/api/peak/v1/logout" method="post"><button className="mt-6 rounded-xl border border-slate-300 px-4 py-2 font-semibold">登出</button></form></section></main>;
 }

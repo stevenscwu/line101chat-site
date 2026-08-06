@@ -29,6 +29,9 @@ npm test
 npm run build
 ```
 
-After deployment, initialize the durable password, synchronize one valid Executive State, and
-verify `/api/peak/v1/health`, `/peak-os`, logout, and a second normal password login. Do not report
-production success until these live checks complete.
+After deployment, configure the independent Telegram-login secret in both Vercel and Peak OS,
+restart the resident worker, and request `/peak_login` from the owner's private Telegram chat.
+Verify one successful exchange, replay rejection, read-only scope, `/peak-os`, and logout. Password
+login remains an emergency administrative fallback rather than the normal cockpit path. Synchronize
+one valid Executive State and verify `/api/peak/v1/health`. Do not report production success until
+these live checks complete.

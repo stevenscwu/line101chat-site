@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { createPasswordHash, hasValidOrigin, loginAttemptKey, requestSession, verifyPassword } from "@/lib/peak/auth";
+import { createPasswordHash, hasValidOrigin, loginAttemptKey, requestAdminSession, verifyPassword } from "@/lib/peak/auth";
 import { loadOwnerPasswordHash, resetAttempts, saveOwnerPasswordHash } from "@/lib/peak/store";
-import { requirePeakServerConfig } from "@/lib/peak/config";
+import { requirePeakSessionConfig } from "@/lib/peak/config";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "private, no-store", "X-Robots-Tag": "noindex, nofollow, noarchive" };
 
 export async function POST(request: NextRequest) {
-  if (!requestSession(request)) return NextResponse.json({ error: "Unauthorized." }, { status: 401, headers });
+  if (!requestAdminSession(request)) return NextResponse.json({ error: "Unauthorized." }, { status: 401, headers });
   if (!hasValidOrigin(request)) return NextResponse.json({ error: "Request rejected." }, { status: 403, headers });
   let password = "";
   let confirmation = "";
@@ -24,12 +24,12 @@ export async function POST(request: NextRequest) {
   if (password.length < 12 || password.length > 256 || password !== confirmation) {
     return NextResponse.json({ error: "Passwords must match and contain 12–256 characters." }, { status: 400, headers });
   }
-  let config: ReturnType<typeof requirePeakServerConfig>;
+  let config: ReturnType<typeof requirePeakSessionConfig>;
   try {
     const hash = createPasswordHash(password);
     await saveOwnerPasswordHash(hash);
-    config = requirePeakServerConfig();
-    const persisted = await loadOwnerPasswordHash(config.passwordHash);
+    config = requirePeakSessionConfig();
+    const persisted = await loadOwnerPasswordHash("");
     if (persisted !== hash || !verifyPassword(password, persisted)) throw new Error("read_after_write_failed");
   } catch {
     console.error("peak_owner_password_update_failed", { reason: "durable_store_verification" });

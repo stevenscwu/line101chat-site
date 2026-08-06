@@ -16,10 +16,22 @@ accepted verifier. Invalid JSON, an invalid verifier, or an unreadable store fai
 silently falls back. Password updates are accepted only from an active owner session and are read
 back and verified before the API returns success.
 
-The browser receives no password hash, session secret, synchronization secret, or Blob token.
-Sessions are HMAC-signed for eight hours and stored in a production-`Secure`, HTTP-only,
-`SameSite=Strict` cookie. Logout expires that cookie. State-changing browser routes require a
-same-origin request.
+The normal owner workflow is passwordless: the owner sends `/peak_login` to the authorized Peak
+OS Telegram bot and receives a two-minute, single-use link. The link carries a signed bearer only
+in its URL fragment, and the access page removes the fragment before server verification. The
+bearer is restricted to `telegram_owner`, `cockpit_read`, and the `peak_dashboard` audience. It
+creates a read-only `cockpit` session and cannot open or call the password-administration route.
+It always redirects to `/peak-os`; it cannot supply an arbitrary destination.
+
+Password and trusted local-recovery login remain available as an emergency fallback. They create
+an `admin` session. Legacy signed owner sessions are accepted as `admin` during migration, but new
+sessions use the versioned, audience- and purpose-bound session contract.
+
+The browser receives no password hash, login secret, session secret, synchronization secret, or
+Blob token. Sessions are HMAC-signed for eight hours and stored in a production-`Secure`,
+HTTP-only, `SameSite=Strict` cookie. Logout expires that cookie. State-changing browser routes
+require a same-origin request. One-time tokens are consumed through durable private storage, so a
+link cannot be replayed after a server restart.
 
 ## Required server-only variables
 
@@ -28,12 +40,20 @@ PEAK_DASHBOARD_ENABLED=true
 PEAK_DASHBOARD_OWNER_EMAILS=owner@example.com
 PEAK_DASHBOARD_PASSWORD_HASH=pbkdf2-sha512$310000$...
 PEAK_DASHBOARD_SESSION_SECRET=<at-least-32-random-characters>
+PEAK_DASHBOARD_LOGIN_SECRET=<different-at-least-32-character-secret>
 PEAK_DASHBOARD_SYNC_SECRET=<different-at-least-32-character-secret>
 PEAK_DASHBOARD_STALE_AFTER_MINUTES=30
 ```
 
 Vercel supplies `BLOB_READ_WRITE_TOKEN` for the connected private store. None of these variables
-may use a `NEXT_PUBLIC_` prefix.
+may use a `NEXT_PUBLIC_` prefix. The Peak OS worker and Vercel must share
+`PEAK_DASHBOARD_LOGIN_SECRET` so the worker can sign and the website can verify Telegram links;
+that secret must be distinct from both other HMAC secrets.
+
+The Telegram flow depends only on dashboard enablement, exactly one configured owner email, the
+session secret, login secret, and private replay store. A missing or obsolete password hash does
+not break Telegram cockpit login. Password fallback still requires a valid bootstrap or durable
+password verifier.
 
 ## Safe setup and recovery
 
