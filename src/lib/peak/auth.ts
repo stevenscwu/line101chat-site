@@ -138,3 +138,8 @@ export function hasValidOrigin(request: NextRequest) {
     return false;
   }
 }
+
+export function loginAttemptKey(request: NextRequest, sessionSecret: string) {
+  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  return createHmac("sha256", sessionSecret).update(forwarded).digest("hex").slice(0, 24);
+}

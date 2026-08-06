@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 
-import { BlobPreconditionFailedError, get, put } from "@vercel/blob";
+import { BlobPreconditionFailedError, del, get, put } from "@vercel/blob";
 
 import { hasPeakPrivateBlobConfig } from "@/lib/peak/config";
 import type { ExecutiveState, StoredExecutiveState } from "@/lib/peak/executive-types";
@@ -265,4 +265,14 @@ export async function allowAttempt(key: string, maximum: number, seconds: number
   }
   entry.count += 1;
   return entry.count <= maximum;
+}
+
+export async function resetAttempts(key: string) {
+  requireDurableProductionStore();
+  if (usesPrivateBlob()) {
+    const fingerprint = createHash("sha256").update(key).digest("hex").slice(0, 32);
+    await del(`peak/security/rate/${fingerprint}.json`);
+    return;
+  }
+  globalStore.peakRate?.delete(`rate:${key}`);
 }

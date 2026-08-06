@@ -1,10 +1,8 @@
-import { createHmac } from "node:crypto";
-
 import { NextRequest, NextResponse } from "next/server";
 
-import { createSession, hasValidOrigin, setSessionCookie, verifySubmittedPassword } from "@/lib/peak/auth";
+import { createSession, hasValidOrigin, loginAttemptKey, setSessionCookie, verifySubmittedPassword } from "@/lib/peak/auth";
 import { isPeakDashboardEnabled, requirePeakServerConfig } from "@/lib/peak/config";
-import { allowAttempt, loadOwnerPasswordHash } from "@/lib/peak/store";
+import { allowAttempt, loadOwnerPasswordHash, resetAttempts } from "@/lib/peak/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,8 +24,7 @@ export async function POST(request: NextRequest) {
     console.error("peak_owner_login_unavailable", { reason: "configuration" });
     return NextResponse.redirect(loginUrl(request, "configuration"), 303);
   }
-  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-  const rateKey = createHmac("sha256", config.sessionSecret).update(forwarded).digest("hex").slice(0, 24);
+  const rateKey = loginAttemptKey(request, config.sessionSecret);
   try {
     if (!(await allowAttempt(rateKey, 5, 15 * 60))) return NextResponse.redirect(loginUrl(request, "limited"), 303);
   } catch {
@@ -47,6 +44,9 @@ export async function POST(request: NextRequest) {
   if (!emailAllowed || !passwordValid) {
     console.warn("peak_owner_login_failed", { reason: "credentials" });
     return NextResponse.redirect(loginUrl(request, "invalid"), 303);
+  }
+  try { await resetAttempts(rateKey); } catch {
+    console.warn("peak_owner_login_rate_reset_failed");
   }
   const response = NextResponse.redirect(new URL("/peak-os", request.url), 303);
   setSessionCookie(response, createSession(email));

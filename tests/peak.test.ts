@@ -17,6 +17,7 @@ import {
   createPasswordHash,
   createSession,
   inspectSession,
+  loginAttemptKey,
   verifyPassword,
   verifySubmittedPassword,
   verifySession,
@@ -24,7 +25,7 @@ import {
 import { getSingleOwnerEmail, hasPeakPrivateBlobConfig } from "@/lib/peak/config";
 import { createLocalLoginToken } from "@/lib/peak/local-login";
 import { parseExecutiveState } from "@/lib/peak/executive-validation";
-import { resetPeakStoreForTests, resolveOwnerPasswordState } from "@/lib/peak/store";
+import { allowAttempt, resetPeakStoreForTests, resolveOwnerPasswordState } from "@/lib/peak/store";
 import { parsePeakSnapshot } from "@/lib/peak/validation";
 
 const original = { ...process.env };
@@ -178,6 +179,47 @@ describe("Peak owner authentication", () => {
     expect(accepted.status).toBe(200);
     expect(accepted.cookies.get(PEAK_SESSION_COOKIE)?.value).toBeTruthy();
     expect((await localLogin(request())).status).toBe(401);
+  });
+
+  it("clears the current address lockout after trusted recovery and successful login", async () => {
+    configureAuth();
+    process.env.PEAK_DASHBOARD_SYNC_SECRET = "y".repeat(64);
+    const address = "203.0.113.44";
+    const requestForKey = new NextRequest("https://line101chat.com/peak/login", {
+      headers: { "x-forwarded-for": address },
+    });
+    const key = loginAttemptKey(requestForKey, process.env.PEAK_DASHBOARD_SESSION_SECRET as string);
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      expect(await allowAttempt(key, 5, 900)).toBe(true);
+    }
+    expect(await allowAttempt(key, 5, 900)).toBe(false);
+
+    const token = createLocalLoginToken("owner@example.com", process.env.PEAK_DASHBOARD_SYNC_SECRET);
+    const recovered = await localLogin(new NextRequest("https://line101chat.com/api/peak/v1/local-login", {
+      method: "POST",
+      headers: {
+        origin: "https://line101chat.com",
+        "content-type": "application/json",
+        "x-forwarded-for": address,
+      },
+      body: JSON.stringify({ token }),
+    }));
+    expect(recovered.status).toBe(200);
+
+    const login = await passwordLogin(new NextRequest("https://line101chat.com/api/peak/v1/login", {
+      method: "POST",
+      headers: {
+        origin: "https://line101chat.com",
+        "content-type": "application/x-www-form-urlencoded",
+        "x-forwarded-for": address,
+      },
+      body: new URLSearchParams({
+        email: "owner@example.com",
+        password: "correct horse battery staple",
+      }),
+    }));
+    expect(login.headers.get("location")).toContain("/peak-os");
+    expect(await allowAttempt(key, 5, 900)).toBe(true);
   });
 
   it("lets an authenticated owner set the durable dashboard password", async () => {

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { createSession, hasValidOrigin, setSessionCookie } from "@/lib/peak/auth";
+import { createSession, hasValidOrigin, loginAttemptKey, setSessionCookie } from "@/lib/peak/auth";
 import { isPeakDashboardEnabled, requirePeakServerConfig, requireSyncSecret } from "@/lib/peak/config";
 import { verifyLocalLoginToken } from "@/lib/peak/local-login";
-import { consumeReplayNonce } from "@/lib/peak/store";
+import { consumeReplayNonce, resetAttempts } from "@/lib/peak/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -41,6 +41,9 @@ export async function POST(request: NextRequest) {
   const payload = verifyLocalLoginToken(token, secret);
   if (!payload || !config.ownerEmails.has(payload.email)) return reject();
   if (!(await consumeReplayNonce(`local-login:${payload.nonce}`))) return reject();
+  try { await resetAttempts(loginAttemptKey(request, config.sessionSecret)); } catch {
+    console.warn("peak_local_login_rate_reset_failed");
+  }
   const response = NextResponse.json({ accepted: true }, { headers: responseHeaders });
   setSessionCookie(response, createSession(payload.email));
   console.info("peak_local_login_success");
