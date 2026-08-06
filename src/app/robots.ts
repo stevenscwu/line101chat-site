@@ -10,6 +10,7 @@ export default function robots(): MetadataRoute.Robots {
           "/translation-service/admin",
           "/api/translation-payments",
           "/peak",
+          "/peak-os",
           "/api/peak",
         ],
       },

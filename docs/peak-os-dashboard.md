@@ -9,7 +9,7 @@ SQLite database and the Windows host does not expose an inbound port.
 flowchart LR
     A[Peak OS services and SQLite] -->|minimized typed snapshot| B[Outbound HTTPS sync]
     B -->|HMAC timestamp + nonce + body| C[Vercel ingestion route]
-    C --> D[(Private Upstash record)]
+    C --> D[(Private Vercel Blob records)]
     E[Owner browser] -->|email/password, HTTP-only session| F[Protected /peak server route]
     F --> D
 ```
@@ -23,10 +23,15 @@ or credentials. Unknown data remains `null`. The public site and sitemap never r
 The initial owner authentication uses:
 
 - an allowlisted email;
-- a PBKDF2-SHA512 password verifier stored only in Vercel environment configuration;
+- a PBKDF2-SHA512 bootstrap verifier in Vercel environment configuration;
+- a durable owner verifier in private Vercel Blob after one-time initialization;
 - an HMAC-signed, eight-hour, HTTP-only, `SameSite=Strict`, production-`Secure` cookie;
 - same-origin validation for POST operations; and
-- failed-login rate limiting backed by Upstash in production.
+- failed-login rate limiting backed by private Vercel Blob in production.
+
+The durable record is authoritative once present. An absent record uses the environment verifier
+only for bootstrap. A corrupt or unreadable durable record fails closed and does not fall back.
+Password changes perform a private-store read-after-write check before reporting success.
 
 Generate the password verifier without placing the password on the command line:
 
@@ -63,19 +68,32 @@ Create and connect the store from the linked project:
 npx --yes vercel@latest blob create-store peak-os-private --access private --region sin1 --yes
 ```
 
-The password itself is stored only in the owner's DPAPI-protected local credential. To select a new
-password and synchronize its hash to Vercel, run:
+The password itself may be retained in the owner's DPAPI-protected local credential for local
+operator tooling. It is not a website authentication source. To create the bootstrap verifier run:
 
 ```powershell
 .\scripts\Set-PeakDashboardPassword.ps1
 ```
 
+Deploy after changing a Vercel environment verifier. Then initialize the durable verifier once,
+without printing or transmitting plaintext:
+
+```powershell
+.\scripts\Initialize-PeakDashboardPassword.ps1
+```
+
+Subsequent password changes use the authenticated `/peak/password` page. They survive logout,
+serverless cold starts, and deployments because the verified hash is stored in private Blob.
+
 ## Routes
 
 - `GET /peak/login` — owner login form
 - `GET /peak` — protected, dynamically rendered dashboard
+- `GET /peak-os` — protected Executive State 1.0 cockpit
 - `POST /api/peak/v1/login` and `/logout` — session lifecycle
 - `POST /api/peak/v1/snapshot` — signed Peak OS ingestion only
+- `POST` and owner-session `GET /api/peak/v1/executive-state` — signed state ingestion and LKG read
+- `GET /api/peak/v1/health` — owner-session health/freshness metadata
 - `GET /api/peak/v1/summary` — owner-session-protected read response
 
 All protected responses use `private, no-store` and `noindex, nofollow, noarchive`. `/peak` and
@@ -107,7 +125,7 @@ production and do not commit `.env.local`.
 
 ## Deployment and first login
 
-1. Create the private Upstash database/token and configure the website variables in Vercel.
+1. Connect a private Vercel Blob store and configure the website variables in Vercel.
 2. Deploy the website and verify that unauthenticated `/peak` redirects to `/peak/login`.
 3. Configure the matching Peak OS synchronization secret and Vercel snapshot URL.
 4. Enable Peak OS outbound synchronization and restart the resident worker.
@@ -126,7 +144,7 @@ password. Remove an email from the allowlist to remove owner access. Set
 
 ## Incident response
 
-If unauthorized access is suspected: disable the dashboard, rotate session/sync/Upstash secrets,
+If unauthorized access is suspected: disable the dashboard, rotate session/sync credentials,
 inspect coarse Vercel authentication/synchronization events, clear the private snapshot record,
 and redeploy. Logs intentionally contain event names rather than health values, reflections,
 email addresses, project text, or request bodies.

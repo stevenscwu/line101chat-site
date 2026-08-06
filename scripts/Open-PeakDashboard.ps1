@@ -1,10 +1,10 @@
 [CmdletBinding()]
 param(
-    [string]$PeakEnvPath = 'C:\Users\Steven\Projects\telegram-personal-assistant\.env',
-    [string]$CredentialPath = 'C:\Users\Steven\.peak-os\credentials\peak-dashboard-login.clixml',
+    [string]$PeakEnvPath = (Join-Path $env:USERPROFILE 'Projects\telegram-personal-assistant\.env'),
+    [string]$CredentialPath = (Join-Path $env:USERPROFILE '.peak-os\credentials\peak-dashboard-login.clixml'),
     [string]$DashboardUrl = 'https://line101chat.com',
-    [ValidateSet('/peak', '/peak/password')]
-    [string]$Destination = '/peak'
+    [ValidateSet('/peak-os', '/peak', '/peak/password')]
+    [string]$Destination = '/peak-os'
 )
 
 $ErrorActionPreference = 'Stop'

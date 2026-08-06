@@ -16,13 +16,17 @@ export const metadata: Metadata = {
 export default async function PeakLoginPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   if (!isPeakDashboardEnabled()) notFound();
   const token = (await cookies()).get(PEAK_SESSION_COOKIE)?.value;
-  if (verifySession(token)) redirect("/peak");
+  if (verifySession(token)) redirect("/peak-os");
   const ownerEmail = getSingleOwnerEmail();
   const error = (await searchParams).error;
   const message = error === "limited"
     ? "嘗試次數過多，請稍後再試。"
-    : error === "unavailable"
+    : error === "configuration"
       ? "擁有者驗證尚未完成設定。"
+      : error === "server"
+        ? "登入服務暫時無法使用，請稍後再試。"
+      : error === "expired"
+        ? "登入工作階段已過期，請重新登入。"
       : error === "link"
         ? "一次性登入連結無效、已使用或已過期，請從本機重新產生。"
       : error

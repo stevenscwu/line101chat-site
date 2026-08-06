@@ -17,28 +17,38 @@ function loginUrl(request: NextRequest, error?: string) {
 
 export async function POST(request: NextRequest) {
   if (!isPeakDashboardEnabled()) return NextResponse.redirect(new URL("/", request.url), 303);
-  if (!hasValidOrigin(request)) return NextResponse.redirect(loginUrl(request, "invalid"), 303);
+  if (!hasValidOrigin(request)) {
+    console.warn("peak_owner_login_rejected", { reason: "origin" });
+    return NextResponse.redirect(loginUrl(request, "invalid"), 303);
+  }
   let config: ReturnType<typeof requirePeakServerConfig>;
-  try { config = requirePeakServerConfig(); } catch { return NextResponse.redirect(loginUrl(request, "unavailable"), 303); }
+  try { config = requirePeakServerConfig(); } catch {
+    console.error("peak_owner_login_unavailable", { reason: "configuration" });
+    return NextResponse.redirect(loginUrl(request, "configuration"), 303);
+  }
   const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   const rateKey = createHmac("sha256", config.sessionSecret).update(forwarded).digest("hex").slice(0, 24);
-  if (!(await allowAttempt(rateKey, 5, 15 * 60))) return NextResponse.redirect(loginUrl(request, "limited"), 303);
+  try {
+    if (!(await allowAttempt(rateKey, 5, 15 * 60))) return NextResponse.redirect(loginUrl(request, "limited"), 303);
+  } catch {
+    console.error("peak_owner_login_unavailable", { reason: "rate_store" });
+    return NextResponse.redirect(loginUrl(request, "server"), 303);
+  }
   const form = await request.formData();
   const email = String(form.get("email") || "").trim().toLowerCase();
   const password = String(form.get("password") || "");
   const emailAllowed = config.ownerEmails.has(email);
   let passwordHash: string;
-  try { passwordHash = await loadOwnerPasswordHash(config.passwordHash); } catch { return NextResponse.redirect(loginUrl(request, "unavailable"), 303); }
+  try { passwordHash = await loadOwnerPasswordHash(config.passwordHash); } catch {
+    console.error("peak_owner_login_unavailable", { reason: "password_store" });
+    return NextResponse.redirect(loginUrl(request, "server"), 303);
+  }
   const passwordValid = verifySubmittedPassword(password, passwordHash);
   if (!emailAllowed || !passwordValid) {
-    console.warn("peak_owner_login_failed", {
-      emailAllowed,
-      passwordValid,
-      hadSurroundingWhitespace: password !== password.trim(),
-    });
+    console.warn("peak_owner_login_failed", { reason: "credentials" });
     return NextResponse.redirect(loginUrl(request, "invalid"), 303);
   }
-  const response = NextResponse.redirect(new URL("/peak", request.url), 303);
+  const response = NextResponse.redirect(new URL("/peak-os", request.url), 303);
   setSessionCookie(response, createSession(email));
   console.info("peak_owner_login_success");
   return response;

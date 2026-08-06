@@ -23,7 +23,7 @@ export function requirePeakServerConfig() {
   const ownerEmails = getOwnerEmails();
   const passwordHash = process.env.PEAK_DASHBOARD_PASSWORD_HASH?.trim();
   const sessionSecret = process.env.PEAK_DASHBOARD_SESSION_SECRET?.trim();
-  if (!ownerEmails.size || !passwordHash || !sessionSecret || sessionSecret.length < 32) {
+  if (!ownerEmails.size || !passwordHash || !/^pbkdf2-sha512\$\d+\$[A-Za-z0-9_-]+\$[A-Za-z0-9_-]+$/u.test(passwordHash) || !sessionSecret || sessionSecret.length < 32) {
     throw new Error("Peak dashboard authentication is not configured.");
   }
   return { ownerEmails, passwordHash, sessionSecret };

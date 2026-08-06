@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { requestSession } from "@/lib/peak/auth";
 import { isPeakDashboardEnabled } from "@/lib/peak/config";
-import { loadPeakSnapshot } from "@/lib/peak/store";
+import { loadExecutiveState, loadPeakSnapshot } from "@/lib/peak/store";
 import { allowAttempt } from "@/lib/peak/store";
 
 export const runtime = "nodejs";
@@ -17,6 +17,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Too many requests." }, { status: 429, headers });
   }
   try {
+    const executive = await loadExecutiveState();
+    if (executive) return NextResponse.json(executive, { headers });
     const record = await loadPeakSnapshot();
     if (!record) return NextResponse.json({ state: "unavailable", reason: "No synchronized snapshot." }, { status: 503, headers });
     return NextResponse.json(record, { headers });

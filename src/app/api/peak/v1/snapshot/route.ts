@@ -3,8 +3,9 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 import { isPeakDashboardEnabled, requireSyncSecret } from "@/lib/peak/config";
+import { parseExecutiveState } from "@/lib/peak/executive-validation";
 import { consumeReplayNonce } from "@/lib/peak/store";
-import { savePeakSnapshot } from "@/lib/peak/store";
+import { saveExecutiveState, savePeakSnapshot } from "@/lib/peak/store";
 import { parsePeakSnapshot } from "@/lib/peak/validation";
 
 export const runtime = "nodejs";
@@ -37,6 +38,17 @@ export async function POST(request: NextRequest) {
   if (!valid || !(await consumeReplayNonce(nonce))) return reject();
   let parsed: unknown;
   try { parsed = JSON.parse(body); } catch { return reject(400); }
+  const executive = parseExecutiveState(parsed);
+  if (executive) {
+    try {
+      await saveExecutiveState(executive);
+      console.info("peak_executive_state_sync_success", { schema_version: executive.schema_version, route: "snapshot_compatibility" });
+      return NextResponse.json({ accepted: true, schema_version: executive.schema_version }, { headers });
+    } catch {
+      console.error("peak_executive_state_sync_failed", { reason: "private_store" });
+      return reject(503);
+    }
+  }
   const snapshot = parsePeakSnapshot(parsed);
   if (!snapshot) {
     console.warn("peak_payload_validation_failed");

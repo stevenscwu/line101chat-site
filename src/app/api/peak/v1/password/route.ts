@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { createPasswordHash, hasValidOrigin, requestSession } from "@/lib/peak/auth";
-import { saveOwnerPasswordHash } from "@/lib/peak/store";
+import { createPasswordHash, hasValidOrigin, requestSession, verifyPassword } from "@/lib/peak/auth";
+import { loadOwnerPasswordHash, saveOwnerPasswordHash } from "@/lib/peak/store";
+import { requirePeakServerConfig } from "@/lib/peak/config";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,11 +25,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Passwords must match and contain 12–256 characters." }, { status: 400, headers });
   }
   try {
-    await saveOwnerPasswordHash(createPasswordHash(password));
-    console.info("peak_owner_password_updated");
+    const hash = createPasswordHash(password);
+    await saveOwnerPasswordHash(hash);
+    const persisted = await loadOwnerPasswordHash(requirePeakServerConfig().passwordHash);
+    if (persisted !== hash || !verifyPassword(password, persisted)) throw new Error("read_after_write_failed");
+    console.info("peak_owner_password_updated", { storage: "durable", verified: true });
     return NextResponse.json({ updated: true }, { headers });
   } catch {
-    console.error("peak_owner_password_update_failed");
+    console.error("peak_owner_password_update_failed", { reason: "durable_store_verification" });
     return NextResponse.json({ error: "Password storage unavailable." }, { status: 503, headers });
   }
 }

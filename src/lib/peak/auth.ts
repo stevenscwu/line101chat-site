@@ -13,6 +13,9 @@ export const PEAK_SESSION_COOKIE = "peak_owner_session";
 const SESSION_SECONDS = 8 * 60 * 60;
 
 type SessionPayload = { v: 1; email: string; iat: number; exp: number; jti: string };
+export type SessionInspection =
+  | { status: "valid"; payload: SessionPayload }
+  | { status: "missing" | "expired" | "invalid" | "configuration"; payload: null };
 
 function safeEqual(left: Buffer, right: Buffer) {
   return left.length === right.length && timingSafeEqual(left, right);
@@ -25,6 +28,7 @@ export function verifyPassword(password: string, encoded: string) {
     algorithm !== "pbkdf2-sha512" ||
     !Number.isInteger(iterations) ||
     iterations < 210_000 ||
+    iterations > 1_000_000 ||
     !saltText ||
     !expectedText ||
     password.length > 256
@@ -32,6 +36,7 @@ export function verifyPassword(password: string, encoded: string) {
   try {
     const salt = Buffer.from(saltText, "base64url");
     const expected = Buffer.from(expectedText, "base64url");
+    if (salt.length < 16 || salt.length > 64 || expected.length < 32 || expected.length > 128) return false;
     const actual = pbkdf2Sync(password, salt, iterations, expected.length, "sha512");
     return safeEqual(actual, expected);
   } catch {
@@ -70,26 +75,30 @@ export function createSession(email: string, now = Date.now()) {
   return `${encoded}.${sign(encoded, sessionSecret)}`;
 }
 
-export function verifySession(token?: string, now = Date.now()): SessionPayload | null {
-  if (!token) return null;
+export function inspectSession(token?: string, now = Date.now()): SessionInspection {
+  if (!token) return { status: "missing", payload: null };
   try {
     const { ownerEmails, sessionSecret } = requirePeakServerConfig();
     const [encoded, signature] = token.split(".");
-    if (!encoded || !signature) return null;
-    if (!safeEqual(Buffer.from(signature), Buffer.from(sign(encoded, sessionSecret)))) return null;
+    if (!encoded || !signature) return { status: "invalid", payload: null };
+    if (!safeEqual(Buffer.from(signature), Buffer.from(sign(encoded, sessionSecret)))) return { status: "invalid", payload: null };
     const payload = JSON.parse(Buffer.from(encoded, "base64url").toString("utf8")) as SessionPayload;
     const current = Math.floor(now / 1_000);
     if (
-      payload.v !== 1 ||
-      !ownerEmails.has(payload.email) ||
-      payload.iat > current + 60 ||
-      payload.exp <= current ||
+      payload.v !== 1 || !ownerEmails.has(payload.email) || payload.iat > current + 60 ||
       payload.exp - payload.iat > SESSION_SECONDS
-    ) return null;
-    return payload;
+    ) return { status: "invalid", payload: null };
+    if (payload.exp <= current) return { status: "expired", payload: null };
+    return { status: "valid", payload };
   } catch {
-    return null;
+    try { requirePeakServerConfig(); } catch { return { status: "configuration", payload: null }; }
+    return { status: "invalid", payload: null };
   }
+}
+
+export function verifySession(token?: string, now = Date.now()): SessionPayload | null {
+  const result = inspectSession(token, now);
+  return result.status === "valid" ? result.payload : null;
 }
 
 export function requestSession(request: NextRequest) {

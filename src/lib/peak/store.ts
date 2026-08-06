@@ -3,24 +3,69 @@ import { createHash } from "node:crypto";
 import { BlobPreconditionFailedError, get, put } from "@vercel/blob";
 
 import { hasPeakPrivateBlobConfig } from "@/lib/peak/config";
+import type { ExecutiveState, StoredExecutiveState } from "@/lib/peak/executive-types";
+import { parseExecutiveState } from "@/lib/peak/executive-validation";
 import type { PeakSnapshot, StoredPeakSnapshot } from "@/lib/peak/types";
 import { parsePeakSnapshot } from "@/lib/peak/validation";
 
 const SNAPSHOT_PATH = "peak/dashboard/v1/owner.json";
 const REPLAY_PATH = "peak/security/replay-window.json";
 const OWNER_PASSWORD_PATH = "peak/security/owner-password.json";
+const EXECUTIVE_STATE_PATH = "peak/executive/v1/latest.json";
 const SECURITY_STATE_SECONDS = 10 * 60;
 const MAX_WRITE_RETRIES = 4;
 const globalStore = globalThis as typeof globalThis & {
   peakSnapshot?: StoredPeakSnapshot;
   peakRate?: Map<string, { count: number; expires: number }>;
   peakOwnerPasswordHash?: string;
+  peakExecutiveState?: StoredExecutiveState;
 };
+
+export function resetPeakStoreForTests() {
+  if (process.env.NODE_ENV !== "test") throw new Error("Test reset is unavailable outside tests.");
+  delete globalStore.peakSnapshot;
+  delete globalStore.peakRate;
+  delete globalStore.peakOwnerPasswordHash;
+  delete globalStore.peakExecutiveState;
+}
 
 type BlobRecord<T> = { value: T; etag: string };
 type ReplayState = { nonces: Record<string, number> };
 type RateState = { count: number; expiresAt: number };
 type OwnerPasswordState = { version: 1; hash: string; updatedAt: string };
+
+export class PeakPrivateStoreError extends Error {
+  constructor(public readonly code: "owner_password_corrupt" | "owner_password_verify_failed") {
+    super(code);
+    this.name = "PeakPrivateStoreError";
+  }
+}
+
+export function isValidPasswordHash(value: unknown): value is string {
+  if (typeof value !== "string") return false;
+  const [algorithm, iterations, salt, digest, extra] = value.split("$");
+  const count = Number(iterations);
+  if (algorithm !== "pbkdf2-sha512" || !Number.isInteger(count) || count < 210_000 || count > 1_000_000 || !salt || !digest || extra !== undefined) return false;
+  try {
+    const saltBytes = Buffer.from(salt, "base64url"); const digestBytes = Buffer.from(digest, "base64url");
+    return saltBytes.length >= 16 && saltBytes.length <= 64 && digestBytes.length >= 32 && digestBytes.length <= 128;
+  } catch { return false; }
+}
+
+export function resolveOwnerPasswordState(value: unknown, bootstrapHash: string) {
+  if (value === null || value === undefined) return { hash: bootstrapHash, source: "bootstrap" as const };
+  if (
+    typeof value !== "object" ||
+    Array.isArray(value) ||
+    (value as Partial<OwnerPasswordState>).version !== 1 ||
+    !isValidPasswordHash((value as Partial<OwnerPasswordState>).hash) ||
+    typeof (value as Partial<OwnerPasswordState>).updatedAt !== "string" ||
+    !Number.isFinite(Date.parse((value as Partial<OwnerPasswordState>).updatedAt as string))
+  ) {
+    throw new PeakPrivateStoreError("owner_password_corrupt");
+  }
+  return { hash: (value as OwnerPasswordState).hash, source: "durable" as const };
+}
 
 function usesPrivateBlob() {
   return process.env.NODE_ENV === "production";
@@ -102,26 +147,76 @@ export async function loadPeakSnapshot() {
 
 export async function loadOwnerPasswordHash(fallback: string) {
   requireDurableProductionStore();
-  const hash = usesPrivateBlob()
-    ? (await readJsonBlob<OwnerPasswordState>(OWNER_PASSWORD_PATH))?.value.hash
-    : globalStore.peakOwnerPasswordHash;
-  return typeof hash === "string" && hash.startsWith("pbkdf2-sha512$") ? hash : fallback;
+  const value: unknown = usesPrivateBlob()
+    ? (await readJsonBlob<unknown>(OWNER_PASSWORD_PATH))?.value ?? null
+    : globalStore.peakOwnerPasswordHash
+      ? { version: 1, hash: globalStore.peakOwnerPasswordHash, updatedAt: new Date().toISOString() }
+      : null;
+  return resolveOwnerPasswordState(value, fallback).hash;
+}
+
+export async function getOwnerPasswordStorageStatus() {
+  requireDurableProductionStore();
+  const value: unknown = usesPrivateBlob()
+    ? (await readJsonBlob<unknown>(OWNER_PASSWORD_PATH))?.value ?? null
+    : globalStore.peakOwnerPasswordHash
+      ? { version: 1, hash: globalStore.peakOwnerPasswordHash, updatedAt: new Date().toISOString() }
+      : null;
+  if (value === null) return "missing" as const;
+  resolveOwnerPasswordState(value, "");
+  return "initialized" as const;
 }
 
 export async function saveOwnerPasswordHash(hash: string) {
-  if (!hash.startsWith("pbkdf2-sha512$")) throw new Error("Invalid password hash.");
+  if (!isValidPasswordHash(hash)) throw new Error("Invalid password hash.");
   requireDurableProductionStore();
   if (usesPrivateBlob()) {
-    await put(OWNER_PASSWORD_PATH, JSON.stringify({ version: 1, hash, updatedAt: new Date().toISOString() }), {
+    const state = { version: 1, hash, updatedAt: new Date().toISOString() } satisfies OwnerPasswordState;
+    await put(OWNER_PASSWORD_PATH, JSON.stringify(state), {
       access: "private",
       addRandomSuffix: false,
       allowOverwrite: true,
       cacheControlMaxAge: 60,
       contentType: "application/json",
     });
-    return;
+    const stored = (await readJsonBlob<unknown>(OWNER_PASSWORD_PATH))?.value ?? null;
+    const verified = resolveOwnerPasswordState(stored, "");
+    if (verified.source !== "durable" || verified.hash !== hash) {
+      throw new PeakPrivateStoreError("owner_password_verify_failed");
+    }
+    return verified;
   }
   globalStore.peakOwnerPasswordHash = hash;
+  return { hash, source: "durable" as const };
+}
+
+export async function saveExecutiveState(state: ExecutiveState) {
+  requireDurableProductionStore();
+  const record = { state, received_at: new Date().toISOString() } satisfies StoredExecutiveState;
+  if (usesPrivateBlob()) {
+    await put(EXECUTIVE_STATE_PATH, JSON.stringify(record), {
+      access: "private",
+      addRandomSuffix: false,
+      allowOverwrite: true,
+      cacheControlMaxAge: 60,
+      contentType: "application/json",
+    });
+    return record;
+  }
+  globalStore.peakExecutiveState = record;
+  return record;
+}
+
+export async function loadExecutiveState() {
+  requireDurableProductionStore();
+  const raw: unknown = usesPrivateBlob()
+    ? (await readJsonBlob<unknown>(EXECUTIVE_STATE_PATH))?.value ?? null
+    : globalStore.peakExecutiveState ?? null;
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  const candidate = raw as { state?: unknown; received_at?: unknown };
+  const state = parseExecutiveState(candidate.state);
+  if (!state || typeof candidate.received_at !== "string" || !Number.isFinite(Date.parse(candidate.received_at))) return null;
+  return { state, received_at: candidate.received_at } satisfies StoredExecutiveState;
 }
 
 export async function consumeReplayNonce(nonce: string) {

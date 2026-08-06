@@ -19,6 +19,7 @@ const nextConfig: NextConfig = {
     ];
     return [
       { source: "/peak/:path*", headers: privateHeaders },
+      { source: "/peak-os/:path*", headers: privateHeaders },
       { source: "/api/peak/:path*", headers: privateHeaders },
     ];
   },

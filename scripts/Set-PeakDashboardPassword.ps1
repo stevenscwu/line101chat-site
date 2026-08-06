@@ -1,8 +1,8 @@
 [CmdletBinding()]
 param(
-    [string]$OwnerEmail = 'stevenscwu@gmail.com',
+    [string]$OwnerEmail = '',
     [string]$VercelProjectPath = 'C:\line101chat-site',
-    [string]$CredentialPath = 'C:\Users\Steven\.peak-os\credentials\peak-dashboard-login.clixml',
+    [string]$CredentialPath = (Join-Path $env:USERPROFILE '.peak-os\credentials\peak-dashboard-login.clixml'),
     [string]$StatusPath = ''
 )
 
@@ -30,7 +30,8 @@ function ConvertTo-Base64Url {
 
 try {
     Write-Host 'Peak OS password setup' -ForegroundColor Cyan
-    Write-Host 'The password remains local; only its one-way hash is sent to Vercel.'
+    Write-Host 'The password remains local; only its one-way bootstrap hash is sent to Vercel.'
+    Write-Host 'Vercel environment changes require a new deployment. After first initialization, use /peak/password instead.'
     Write-Host ''
 
     $protectedPassword = Read-Host 'Choose your Peak OS password (minimum 12 characters)' -AsSecureString
@@ -42,6 +43,15 @@ try {
     }
     if ($password -cne $confirmation) {
         throw 'The two passwords do not match.'
+    }
+    if (-not $OwnerEmail -and (Test-Path -LiteralPath $CredentialPath)) {
+        $OwnerEmail = (Import-Clixml -LiteralPath $CredentialPath).UserName
+    }
+    if (-not $OwnerEmail) {
+        $OwnerEmail = (Read-Host 'Owner email').Trim()
+    }
+    if ($OwnerEmail -notmatch '^[^@\s]+@[^@\s]+\.[^@\s]+$') {
+        throw 'Enter a valid owner email.'
     }
 
     $salt = [Security.Cryptography.RandomNumberGenerator]::GetBytes(24)
