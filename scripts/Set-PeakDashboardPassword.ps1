@@ -1,7 +1,8 @@
 [CmdletBinding()]
 param(
     [string]$OwnerEmail = '',
-    [string]$VercelProjectPath = 'C:\line101chat-site',
+    [string]$DashboardUrl = 'https://line101chat.com',
+    [string]$PeakEnvPath = (Join-Path $env:USERPROFILE 'Projects\telegram-personal-assistant\.env'),
     [string]$CredentialPath = (Join-Path $env:USERPROFILE '.peak-os\credentials\peak-dashboard-login.clixml'),
     [string]$StatusPath = ''
 )
@@ -28,10 +29,43 @@ function ConvertTo-Base64Url {
     [Convert]::ToBase64String($Value).TrimEnd('=').Replace('+', '-').Replace('/', '_')
 }
 
+function New-LocalLoginToken {
+    param(
+        [Parameter(Mandatory)][string]$Email,
+        [Parameter(Mandatory)][string]$Secret
+    )
+
+    $now = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+    $payload = [ordered]@{
+        v = 1
+        email = $Email.Trim().ToLowerInvariant()
+        iat = $now
+        exp = $now + 120
+        nonce = [Convert]::ToHexString(
+            [Security.Cryptography.RandomNumberGenerator]::GetBytes(16)
+        ).ToLowerInvariant()
+    }
+    $encoded = ConvertTo-Base64Url (
+        [Text.Encoding]::UTF8.GetBytes(($payload | ConvertTo-Json -Compress))
+    )
+    $hmac = [Security.Cryptography.HMACSHA256]::new(
+        [Text.Encoding]::UTF8.GetBytes($Secret)
+    )
+    try {
+        $signature = [Convert]::ToHexString(
+            $hmac.ComputeHash([Text.Encoding]::UTF8.GetBytes($encoded))
+        ).ToLowerInvariant()
+    }
+    finally {
+        $hmac.Dispose()
+    }
+    "$encoded.$signature"
+}
+
 try {
     Write-Host 'Peak OS password setup' -ForegroundColor Cyan
-    Write-Host 'The password remains local; only its one-way bootstrap hash is sent to Vercel.'
-    Write-Host 'Vercel environment changes require a new deployment. After first initialization, use /peak/password instead.'
+    Write-Host 'The password is sent only through an authenticated recovery session.'
+    Write-Host 'The live server stores only a one-way password verifier.'
     Write-Host ''
 
     $protectedPassword = Read-Host 'Choose your Peak OS password (minimum 12 characters)' -AsSecureString
@@ -54,35 +88,43 @@ try {
         throw 'Enter a valid owner email.'
     }
 
-    $salt = [Security.Cryptography.RandomNumberGenerator]::GetBytes(24)
-    $derive = [Security.Cryptography.Rfc2898DeriveBytes]::new(
-        $password,
-        $salt,
-        310000,
-        [Security.Cryptography.HashAlgorithmName]::SHA512
-    )
-    try {
-        $digest = $derive.GetBytes(64)
-        $hash = 'pbkdf2-sha512$310000$' +
-            (ConvertTo-Base64Url $salt) + '$' +
-            (ConvertTo-Base64Url $digest)
+    $secretLine = Get-Content -LiteralPath $PeakEnvPath | Where-Object {
+        $_ -match '^PEAK_DASHBOARD_SYNC_SECRET='
+    } | Select-Object -Last 1
+    if (-not $secretLine) {
+        throw 'Peak dashboard synchronization is not configured on this computer.'
     }
-    finally {
-        $derive.Dispose()
+    $syncSecret = ($secretLine -split '=', 2)[1].Trim().Trim('"').Trim("'")
+    if ($syncSecret.Length -lt 32) {
+        throw 'Peak dashboard synchronization configuration is invalid.'
     }
 
-    Push-Location $VercelProjectPath
-    try {
-        $hash | & npx --yes vercel@latest env add `
-            PEAK_DASHBOARD_PASSWORD_HASH production --force --yes --sensitive
-        if ($LASTEXITCODE -ne 0) {
-            throw 'Vercel rejected the password hash.'
-        }
-    }
-    finally {
-        Pop-Location
+    $baseUrl = $DashboardUrl.TrimEnd('/')
+    $session = [Microsoft.PowerShell.Commands.WebRequestSession]::new()
+    $token = New-LocalLoginToken -Email $OwnerEmail -Secret $syncSecret
+    $recovery = Invoke-WebRequest -UseBasicParsing -Method Post `
+        -Uri "$baseUrl/api/peak/v1/local-login" `
+        -WebSession $session `
+        -Headers @{ Origin = $baseUrl } `
+        -ContentType 'application/json' `
+        -Body (@{ token = $token } | ConvertTo-Json -Compress)
+    if ($recovery.StatusCode -ne 200) {
+        throw 'The trusted local recovery session was rejected.'
     }
 
+    $body = @{ password = $password; confirmation = $confirmation } | ConvertTo-Json -Compress
+    $update = Invoke-WebRequest -UseBasicParsing -Method Post `
+        -Uri "$baseUrl/api/peak/v1/password" `
+        -WebSession $session `
+        -Headers @{ Origin = $baseUrl } `
+        -ContentType 'application/json' `
+        -Body $body
+    $result = $update.Content | ConvertFrom-Json
+    if ($update.StatusCode -ne 200 -or $result.updated -ne $true) {
+        throw 'The live dashboard did not confirm the password update.'
+    }
+
+    # Persist locally only after the live durable verifier has been read back and verified.
     $credentialDirectory = Split-Path -Parent $CredentialPath
     New-Item -ItemType Directory -Path $credentialDirectory -Force | Out-Null
     $credential = [Management.Automation.PSCredential]::new($OwnerEmail, $protectedPassword)
@@ -92,8 +134,7 @@ try {
         Set-Content -LiteralPath $StatusPath -Value 'success' -Encoding ascii
     }
     Write-Host ''
-    Write-Host 'Password setup completed successfully.' -ForegroundColor Green
-    Read-Host 'Press Enter to close this window'
+    Write-Host 'Live password updated and protected local credential synchronized.' -ForegroundColor Green
 }
 catch {
     if ($StatusPath) {
@@ -101,16 +142,15 @@ catch {
     }
     Write-Host ''
     Write-Host "Password setup failed: $($_.Exception.Message)" -ForegroundColor Red
-    Read-Host 'Press Enter to close this window'
     exit 1
 }
 finally {
     $password = $null
     $confirmation = $null
-    $hash = $null
-    $digest = $null
-    $salt = $null
     $credential = $null
     $protectedPassword = $null
     $protectedConfirmation = $null
+    $syncSecret = $null
+    $token = $null
+    $body = $null
 }

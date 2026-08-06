@@ -37,13 +37,25 @@ may use a `NEXT_PUBLIC_` prefix.
 
 ## Safe setup and recovery
 
-1. Run `scripts/Set-PeakDashboardPassword.ps1` in an interactive protected console.
-2. Deploy so the bootstrap verifier is present in the new production deployment.
-3. Run `scripts/Initialize-PeakDashboardPassword.ps1`. It imports the DPAPI credential in memory,
-   sends only a signed encoded verifier, and can initialize only an absent durable record.
-4. Test correct login, incorrect login, navigation, logout, and a second login.
-5. For routine changes, authenticate once (the local one-time link is supported), open
-   `/peak/password`, and update the durable password.
+For a first deployment, configure and deploy the bootstrap verifier, then run
+`scripts/Initialize-PeakDashboardPassword.ps1`. Initialization is create-only and cannot replace
+an existing durable verifier.
+
+For every routine change or recovery, run:
+
+```powershell
+cd C:\line101chat-site
+.\scripts\Set-PeakDashboardPassword.ps1
+```
+
+The script asks for the new password twice, creates a short-lived signed recovery session from the
+trusted Peak OS computer, updates the durable verifier, waits for server-side read-back
+verification, and only then synchronizes the DPAPI-protected local credential. It does not update
+the Vercel bootstrap variable and does not require a redeployment.
+
+Alternatively, `scripts/Open-PeakDashboard.ps1 -Destination '/peak/password'` opens a two-minute,
+single-use recovery session in the local browser. Enter the desired password twice on that page.
+Then test login, navigation, logout, and login again.
 
 The UI distinguishes invalid credentials, missing server configuration, a temporary server/store
 failure, rate limiting, and an expired session without disclosing internal details.

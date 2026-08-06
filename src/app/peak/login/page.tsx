@@ -46,6 +46,9 @@ export default async function PeakLoginPage({ searchParams }: { searchParams: Pr
           <PasswordInput />
           <button type="submit" className="w-full rounded-xl bg-emerald-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:ring-offset-2 focus:ring-offset-slate-900">安全登入</button>
         </form>
+        <p className="mt-5 border-t border-slate-700 pt-4 text-xs leading-5 text-slate-400">
+          忘記或無法確認密碼時，請在受信任的 Peak OS 主機執行本機密碼重設工具。它會直接更新目前的伺服器密碼，不需要修改 Vercel 或重新部署。
+        </p>
       </section>
     </main>
   );

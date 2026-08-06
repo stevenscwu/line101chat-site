@@ -82,7 +82,8 @@ without printing or transmitting plaintext:
 .\scripts\Initialize-PeakDashboardPassword.ps1
 ```
 
-Subsequent password changes use the authenticated `/peak/password` page. They survive logout,
+Subsequent password changes use the authenticated `/peak/password` page or the trusted local
+`scripts/Set-PeakDashboardPassword.ps1` recovery tool. Both update the durable server verifier and survive logout,
 serverless cold starts, and deployments because the verified hash is stored in private Blob.
 
 ## Routes
