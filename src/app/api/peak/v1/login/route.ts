@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   if (!isPeakDashboardEnabled()) return NextResponse.redirect(new URL("/", request.url), 303);
   if (!hasValidOrigin(request)) {
     console.warn("peak_owner_login_rejected", { reason: "origin" });
-    return NextResponse.redirect(loginUrl(request, "invalid"), 303);
+    return NextResponse.redirect(loginUrl(request, "request"), 303);
   }
   let config: ReturnType<typeof requirePeakServerConfig>;
   try { config = requirePeakServerConfig(); } catch {

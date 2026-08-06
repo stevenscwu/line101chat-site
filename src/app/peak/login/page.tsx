@@ -29,6 +29,8 @@ export default async function PeakLoginPage({ searchParams }: { searchParams: Pr
         ? "登入工作階段已過期，請重新登入。"
       : error === "link"
         ? "一次性登入連結無效、已使用或已過期，請從本機重新產生。"
+      : error === "request"
+        ? "瀏覽器未提供必要的同網站安全資訊。請重新整理此頁後再試一次。"
       : error
         ? "登入資料無效。電子郵件已保留；密碼基於安全考量不會保留，請重新輸入或貼上。"
         : null;

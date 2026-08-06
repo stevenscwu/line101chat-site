@@ -58,4 +58,7 @@ single-use recovery session in the local browser. Enter the desired password twi
 Then test login, navigation, logout, and login again.
 
 The UI distinguishes invalid credentials, missing server configuration, a temporary server/store
-failure, rate limiting, and an expired session without disclosing internal details.
+failure, rate limiting, rejected cross-site/browser-metadata requests, and an expired session
+without disclosing internal details. Browsers that omit `Origin` may use either an exact
+same-origin `Referer` or `Sec-Fetch-Site: same-origin` together with the expected host. Cross-site
+form submissions remain rejected.

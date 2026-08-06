@@ -131,9 +131,18 @@ export function clearSessionCookie(response: NextResponse) {
 
 export function hasValidOrigin(request: NextRequest) {
   const origin = request.headers.get("origin");
-  if (!origin) return false;
   try {
-    return new URL(origin).origin === new URL(request.url).origin;
+    const expected = new URL(request.url);
+    if (origin) return new URL(origin).origin === expected.origin;
+
+    const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim();
+    const requestHost = (forwardedHost || request.headers.get("host") || "").toLowerCase();
+    if (!requestHost || requestHost !== expected.host.toLowerCase()) return false;
+
+    const referer = request.headers.get("referer");
+    if (referer && new URL(referer).origin === expected.origin) return true;
+
+    return request.headers.get("sec-fetch-site")?.toLowerCase() === "same-origin";
   } catch {
     return false;
   }

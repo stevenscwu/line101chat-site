@@ -166,6 +166,40 @@ describe("Peak owner authentication", () => {
     expect((await passwordLogin(request())).headers.get("location")).toContain("error=server");
   });
 
+  it("accepts safe browser same-origin metadata when Origin is omitted", async () => {
+    configureAuth();
+    const response = await passwordLogin(new NextRequest("https://line101chat.com/api/peak/v1/login", {
+      method: "POST",
+      headers: {
+        host: "line101chat.com",
+        "sec-fetch-site": "same-origin",
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        email: "owner@example.com",
+        password: "correct horse battery staple",
+      }),
+    }));
+    expect(response.headers.get("location")).toContain("/peak-os");
+  });
+
+  it("rejects cross-site form posts without calling them invalid credentials", async () => {
+    configureAuth();
+    const response = await passwordLogin(new NextRequest("https://line101chat.com/api/peak/v1/login", {
+      method: "POST",
+      headers: {
+        host: "line101chat.com",
+        "sec-fetch-site": "cross-site",
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        email: "owner@example.com",
+        password: "correct horse battery staple",
+      }),
+    }));
+    expect(response.headers.get("location")).toContain("error=request");
+  });
+
   it("accepts a short-lived local token once and rejects replay", async () => {
     configureAuth();
     process.env.PEAK_DASHBOARD_SYNC_SECRET = "y".repeat(64);
