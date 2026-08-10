@@ -1,37 +1,47 @@
 # Peak OS Executive Cockpit — website implementation
 
-## Architecture found
+## Architecture
 
-LINE101Chat runs Next.js 16.3 on Vercel. The original `/peak` view receives a sanitized HMAC-signed
-snapshot from the Windows Peak OS worker and stores it in private Vercel Blob. The browser has no
-network path to the local SQLite database. This outbound synchronization design remains the
-simplest reliable option because it opens no inbound Windows port and retains a last-known-good
-view while the PC is unavailable.
+LINE101Chat runs Next.js on Vercel. The Windows Peak OS worker sends a minimized, HMAC-signed
+Executive State 2.0 to a server-only route. The website stores one last-known-good record in
+private Vercel Blob. The browser has no path to local SQLite, Telegram credentials, or a Windows
+inbound port.
 
 ## Implemented vertical slice
 
-`/api/peak/v1/executive-state` accepts the signed Executive State 1.0 and exposes it only to an
-authenticated owner. `/api/peak/v1/health` exposes minimal authenticated freshness metadata.
-The legacy `/api/peak/v1/snapshot`, `/api/peak/v1/summary`, and `/peak` routes remain compatible;
-the snapshot route also accepts Executive State during backend migration.
+`POST /api/peak/v1/executive-state` accepts only the complete 2.0 contract. Authenticated owner
+sessions can read that same record with `GET`. `/peak-os` renders the Portfolio Chief, today's
+highest-leverage action, research, Japanese, business, system operations, changes, opportunities,
+and evidence limitations without independently ranking them.
 
-`/peak-os` is a protected responsive cockpit. It leads with today's status and highest-leverage
-action, then shows domain evidence, meaningful changes, separate risks/opportunities, and agent
-run drill-downs. Receipt age and source-generation age produce live, cached, stale, or offline
-warnings. Missing evidence is displayed as unknown.
+The old data contract and compatibility endpoints are absent. `/peak` is a route-only redirect to
+`/peak-os`; it has no data loader or independent view. Receipt age and source-generation age
+produce live, cached, stale, or offline warnings.
+
+Owner authentication, password administration, replay protection, and rate limiting retain their
+separate private Blob records. The Executive State data record uses the versioned path
+`peak/executive/v2/latest.json`.
 
 ## Deployment verification
 
 ```powershell
-cd C:\line101chat-site
+npm ci
 npm run lint
 npm test
 npm run build
 ```
 
-After deployment, configure the independent Telegram-login secret in both Vercel and Peak OS,
-restart the resident worker, and request `/peak_login` from the owner's private Telegram chat.
-Verify one successful exchange, replay rejection, read-only scope, `/peak-os`, and logout. Password
-login remains an emergency administrative fallback rather than the normal cockpit path. Synchronize
-one valid Executive State and verify `/api/peak/v1/health`. Do not report production success until
-these live checks complete.
+Deploy this website contract before enabling a Peak OS worker that sends schema 2.0. Retain the
+existing server-only dashboard, session, login, synchronization, and Blob configuration. After
+deployment:
+
+1. Confirm unauthenticated cockpit reads redirect to login and API reads return 401.
+2. Request `/peak_login` in the authorized private Telegram chat and verify one successful,
+   single-use, read-only cockpit session.
+3. Send one valid signed Executive State 2.0 and verify both authenticated API read-back and
+   `/peak-os` rendering.
+4. Confirm a replayed nonce and a schema 1.0 or extra-field payload are rejected.
+5. Verify `/peak` redirects to `/peak-os`, logout works, and password login remains an emergency
+   administrative fallback.
+
+Do not report production success until these live checks pass.

@@ -1,29 +1,34 @@
-# Executive State 1.0 website contract
+# Executive State 2.0 website contract
 
 Peak OS SQLite is authoritative. The website stores only the latest valid, sanitized projection;
-it never reads SQLite or computes an independent health, research, or priority judgment.
+it never reads SQLite or computes an independent research, learning, business, system, or priority
+judgment.
 
 The TypeScript contract is in `src/lib/peak/executive-types.ts`, with strict bounded validation in
-`src/lib/peak/executive-validation.ts`. Required top-level fields include:
+`src/lib/peak/executive-validation.ts`. Required top-level fields are:
 
-- `schema_version: "1.0"`;
-- `state_hash`: semantic SHA-256 supplied by Peak OS;
+- `schema_version: "2.0"`;
+- `state_hash`: the semantic SHA-256 supplied by Peak OS;
 - UTC `generated_at` and an explicit timezone;
-- overall, health, research, Japanese, business, and system states;
-- today's focus and evidence-backed actions;
-- typed changes from the previous semantic state;
-- separate risks and opportunities; and
-- confidence, missing inputs, and stale inputs.
+- `overall`, `research`, `japanese`, `business`, and `system` states;
+- optional `chief` coordination state, represented explicitly as an object or `null`;
+- `today`, typed changes, opportunities, and confidence limits.
+
+Unknown top-level or nested fields are rejected. Unsupported versions are rejected rather than
+coerced. A failed upload never replaces the last-known-good record.
 
 Domain scores are integers from 0–100 or `null`; overall confidence is a value from 0–1 or
-`null`. `null` means unscored; it is never converted to zero.
-Agent state explicitly distinguishes `not_scheduled`, `scheduled_not_run`, `running`,
-`completed_successfully`, `completed_with_findings`, `failed`, `stale`, and `unknown`.
+`null`. `null` means unscored and is never converted to zero. Domain status is one of `stable`,
+`attention`, `critical`, `deferred`, or `unknown`.
 
-Domain status is one of `stable`, `attention`, `critical`, `recovery`, `deferred`, or `unknown`.
-Evidence records include source, summary, verification status, timestamp, and an optional record
-identifier. Risks, opportunities, and recommended actions are bounded strings from the canonical
-backend model; the website does not reinterpret them.
+Agent state explicitly distinguishes `not_scheduled`, `scheduled_not_run`, `running`,
+`completed_successfully`, `completed_with_findings`, `failed`, `stale`, and `unknown`. Evidence
+records include a source, bounded summary, verification status, timestamp, and optional record
+identifier.
+
+The Portfolio Chief projection includes its cycle and decision hashes, lifecycle state, primary
+focus, rationale, `operating_constraint`, optional owner action, up to two bounded work orders,
+deferred count, and next check time. The website presents this state but does not recalculate it.
 
 The signed request uses these headers:
 
@@ -33,5 +38,5 @@ X-Peak-Nonce: 32 lowercase hex characters
 X-Peak-Signature: HMAC-SHA256(timestamp + "." + nonce + "." + exact body)
 ```
 
-The server validates time skew, signature, nonce replay, byte limit, and the entire schema before
-atomically replacing the last-known-good private record. Invalid input never replaces valid state.
+The server validates clock skew, signature, nonce replay, byte limit, and the entire schema before
+atomically replacing `peak/executive/v2/latest.json` in private Blob storage.

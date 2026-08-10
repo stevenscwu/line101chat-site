@@ -5,17 +5,13 @@ import { BlobPreconditionFailedError, del, get, put } from "@vercel/blob";
 import { hasPeakPrivateBlobConfig } from "@/lib/peak/config";
 import type { ExecutiveState, StoredExecutiveState } from "@/lib/peak/executive-types";
 import { parseExecutiveState } from "@/lib/peak/executive-validation";
-import type { PeakSnapshot, StoredPeakSnapshot } from "@/lib/peak/types";
-import { parsePeakSnapshot } from "@/lib/peak/validation";
 
-const SNAPSHOT_PATH = "peak/dashboard/v1/owner.json";
 const REPLAY_PATH = "peak/security/replay-window.json";
 const OWNER_PASSWORD_PATH = "peak/security/owner-password.json";
-const EXECUTIVE_STATE_PATH = "peak/executive/v1/latest.json";
+const EXECUTIVE_STATE_PATH = "peak/executive/v2/latest.json";
 const SECURITY_STATE_SECONDS = 10 * 60;
 const MAX_WRITE_RETRIES = 4;
 const globalStore = globalThis as typeof globalThis & {
-  peakSnapshot?: StoredPeakSnapshot;
   peakRate?: Map<string, { count: number; expires: number }>;
   peakOwnerPasswordHash?: string;
   peakExecutiveState?: StoredExecutiveState;
@@ -23,7 +19,6 @@ const globalStore = globalThis as typeof globalThis & {
 
 export function resetPeakStoreForTests() {
   if (process.env.NODE_ENV !== "test") throw new Error("Test reset is unavailable outside tests.");
-  delete globalStore.peakSnapshot;
   delete globalStore.peakRate;
   delete globalStore.peakOwnerPasswordHash;
   delete globalStore.peakExecutiveState;
@@ -115,34 +110,6 @@ async function retryConditionalWrite<T>(
     }
   }
   throw lastError instanceof Error ? lastError : new Error("Private storage write conflict.");
-}
-
-export async function savePeakSnapshot(snapshot: PeakSnapshot) {
-  requireDurableProductionStore();
-  const record = { snapshot, receivedAt: new Date().toISOString() } satisfies StoredPeakSnapshot;
-  if (usesPrivateBlob()) {
-    await put(SNAPSHOT_PATH, JSON.stringify(record), {
-      access: "private",
-      addRandomSuffix: false,
-      allowOverwrite: true,
-      cacheControlMaxAge: 60,
-      contentType: "application/json",
-    });
-    return;
-  }
-  globalStore.peakSnapshot = record;
-}
-
-export async function loadPeakSnapshot() {
-  requireDurableProductionStore();
-  const raw: unknown = usesPrivateBlob()
-    ? (await readJsonBlob<unknown>(SNAPSHOT_PATH))?.value ?? null
-    : globalStore.peakSnapshot ?? null;
-  if (!raw || typeof raw !== "object") return null;
-  const candidate = raw as { snapshot?: unknown; receivedAt?: unknown };
-  const snapshot = parsePeakSnapshot(candidate.snapshot);
-  if (!snapshot || typeof candidate.receivedAt !== "string" || !Number.isFinite(Date.parse(candidate.receivedAt))) return null;
-  return { snapshot, receivedAt: candidate.receivedAt } satisfies StoredPeakSnapshot;
 }
 
 export async function loadOwnerPasswordHash(fallback: string) {

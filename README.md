@@ -298,9 +298,10 @@ The contact form opens the visitor's email app with a prefilled message to `stev
 
 ## Private Peak OS Dashboard
 
-`/peak` is an owner-authenticated, dynamically rendered executive dashboard. It receives a
-privacy-minimized snapshot through signed outbound synchronization from the local Peak OS worker;
-it never opens the live SQLite database or exposes a Windows inbound port. The feature is disabled
-by default and is not included in navigation or the sitemap. See
+`/peak-os` is an owner-authenticated, dynamically rendered executive cockpit. It receives a
+strict Executive State 2.0 projection through signed outbound synchronization from the local Peak
+OS worker; it never opens the live SQLite database or exposes a Windows inbound port. The former
+`/peak` entry redirects to this cockpit. The feature is disabled by default and is not included in
+navigation or the sitemap. See
 [`docs/peak-os-dashboard.md`](docs/peak-os-dashboard.md) for setup, security, testing, first login,
 rotation, incident response, and rollback.

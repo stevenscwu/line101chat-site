@@ -78,12 +78,12 @@ describe("Peak Telegram-first login UX", () => {
       "utf8",
     );
     const cockpit = readFileSync(join(process.cwd(), "src/app/peak-os/page.tsx"), "utf8");
-    const legacyDashboard = readFileSync(join(process.cwd(), "src/app/peak/page.tsx"), "utf8");
+    const legacyRedirect = readFileSync(join(process.cwd(), "src/app/peak/page.tsx"), "utf8");
 
     expect(accessClient).toContain('fetch("/api/peak/v1/telegram-login"');
     expect(accessClient).toContain('window.location.replace("/peak-os")');
     expect(accessClient).not.toContain("next=");
     expect(cockpit).toContain('session.payload.scope === "admin"');
-    expect(legacyDashboard).toContain('session.scope === "admin"');
+    expect(legacyRedirect).toContain('redirect("/peak-os")');
   });
 });

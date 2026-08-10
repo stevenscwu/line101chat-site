@@ -9,7 +9,7 @@ export function LocalLoginClient() {
 
   useEffect(() => {
     const requested = new URLSearchParams(window.location.search).get("next");
-    const destination = requested === "/peak/password" || requested === "/peak" ? requested : "/peak-os";
+    const destination = requested === "/peak/password" ? requested : "/peak-os";
     const token = window.location.hash.slice(1);
     window.history.replaceState(null, "", "/peak/local-login");
     if (!token) {

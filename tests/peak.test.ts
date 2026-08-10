@@ -5,14 +5,11 @@ import { join } from "node:path";
 import { NextRequest } from "next/server";
 
 import sitemap from "@/app/sitemap";
-import { POST as ingestSnapshot } from "@/app/api/peak/v1/snapshot/route";
-import { GET as readSummary } from "@/app/api/peak/v1/summary/route";
 import { POST as localLogin } from "@/app/api/peak/v1/local-login/route";
 import { POST as telegramLogin } from "@/app/api/peak/v1/telegram-login/route";
 import { POST as updatePassword } from "@/app/api/peak/v1/password/route";
 import { POST as passwordLogin } from "@/app/api/peak/v1/login/route";
 import { POST as passwordLogout } from "@/app/api/peak/v1/logout/route";
-import { GET as executiveHealth } from "@/app/api/peak/v1/health/route";
 import { GET as readExecutive, POST as ingestExecutive } from "@/app/api/peak/v1/executive-state/route";
 import { POST as bootstrapPassword } from "@/app/api/peak/v1/password/bootstrap/route";
 import {
@@ -33,8 +30,12 @@ import {
   verifyTelegramLoginToken,
 } from "@/lib/peak/telegram-login";
 import { parseExecutiveState } from "@/lib/peak/executive-validation";
-import { allowAttempt, resetPeakStoreForTests, resolveOwnerPasswordState } from "@/lib/peak/store";
-import { parsePeakSnapshot } from "@/lib/peak/validation";
+import {
+  allowAttempt,
+  resetPeakStoreForTests,
+  resolveOwnerPasswordState,
+  saveExecutiveState,
+} from "@/lib/peak/store";
 
 const original = { ...process.env };
 
@@ -71,72 +72,43 @@ function executiveState() {
   const evidence = { source: "Peak OS", summary: "No current evidence", status: "missing", observed_at: null, record_id: null };
   const domain = { status: "unknown", score: null, summary: "No current evidence.", evidence: [evidence], last_successful_activity_at: null, warnings: [], next_action: "Collect current evidence." };
   return {
-    schema_version: "1.0",
+    schema_version: "2.0",
     state_hash: "a".repeat(64),
     generated_at: "2026-08-06T01:00:00Z",
     timezone: "Asia/Taipei",
     overall: { score: null, status: "unknown", summary: "Current state is incomplete." },
-    health: { ...domain, risk_flags: [], recommendation: "Complete a check-in before changing workload." },
     research: { ...domain, current_focus: "Dissertation", progress: [], blockers: [], last_successful_run: null },
     japanese: { ...domain, recent_activity: [] },
     business: { ...domain, opportunities: [] },
     system: { ...domain, agents: [{ name: "Research PM", state: "scheduled_not_run", last_scheduled_run: "2026-08-06T00:00:00Z", last_actual_run: null, last_success: null, duration_seconds: null, latest_result: "Awaiting run.", failure_reason: null, next_scheduled_run: "2026-08-06T06:00:00Z" }], audits: [{ audit_id: "research-20260806", status: "scheduled", scheduled_for: "2026-08-06T06:00:00Z", completed_at: null }], failures: [] },
-    today: { primary_focus: "Dissertation evidence", rationale: "Highest strategic priority.", estimated_effort_minutes: null, recommended_actions: ["Complete one verified research action."], schedule: [{ label: "Research audit", scheduled_at: "06:00", state: "scheduled_not_run" }], biggest_risk: "Missing current evidence", biggest_opportunity: "Complete one verified research action" },
+    chief: {
+      cycle_id: "chief-20260806",
+      decision_hash: "b".repeat(64),
+      state: "completed_with_findings",
+      summary: "Dissertation work remains first.",
+      primary_focus: "Dissertation evidence",
+      rationale: "Highest strategic priority.",
+      operating_constraint: "Dissertation work is primary; only critical platform work may preempt it.",
+      last_cycle_at: "2026-08-06T01:00:00Z",
+      owner_action: "Review one bounded research decision.",
+      work_orders: [{
+        order_id: "order-1",
+        pm_name: "Research PM",
+        action: "Prepare one screening decision.",
+        reason_code: "dissertation_primary",
+        status: "issued_unclaimed",
+        materiality: "routine",
+        issued_at: "2026-08-06T01:00:00Z",
+        updated_at: "2026-08-06T01:00:00Z",
+        failure_reason: null,
+      }],
+      deferred_count: 1,
+      next_check_at: "2026-08-06T06:00:00Z",
+    },
+    today: { primary_focus: "Dissertation evidence", rationale: "Highest strategic priority.", estimated_effort_minutes: null, recommended_actions: ["Complete one verified research action."], schedule: [{ label: "Research audit", scheduled_at: "06:00", state: "scheduled_not_run" }], biggest_opportunity: "Complete one verified research action" },
     changes_since_previous: [{ domain: "research", kind: "changed", summary: "Focus recorded.", previous: null, current: "Dissertation", observed_at: "2026-08-06T01:00:00Z" }],
-    risks: ["Evidence inputs are incomplete."],
     opportunities: [],
-    confidence: { overall: 0.55, missing_inputs: ["health check-in"], stale_inputs: [] },
-  };
-}
-
-function snapshot() {
-  const metric = {
-    value: null,
-    unit: null,
-    scaleMaximum: null,
-    state: "unknown",
-    source: null,
-    observedAt: null,
-    reason: "No current evidence",
-  };
-  return {
-    schemaVersion: 1,
-    generatedAt: "2026-08-04T08:00:00Z",
-    timezone: "Asia/Taipei",
-    freshness: { state: "unavailable", latestEvidenceAt: null, reason: "No evidence" },
-    guidingQuestion: "What action matters?",
-    wellbeing: { sleep: metric, energy: metric, workload: metric, exercise: metric },
-    sustainability: {
-      state: "unknown",
-      reasons: [],
-      evidenceFreshness: "unavailable",
-      recommendation: "Complete a check-in.",
-      uncertainty: "Missing remains unknown.",
-    },
-    highestLeverageAction: null,
-    priorities: [],
-    deferredTaskCount: 0,
-    projects: [],
-    latestReflection: null,
-    week: [],
-    backup: {
-      state: "not_configured",
-      configured: false,
-      lastAttemptAt: null,
-      lastEncryptedAt: null,
-      lastCloudVerifiedAt: null,
-      lastRestoreTestAt: null,
-      restoreDueAt: null,
-      errorCode: null,
-    },
-    system: {
-      peakWorker: "running",
-      database: "available",
-      schemaVersion: 12,
-      telegram: "configured",
-      lastScheduledProcessAt: null,
-      lastErrorCode: null,
-    },
+    confidence: { overall: 0.55, missing_inputs: ["research decision"], stale_inputs: [] },
   };
 }
 
@@ -341,6 +313,9 @@ describe("Peak owner authentication", () => {
 
   it("keeps cockpit sessions read-only while allowing dashboard reads", async () => {
     configureAuth();
+    const state = parseExecutiveState(executiveState());
+    expect(state).not.toBeNull();
+    await saveExecutiveState(state!);
     const session = createSession("owner@example.com", Date.now(), "cockpit");
     const headers = {
       origin: "https://line101chat.com",
@@ -353,10 +328,10 @@ describe("Peak owner authentication", () => {
       body: JSON.stringify({ password: "new safe browser password", confirmation: "new safe browser password" }),
     }));
     expect(denied.status).toBe(401);
-    const summary = await readSummary(new NextRequest("https://line101chat.com/api/peak/v1/summary", {
+    const summary = await readExecutive(new NextRequest("https://line101chat.com/api/peak/v1/executive-state", {
       headers: { cookie: `${PEAK_SESSION_COOKIE}=${session}` },
     }));
-    expect(summary.status).not.toBe(401);
+    expect(summary.status).toBe(200);
   });
 
   it("clears the current address lockout after trusted recovery and successful login", async () => {
@@ -440,15 +415,25 @@ describe("Peak owner authentication", () => {
   });
 });
 
-describe("Peak Executive State 1.0", () => {
+describe("Peak Executive State 2.0", () => {
   it("validates explicit unknowns, agent lifecycle states, hashes, and typed changes", () => {
     const parsed = parseExecutiveState(executiveState());
-    expect(parsed?.health.score).toBeNull();
+    expect(parsed?.research.score).toBeNull();
     expect(parsed?.system.agents[0].state).toBe("scheduled_not_run");
     expect(parsed?.system.audits[0].audit_id).toBe("research-20260806");
+    expect(parsed?.chief?.operating_constraint).toContain("Dissertation work is primary");
     expect(parsed?.confidence.overall).toBe(0.55);
     expect(parsed?.changes_since_previous[0].kind).toBe("changed");
     expect(parseExecutiveState({ ...executiveState(), state_hash: "not-a-hash" })).toBeNull();
+  });
+
+  it("rejects the previous schema and any extra legacy fields", () => {
+    expect(parseExecutiveState({ ...executiveState(), schema_version: "1.0" })).toBeNull();
+    expect(parseExecutiveState({ ...executiveState(), legacy_domain: {} })).toBeNull();
+    expect(parseExecutiveState({
+      ...executiveState(),
+      today: { ...executiveState().today, legacy_warning: "obsolete" },
+    })).toBeNull();
   });
 
   it("accepts signed Executive State and serves the same last-known-good state to an owner", async () => {
@@ -465,11 +450,10 @@ describe("Peak Executive State 1.0", () => {
     const response = await readExecutive(new NextRequest("https://line101chat.com/api/peak/v1/executive-state", { headers }));
     expect(response.status).toBe(200);
     expect((await response.json()).state.state_hash).toBe("a".repeat(64));
-    expect((await executiveHealth(new NextRequest("https://line101chat.com/api/peak/v1/health", { headers }))).status).toBe(200);
   });
 });
 
-describe("Peak dashboard payload", () => {
+describe("Peak dashboard boundary", () => {
   it("recognizes Vercel private Blob credentials without Upstash", () => {
     delete process.env.BLOB_READ_WRITE_TOKEN;
     delete process.env.VERCEL_OIDC_TOKEN;
@@ -479,69 +463,13 @@ describe("Peak dashboard payload", () => {
     expect(hasPeakPrivateBlobConfig()).toBe(true);
   });
 
-  it("preserves unknown wellbeing as null rather than zero", () => {
-    const parsed = parsePeakSnapshot(snapshot());
-    expect(parsed?.wellbeing.energy.value).toBeNull();
-    expect(parsed?.wellbeing.energy.state).toBe("unknown");
-    expect(parsed?.backup.state).toBe("not_configured");
-  });
-
-  it("rejects malformed or unsupported payloads", () => {
-    expect(parsePeakSnapshot({ ...snapshot(), schemaVersion: 99 })).toBeNull();
-    expect(parsePeakSnapshot({ ...snapshot(), wellbeing: { energy: { value: "five" } } })).toBeNull();
-  });
-
   it("keeps private routes out of the public sitemap", () => {
     expect(sitemap().some((entry) => entry.url.includes("/peak"))).toBe(false);
   });
-});
 
-describe("Peak dashboard route boundary", () => {
   it("rejects unauthenticated browser reads", async () => {
     configureAuth();
-    const response = await readSummary(new NextRequest("https://line101chat.com/api/peak/v1/summary"));
+    const response = await readExecutive(new NextRequest("https://line101chat.com/api/peak/v1/executive-state"));
     expect(response.status).toBe(401);
-  });
-
-  it("accepts a signed snapshot and returns it only to an owner session", async () => {
-    configureAuth();
-    process.env.PEAK_DASHBOARD_SYNC_SECRET = "y".repeat(64);
-    const body = JSON.stringify(snapshot());
-    const timestamp = String(Math.floor(Date.now() / 1_000));
-    const nonce = randomBytes(16).toString("hex");
-    const signature = createHmac("sha256", process.env.PEAK_DASHBOARD_SYNC_SECRET)
-      .update(`${timestamp}.${nonce}.${body}`)
-      .digest("hex");
-    const accepted = await ingestSnapshot(new NextRequest("https://line101chat.com/api/peak/v1/snapshot", {
-      method: "POST",
-      body,
-      headers: {
-        "content-type": "application/json",
-        "x-peak-timestamp": timestamp,
-        "x-peak-nonce": nonce,
-        "x-peak-signature": signature,
-      },
-    }));
-    expect(accepted.status).toBe(200);
-    const replayed = await ingestSnapshot(new NextRequest("https://line101chat.com/api/peak/v1/snapshot", {
-      method: "POST",
-      body,
-      headers: {
-        "content-type": "application/json",
-        "x-peak-timestamp": timestamp,
-        "x-peak-nonce": nonce,
-        "x-peak-signature": signature,
-      },
-    }));
-    expect(replayed.status).toBe(401);
-    const token = createSession("owner@example.com");
-    const response = await readSummary(new NextRequest("https://line101chat.com/api/peak/v1/summary", {
-      headers: { cookie: `${PEAK_SESSION_COOKIE}=${token}` },
-    }));
-    expect(response.status).toBe(200);
-    const payload = await response.json();
-    expect(payload.snapshot.wellbeing.energy.value).toBeNull();
-    expect(response.headers.get("cache-control")).toContain("no-store");
-    expect(response.headers.get("x-robots-tag")).toContain("noindex");
   });
 });

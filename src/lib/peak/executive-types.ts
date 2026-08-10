@@ -2,7 +2,6 @@ export type ExecutiveStatus =
   | "stable"
   | "attention"
   | "critical"
-  | "recovery"
   | "deferred"
   | "unknown";
 
@@ -46,13 +45,39 @@ export type DomainBase = {
   next_action: string;
 };
 
+export type ChiefWorkOrder = {
+  order_id: string;
+  pm_name: string;
+  action: string;
+  reason_code: string;
+  status: "issued_unclaimed" | "claimed" | "running" | "completed" | "failed" | "cancelled";
+  materiality: "routine" | "material" | "critical";
+  issued_at: string;
+  updated_at: string;
+  failure_reason: string | null;
+};
+
+export type ChiefState = {
+  cycle_id: string;
+  decision_hash: string;
+  state: AgentRunState;
+  summary: string;
+  primary_focus: string;
+  rationale: string;
+  operating_constraint: string;
+  last_cycle_at: string;
+  owner_action: string;
+  work_orders: ChiefWorkOrder[];
+  deferred_count: number;
+  next_check_at: string | null;
+};
+
 export type ExecutiveState = {
-  schema_version: "1.0";
+  schema_version: "2.0";
   state_hash: string;
   generated_at: string;
   timezone: string;
   overall: { score: number | null; status: ExecutiveStatus; summary: string };
-  health: DomainBase & { risk_flags: string[]; recommendation: string };
   research: DomainBase & {
     current_focus: string;
     progress: string[];
@@ -71,13 +96,13 @@ export type ExecutiveState = {
     }>;
     failures: string[];
   };
+  chief: ChiefState | null;
   today: {
     primary_focus: string;
     rationale: string;
     estimated_effort_minutes: number | null;
     recommended_actions: string[];
     schedule: Array<{ label: string; scheduled_at: string; state: AgentRunState }>;
-    biggest_risk: string;
     biggest_opportunity: string;
   };
   changes_since_previous: Array<{
@@ -88,7 +113,6 @@ export type ExecutiveState = {
     current: string | null;
     observed_at: string;
   }>;
-  risks: string[];
   opportunities: string[];
   confidence: {
     overall: number | null;
