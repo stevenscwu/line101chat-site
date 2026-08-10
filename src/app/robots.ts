@@ -6,7 +6,13 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/translation-service/admin", "/api/translation-payments"],
+        disallow: [
+          "/translation-service/admin",
+          "/api/translation-payments",
+          "/peak",
+          "/peak-os",
+          "/api/peak",
+        ],
       },
     ],
     sitemap: "https://line101chat.com/sitemap.xml",

@@ -1,0 +1,475 @@
+import { afterEach, describe, expect, it } from "vitest";
+import { createHmac, randomBytes } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { NextRequest } from "next/server";
+
+import sitemap from "@/app/sitemap";
+import { POST as localLogin } from "@/app/api/peak/v1/local-login/route";
+import { POST as telegramLogin } from "@/app/api/peak/v1/telegram-login/route";
+import { POST as updatePassword } from "@/app/api/peak/v1/password/route";
+import { POST as passwordLogin } from "@/app/api/peak/v1/login/route";
+import { POST as passwordLogout } from "@/app/api/peak/v1/logout/route";
+import { GET as readExecutive, POST as ingestExecutive } from "@/app/api/peak/v1/executive-state/route";
+import { POST as bootstrapPassword } from "@/app/api/peak/v1/password/bootstrap/route";
+import {
+  PEAK_SESSION_COOKIE,
+  createPasswordHash,
+  createSession,
+  inspectSession,
+  loginAttemptKey,
+  verifyPassword,
+  verifyAdminSession,
+  verifySubmittedPassword,
+  verifySession,
+} from "@/lib/peak/auth";
+import { getSingleOwnerEmail, hasPeakPrivateBlobConfig } from "@/lib/peak/config";
+import { createLocalLoginToken } from "@/lib/peak/local-login";
+import {
+  createTelegramLoginToken,
+  verifyTelegramLoginToken,
+} from "@/lib/peak/telegram-login";
+import { parseExecutiveState } from "@/lib/peak/executive-validation";
+import {
+  allowAttempt,
+  resetPeakStoreForTests,
+  resolveOwnerPasswordState,
+  saveExecutiveState,
+} from "@/lib/peak/store";
+
+const original = { ...process.env };
+
+afterEach(() => {
+  process.env = { ...original };
+  resetPeakStoreForTests();
+});
+
+function configureAuth() {
+  process.env.PEAK_DASHBOARD_ENABLED = "true";
+  process.env.PEAK_DASHBOARD_OWNER_EMAILS = "owner@example.com";
+  process.env.PEAK_DASHBOARD_SESSION_SECRET = "s".repeat(64);
+  process.env.PEAK_DASHBOARD_PASSWORD_HASH = createPasswordHash("correct horse battery staple");
+  process.env.PEAK_DASHBOARD_LOGIN_SECRET = "t".repeat(64);
+}
+
+function signSessionPayload(payload: Record<string, unknown>) {
+  const encoded = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const signature = createHmac("sha256", process.env.PEAK_DASHBOARD_SESSION_SECRET as string)
+    .update(encoded)
+    .digest("base64url");
+  return `${encoded}.${signature}`;
+}
+
+function signTelegramPayload(payload: Record<string, unknown>) {
+  const encoded = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const signature = createHmac("sha256", process.env.PEAK_DASHBOARD_LOGIN_SECRET as string)
+    .update(encoded)
+    .digest("hex");
+  return `${encoded}.${signature}`;
+}
+
+function executiveState() {
+  const evidence = { source: "Peak OS", summary: "No current evidence", status: "missing", observed_at: null, record_id: null };
+  const domain = { status: "unknown", score: null, summary: "No current evidence.", evidence: [evidence], last_successful_activity_at: null, warnings: [], next_action: "Collect current evidence." };
+  return {
+    schema_version: "2.0",
+    state_hash: "a".repeat(64),
+    generated_at: "2026-08-06T01:00:00Z",
+    timezone: "Asia/Taipei",
+    overall: { score: null, status: "unknown", summary: "Current state is incomplete." },
+    research: { ...domain, current_focus: "Dissertation", progress: [], blockers: [], last_successful_run: null },
+    japanese: { ...domain, recent_activity: [] },
+    business: { ...domain, opportunities: [] },
+    system: { ...domain, agents: [{ name: "Research PM", state: "scheduled_not_run", last_scheduled_run: "2026-08-06T00:00:00Z", last_actual_run: null, last_success: null, duration_seconds: null, latest_result: "Awaiting run.", failure_reason: null, next_scheduled_run: "2026-08-06T06:00:00Z" }], audits: [{ audit_id: "research-20260806", status: "scheduled", scheduled_for: "2026-08-06T06:00:00Z", completed_at: null }], failures: [] },
+    chief: {
+      cycle_id: "chief-20260806",
+      decision_hash: "b".repeat(64),
+      state: "completed_with_findings",
+      summary: "Dissertation work remains first.",
+      primary_focus: "Dissertation evidence",
+      rationale: "Highest strategic priority.",
+      operating_constraint: "Dissertation work is primary; only critical platform work may preempt it.",
+      last_cycle_at: "2026-08-06T01:00:00Z",
+      owner_action: "Review one bounded research decision.",
+      work_orders: [{
+        order_id: "order-1",
+        pm_name: "Research PM",
+        action: "Prepare one screening decision.",
+        reason_code: "dissertation_primary",
+        status: "issued_unclaimed",
+        materiality: "routine",
+        issued_at: "2026-08-06T01:00:00Z",
+        updated_at: "2026-08-06T01:00:00Z",
+        failure_reason: null,
+      }],
+      deferred_count: 1,
+      next_check_at: "2026-08-06T06:00:00Z",
+    },
+    today: { primary_focus: "Dissertation evidence", rationale: "Highest strategic priority.", estimated_effort_minutes: null, recommended_actions: ["Complete one verified research action."], schedule: [{ label: "Research audit", scheduled_at: "06:00", state: "scheduled_not_run" }], biggest_opportunity: "Complete one verified research action" },
+    changes_since_previous: [{ domain: "research", kind: "changed", summary: "Focus recorded.", previous: null, current: "Dissertation", observed_at: "2026-08-06T01:00:00Z" }],
+    opportunities: [],
+    confidence: { overall: 0.55, missing_inputs: ["research decision"], stale_inputs: [] },
+  };
+}
+
+describe("Peak owner authentication", () => {
+  it("keeps password recovery scripts compatible with Windows PowerShell", () => {
+    const scripts = [
+      "Set-PeakDashboardPassword.ps1",
+      "Open-PeakDashboard.ps1",
+      "Initialize-PeakDashboardPassword.ps1",
+      "New-PeakDashboardPasswordHash.ps1",
+    ];
+    const unsupported = [
+      "RandomNumberGenerator]::GetBytes",
+      "RandomNumberGenerator]::Fill",
+      "Convert]::ToHexString",
+      "WebRequestSession]::new",
+    ];
+    for (const script of scripts) {
+      const source = readFileSync(join(process.cwd(), "scripts", script), "utf8");
+      for (const marker of unsupported) expect(source).not.toContain(marker);
+    }
+  });
+
+  it("prefills the sole owner email without choosing among multiple owners", () => {
+    process.env.PEAK_DASHBOARD_OWNER_EMAILS = " Owner@Example.com ";
+    expect(getSingleOwnerEmail()).toBe("owner@example.com");
+    process.env.PEAK_DASHBOARD_OWNER_EMAILS = "owner@example.com,backup@example.com";
+    expect(getSingleOwnerEmail()).toBe("");
+  });
+
+  it("verifies the server-side password hash without exposing the password", () => {
+    const encoded = createPasswordHash("correct horse battery staple");
+    expect(verifyPassword("correct horse battery staple", encoded)).toBe(true);
+    expect(verifyPassword("wrong password", encoded)).toBe(false);
+    expect(verifySubmittedPassword("  correct horse battery staple\r\n", encoded)).toBe(true);
+    expect(encoded).not.toContain("correct horse");
+  });
+
+  it("accepts only allowlisted, unexpired signed sessions", () => {
+    configureAuth();
+    const now = Date.parse("2026-08-04T08:00:00Z");
+    const token = createSession("owner@example.com", now);
+    expect(verifySession(token, now + 60_000)?.email).toBe("owner@example.com");
+    expect(verifyAdminSession(token, now + 60_000)?.scope).toBe("admin");
+    const cockpit = createSession("owner@example.com", now, "cockpit");
+    expect(verifySession(cockpit, now + 60_000)?.scope).toBe("cockpit");
+    expect(verifyAdminSession(cockpit, now + 60_000)).toBeNull();
+    expect(verifySession(token, now + 9 * 60 * 60 * 1_000)).toBeNull();
+    expect(inspectSession(token, now + 9 * 60 * 60 * 1_000).status).toBe("expired");
+    process.env.PEAK_DASHBOARD_OWNER_EMAILS = "someone-else@example.com";
+    expect(verifySession(token, now + 60_000)).toBeNull();
+  });
+
+  it("strictly validates signed session fields while retaining legacy admin sessions", () => {
+    configureAuth();
+    const now = Date.parse("2026-08-06T05:00:00Z");
+    const issuedAt = Math.floor(now / 1_000);
+    const base = {
+      v: 2,
+      aud: "peak_dashboard",
+      purpose: "owner_session",
+      scope: "cockpit",
+      email: "owner@example.com",
+      iat: issuedAt,
+      exp: issuedAt + 60,
+      jti: "a".repeat(32),
+    };
+    expect(verifySession(`${signSessionPayload(base)}.extra`, now)).toBeNull();
+    expect(verifySession(signSessionPayload({ ...base, iat: String(issuedAt) }), now)).toBeNull();
+    expect(verifySession(signSessionPayload({ ...base, exp: issuedAt }), now)).toBeNull();
+    expect(verifySession(signSessionPayload({ ...base, email: "Owner@Example.com" }), now)).toBeNull();
+    expect(verifySession(signSessionPayload({ ...base, jti: "short" }), now)).toBeNull();
+    expect(verifySession(signSessionPayload({ ...base, unexpected: true }), now)).toBeNull();
+
+    const legacy = signSessionPayload({
+      v: 1,
+      email: "owner@example.com",
+      iat: issuedAt,
+      exp: issuedAt + 60,
+      jti: "b".repeat(32),
+    });
+    expect(verifyAdminSession(legacy, now)?.scope).toBe("admin");
+  });
+
+  it("restores the durable verifier after a simulated fresh process and fails closed on corruption", () => {
+    const bootstrap = createPasswordHash("bootstrap password");
+    const durable = createPasswordHash("durable password");
+    expect(resolveOwnerPasswordState(null, bootstrap)).toEqual({ hash: bootstrap, source: "bootstrap" });
+    const serialized = JSON.parse(JSON.stringify({ version: 1, hash: durable, updatedAt: "2026-08-06T01:00:00Z" }));
+    expect(resolveOwnerPasswordState(serialized, bootstrap)).toEqual({ hash: durable, source: "durable" });
+    expect(() => resolveOwnerPasswordState({ version: 1, hash: "corrupt", updatedAt: "2026-08-06T01:00:00Z" }, bootstrap)).toThrow("owner_password_corrupt");
+  });
+
+  it("distinguishes invalid credentials, missing configuration, and private-store failure", async () => {
+    configureAuth();
+    const request = () => new NextRequest("https://line101chat.com/api/peak/v1/login", {
+      method: "POST", headers: { origin: "https://line101chat.com", "content-type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ email: "owner@example.com", password: "incorrect password" }),
+    });
+    expect((await passwordLogin(request())).headers.get("location")).toContain("error=invalid");
+    delete process.env.PEAK_DASHBOARD_SESSION_SECRET;
+    expect((await passwordLogin(request())).headers.get("location")).toContain("error=configuration");
+    configureAuth();
+    (process.env as Record<string, string | undefined>).NODE_ENV = "production";
+    delete process.env.BLOB_READ_WRITE_TOKEN; delete process.env.VERCEL_OIDC_TOKEN; delete process.env.BLOB_STORE_ID;
+    expect((await passwordLogin(request())).headers.get("location")).toContain("error=server");
+  });
+
+  it("accepts safe browser same-origin metadata when Origin is omitted", async () => {
+    configureAuth();
+    const response = await passwordLogin(new NextRequest("https://line101chat.com/api/peak/v1/login", {
+      method: "POST",
+      headers: {
+        host: "line101chat.com",
+        "sec-fetch-site": "same-origin",
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        email: "owner@example.com",
+        password: "correct horse battery staple",
+      }),
+    }));
+    expect(response.headers.get("location")).toContain("/peak-os");
+  });
+
+  it("rejects cross-site form posts without calling them invalid credentials", async () => {
+    configureAuth();
+    const response = await passwordLogin(new NextRequest("https://line101chat.com/api/peak/v1/login", {
+      method: "POST",
+      headers: {
+        host: "line101chat.com",
+        "sec-fetch-site": "cross-site",
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        email: "owner@example.com",
+        password: "correct horse battery staple",
+      }),
+    }));
+    expect(response.headers.get("location")).toContain("error=request");
+  });
+
+  it("accepts a short-lived local token once and rejects replay", async () => {
+    configureAuth();
+    process.env.PEAK_DASHBOARD_SYNC_SECRET = "y".repeat(64);
+    const token = createLocalLoginToken("owner@example.com", process.env.PEAK_DASHBOARD_SYNC_SECRET);
+    const request = () => new NextRequest("https://line101chat.com/api/peak/v1/local-login", {
+      method: "POST",
+      headers: { origin: "https://line101chat.com", "content-type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
+    const accepted = await localLogin(request());
+    expect(accepted.status).toBe(200);
+    expect(accepted.cookies.get(PEAK_SESSION_COOKIE)?.value).toBeTruthy();
+    expect((await localLogin(request())).status).toBe(401);
+  });
+
+  it("accepts a one-time Telegram token as a cockpit session without password configuration", async () => {
+    configureAuth();
+    delete process.env.PEAK_DASHBOARD_PASSWORD_HASH;
+    const token = createTelegramLoginToken(process.env.PEAK_DASHBOARD_LOGIN_SECRET as string);
+    const request = () => new NextRequest("https://line101chat.com/api/peak/v1/telegram-login", {
+      method: "POST",
+      headers: { origin: "https://line101chat.com", "content-type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
+
+    const accepted = await telegramLogin(request());
+    expect(accepted.status).toBe(200);
+    const session = accepted.cookies.get(PEAK_SESSION_COOKIE)?.value;
+    expect(verifySession(session)?.scope).toBe("cockpit");
+    expect(verifyAdminSession(session)).toBeNull();
+    expect((await telegramLogin(request())).status).toBe(401);
+  });
+
+  it("rejects malformed Telegram claims and ambiguous owner configuration", async () => {
+    configureAuth();
+    const now = Date.parse("2026-08-06T05:00:00Z");
+    const issuedAt = Math.floor(now / 1_000);
+    const claims = {
+      v: 2,
+      sub: "telegram_owner",
+      purpose: "cockpit_read",
+      aud: "peak_dashboard",
+      iat: issuedAt,
+      exp: issuedAt + 120,
+      nonce: "c".repeat(32),
+    };
+    expect(verifyTelegramLoginToken(signTelegramPayload(claims), process.env.PEAK_DASHBOARD_LOGIN_SECRET as string, now)?.nonce).toBe("c".repeat(32));
+    expect(verifyTelegramLoginToken(signTelegramPayload({ ...claims, purpose: "admin" }), process.env.PEAK_DASHBOARD_LOGIN_SECRET as string, now)).toBeNull();
+    expect(verifyTelegramLoginToken(signTelegramPayload({ ...claims, extra: true }), process.env.PEAK_DASHBOARD_LOGIN_SECRET as string, now)).toBeNull();
+
+    process.env.PEAK_DASHBOARD_OWNER_EMAILS = "owner@example.com,other@example.com";
+    const token = createTelegramLoginToken(process.env.PEAK_DASHBOARD_LOGIN_SECRET as string);
+    const response = await telegramLogin(new NextRequest("https://line101chat.com/api/peak/v1/telegram-login", {
+      method: "POST",
+      headers: { origin: "https://line101chat.com", "content-type": "application/json" },
+      body: JSON.stringify({ token }),
+    }));
+    expect(response.status).toBe(503);
+  });
+
+  it("keeps cockpit sessions read-only while allowing dashboard reads", async () => {
+    configureAuth();
+    const state = parseExecutiveState(executiveState());
+    expect(state).not.toBeNull();
+    await saveExecutiveState(state!);
+    const session = createSession("owner@example.com", Date.now(), "cockpit");
+    const headers = {
+      origin: "https://line101chat.com",
+      cookie: `${PEAK_SESSION_COOKIE}=${session}`,
+      "content-type": "application/json",
+    };
+    const denied = await updatePassword(new NextRequest("https://line101chat.com/api/peak/v1/password", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ password: "new safe browser password", confirmation: "new safe browser password" }),
+    }));
+    expect(denied.status).toBe(401);
+    const summary = await readExecutive(new NextRequest("https://line101chat.com/api/peak/v1/executive-state", {
+      headers: { cookie: `${PEAK_SESSION_COOKIE}=${session}` },
+    }));
+    expect(summary.status).toBe(200);
+  });
+
+  it("clears the current address lockout after trusted recovery and successful login", async () => {
+    configureAuth();
+    process.env.PEAK_DASHBOARD_SYNC_SECRET = "y".repeat(64);
+    const address = "203.0.113.44";
+    const requestForKey = new NextRequest("https://line101chat.com/peak/login", {
+      headers: { "x-forwarded-for": address },
+    });
+    const key = loginAttemptKey(requestForKey, process.env.PEAK_DASHBOARD_SESSION_SECRET as string);
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      expect(await allowAttempt(key, 5, 900)).toBe(true);
+    }
+    expect(await allowAttempt(key, 5, 900)).toBe(false);
+
+    const token = createLocalLoginToken("owner@example.com", process.env.PEAK_DASHBOARD_SYNC_SECRET);
+    const recovered = await localLogin(new NextRequest("https://line101chat.com/api/peak/v1/local-login", {
+      method: "POST",
+      headers: {
+        origin: "https://line101chat.com",
+        "content-type": "application/json",
+        "x-forwarded-for": address,
+      },
+      body: JSON.stringify({ token }),
+    }));
+    expect(recovered.status).toBe(200);
+
+    const login = await passwordLogin(new NextRequest("https://line101chat.com/api/peak/v1/login", {
+      method: "POST",
+      headers: {
+        origin: "https://line101chat.com",
+        "content-type": "application/x-www-form-urlencoded",
+        "x-forwarded-for": address,
+      },
+      body: new URLSearchParams({
+        email: "owner@example.com",
+        password: "correct horse battery staple",
+      }),
+    }));
+    expect(login.headers.get("location")).toContain("/peak-os");
+    expect(await allowAttempt(key, 5, 900)).toBe(true);
+  });
+
+  it("lets an authenticated owner set the durable dashboard password", async () => {
+    configureAuth();
+    const session = createSession("owner@example.com");
+    const changed = await updatePassword(new NextRequest("https://line101chat.com/api/peak/v1/password", {
+      method: "POST",
+      headers: { origin: "https://line101chat.com", cookie: `${PEAK_SESSION_COOKIE}=${session}`, "content-type": "application/json" },
+      body: JSON.stringify({ password: "my browser password", confirmation: "my browser password" }),
+    }));
+    expect(changed.status).toBe(200);
+    const loggedIn = await passwordLogin(new NextRequest("https://line101chat.com/api/peak/v1/login", {
+      method: "POST",
+      headers: { origin: "https://line101chat.com", "content-type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ email: "owner@example.com", password: "my browser password" }),
+    }));
+    expect(loggedIn.status).toBe(303);
+    expect(loggedIn.cookies.get(PEAK_SESSION_COOKIE)?.value).toBeTruthy();
+
+    const logout = await passwordLogout(new NextRequest("https://line101chat.com/api/peak/v1/logout", {
+      method: "POST", headers: { origin: "https://line101chat.com", cookie: `${PEAK_SESSION_COOKIE}=${loggedIn.cookies.get(PEAK_SESSION_COOKIE)?.value}` },
+    }));
+    expect(logout.status).toBe(303);
+    expect(logout.cookies.get(PEAK_SESSION_COOKIE)?.value).toBe("");
+  });
+
+  it("bootstraps a durable hash once through a signed server-only request", async () => {
+    configureAuth(); process.env.PEAK_DASHBOARD_SYNC_SECRET = "y".repeat(64);
+    const durablePassword = "durable browser password"; const body = JSON.stringify({ password_hash: createPasswordHash(durablePassword) });
+    const request = () => {
+      const timestamp = String(Math.floor(Date.now() / 1_000)); const nonce = randomBytes(16).toString("hex");
+      const signature = createHmac("sha256", process.env.PEAK_DASHBOARD_SYNC_SECRET as string).update(`${timestamp}.${nonce}.${body}`).digest("hex");
+      return new NextRequest("https://line101chat.com/api/peak/v1/password/bootstrap", { method: "POST", body, headers: { "content-type": "application/json", "x-peak-timestamp": timestamp, "x-peak-nonce": nonce, "x-peak-signature": signature } });
+    };
+    expect((await bootstrapPassword(request())).status).toBe(200);
+    expect((await bootstrapPassword(request())).status).toBe(409);
+    const login = (password: string) => passwordLogin(new NextRequest("https://line101chat.com/api/peak/v1/login", { method: "POST", headers: { origin: "https://line101chat.com", "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ email: "owner@example.com", password }) }));
+    expect((await login(durablePassword)).headers.get("location")).toContain("/peak-os");
+    expect((await login("correct horse battery staple")).headers.get("location")).toContain("error=invalid");
+  });
+});
+
+describe("Peak Executive State 2.0", () => {
+  it("validates explicit unknowns, agent lifecycle states, hashes, and typed changes", () => {
+    const parsed = parseExecutiveState(executiveState());
+    expect(parsed?.research.score).toBeNull();
+    expect(parsed?.system.agents[0].state).toBe("scheduled_not_run");
+    expect(parsed?.system.audits[0].audit_id).toBe("research-20260806");
+    expect(parsed?.chief?.operating_constraint).toContain("Dissertation work is primary");
+    expect(parsed?.confidence.overall).toBe(0.55);
+    expect(parsed?.changes_since_previous[0].kind).toBe("changed");
+    expect(parseExecutiveState({ ...executiveState(), state_hash: "not-a-hash" })).toBeNull();
+  });
+
+  it("rejects the previous schema and any extra legacy fields", () => {
+    expect(parseExecutiveState({ ...executiveState(), schema_version: "1.0" })).toBeNull();
+    expect(parseExecutiveState({ ...executiveState(), legacy_domain: {} })).toBeNull();
+    expect(parseExecutiveState({
+      ...executiveState(),
+      today: { ...executiveState().today, legacy_warning: "obsolete" },
+    })).toBeNull();
+  });
+
+  it("accepts signed Executive State and serves the same last-known-good state to an owner", async () => {
+    configureAuth(); process.env.PEAK_DASHBOARD_SYNC_SECRET = "y".repeat(64);
+    const body = JSON.stringify(executiveState()); const timestamp = String(Math.floor(Date.now() / 1_000)); const nonce = randomBytes(16).toString("hex");
+    const signature = createHmac("sha256", process.env.PEAK_DASHBOARD_SYNC_SECRET).update(`${timestamp}.${nonce}.${body}`).digest("hex");
+    const accepted = await ingestExecutive(new NextRequest("https://line101chat.com/api/peak/v1/executive-state", { method: "POST", body, headers: { "content-type": "application/json", "x-peak-timestamp": timestamp, "x-peak-nonce": nonce, "x-peak-signature": signature } }));
+    expect(accepted.status).toBe(200);
+    const invalidBody = JSON.stringify({ ...executiveState(), state_hash: "invalid" }); const invalidTimestamp = String(Math.floor(Date.now() / 1_000)); const invalidNonce = randomBytes(16).toString("hex");
+    const invalidSignature = createHmac("sha256", process.env.PEAK_DASHBOARD_SYNC_SECRET).update(`${invalidTimestamp}.${invalidNonce}.${invalidBody}`).digest("hex");
+    expect((await ingestExecutive(new NextRequest("https://line101chat.com/api/peak/v1/executive-state", { method: "POST", body: invalidBody, headers: { "content-type": "application/json", "x-peak-timestamp": invalidTimestamp, "x-peak-nonce": invalidNonce, "x-peak-signature": invalidSignature } }))).status).toBe(400);
+    const token = createSession("owner@example.com");
+    const headers = { cookie: `${PEAK_SESSION_COOKIE}=${token}` };
+    const response = await readExecutive(new NextRequest("https://line101chat.com/api/peak/v1/executive-state", { headers }));
+    expect(response.status).toBe(200);
+    expect((await response.json()).state.state_hash).toBe("a".repeat(64));
+  });
+});
+
+describe("Peak dashboard boundary", () => {
+  it("recognizes Vercel private Blob credentials without Upstash", () => {
+    delete process.env.BLOB_READ_WRITE_TOKEN;
+    delete process.env.VERCEL_OIDC_TOKEN;
+    delete process.env.BLOB_STORE_ID;
+    expect(hasPeakPrivateBlobConfig()).toBe(false);
+    process.env.BLOB_READ_WRITE_TOKEN = "vercel-managed-test-token";
+    expect(hasPeakPrivateBlobConfig()).toBe(true);
+  });
+
+  it("keeps private routes out of the public sitemap", () => {
+    expect(sitemap().some((entry) => entry.url.includes("/peak"))).toBe(false);
+  });
+
+  it("rejects unauthenticated browser reads", async () => {
+    configureAuth();
+    const response = await readExecutive(new NextRequest("https://line101chat.com/api/peak/v1/executive-state"));
+    expect(response.status).toBe(401);
+  });
+});

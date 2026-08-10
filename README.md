@@ -1,8 +1,24 @@
-# LINE101Chat Business Website
+# LINE101Chat — Knowledge-Grounded AI Avatar Platform
 
-LINE101Chat is a Taiwan-focused enterprise AI knowledge assistant website for SMEs, schools, education organizations, manufacturers, HR/admin/IT teams, and LINE-based customer service teams.
+LINE101Chat is evolving from a Taiwan-focused RAG LINE chatbot service into a
+Knowledge-Grounded AI Avatar Platform for LINE-first businesses, schools,
+consultants, stores, creators, and service teams.
 
-The site now presents confidential company knowledge search through LINE as the core service and translation as an optional module:
+The current investor-facing MVP is **LINE101 Avatar / LINE101 AI分身**:
+
+- Celine as the named, knowledge-grounded reference avatar
+- One knowledge-grounded avatar brain for website chat and LINE
+- A natural persona with quiet profile-level transparency and truthful direct answers
+- Friend-first conversation powered by Gemma, with product promotion only when contextually useful
+- Pseudonymous memory with optional LINE-to-website identity linking
+- Lightweight markdown RAG with a future vector-database extension point
+- Mock, Ollama (`gemma4:26b`), and OpenAI-compatible model adapters
+- Browser-native optional voice input and read-aloud
+- Lead qualification and human handoff
+- A future path to short-form video and real-time avatars
+
+The existing RAG and LINE knowledge-assistant capabilities remain the
+intelligence foundation:
 
 - Enterprise AI Knowledge Assistant for official-document Q&A with source-grounded answers
 - LINE-based company knowledge search with cloud, local, or private deployment options
@@ -38,6 +54,8 @@ https://github.com/stevenscwu/line101chat-site
 - `/document-readiness-checklist` lead magnet page that can be printed or saved as PDF
 - SEO blog and detailed NTUT iFIRST RAG case-study pages
 - `/101recipe` local recipe PDF retrieval page, proxied to the 101recipe bot backend
+- `/ai-avatar` investor-facing LINE101 Avatar product page with website chat,
+  LINE integration, optional browser voice controls, and future video roadmap
 
 ## Presenter Assets
 
@@ -84,6 +102,40 @@ Open:
 ```text
 http://localhost:3000/
 ```
+
+For the LINE AI avatar webhook, copy the example configuration without committing
+the resulting local file:
+
+```powershell
+Copy-Item .env.example .env.local
+```
+
+Use `LLM_PROVIDER=mock` for a deterministic demo without a running model. For
+local Ollama, use:
+
+```env
+LLM_PROVIDER=ollama
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=gemma4:26b
+OLLAMA_TIMEOUT_MS=45000
+OLLAMA_API_KEY=
+```
+
+The live Celine deployment can use the local `gemma4:26b` model through a
+bearer-protected HTTPS proxy. Do not expose port `11434` directly. If the
+temporary tunnel hostname changes, update `OLLAMA_BASE_URL` in Vercel and
+redeploy; the application falls back to deterministic friend-first replies
+while the model host is unavailable.
+
+Test the avatar page and API:
+
+```text
+http://localhost:3000/ai-avatar
+POST http://localhost:3000/api/avatar/chat
+```
+
+Full setup instructions are in
+[`docs/line101-ai-avatar.md`](docs/line101-ai-avatar.md).
 
 For the 101recipe page, run the bot backend first:
 
@@ -147,6 +199,7 @@ https://vercel.com/line101chats-projects?repo=https://github.com/stevenscwu/line
 ## Pages
 
 - `/`
+- `/ai-avatar`
 - `/services`
 - `/rag-chatbot`
 - `/translation-chatbot`
@@ -193,6 +246,62 @@ TRANSLATION_PAYMENTS_ADMIN_TOKEN
 
 Payment records are stored through the local file-backed store in `.data/translation-payments.json` during local development. For production billing, replace the store with a durable database or configure durable storage before accepting real payments.
 
+## LINE101 Avatar
+
+Public routes:
+
+```text
+GET  /ai-avatar
+POST /api/avatar/chat
+POST /api/avatar/link
+POST /api/line/avatar-webhook
+```
+
+The earlier `POST /api/celine/chat` route remains as a compatibility alias.
+Website and LINE requests both call the same `generateAvatarReply` engine.
+
+Required variables depend on the selected channel and model:
+
+```text
+LLM_PROVIDER
+OLLAMA_BASE_URL
+OLLAMA_MODEL
+OLLAMA_API_KEY
+LINE_AVATAR_CHANNEL_SECRET
+LINE_AVATAR_CHANNEL_ACCESS_TOKEN
+NEXT_PUBLIC_LINE_AVATAR_QR_URL
+NEXT_PUBLIC_LINE_AVATAR_ADD_FRIEND_URL
+OPENAI_COMPATIBLE_BASE_URL
+OPENAI_COMPATIBLE_API_KEY
+OPENAI_COMPATIBLE_MODEL
+CELINE_MEMORY_SECRET
+UPSTASH_REDIS_REST_URL
+UPSTASH_REDIS_REST_TOKEN
+```
+
+Use `LLM_PROVIDER=mock` for a deployment-safe deterministic demo. Vercel cannot
+call a private Windows `localhost:11434`; production Ollama needs a protected
+HTTPS endpoint, private server, secure tunnel, or hosted compatible provider.
+
+For durable production memory, connect an Upstash Redis database and provide
+the REST URL/token variables. LINE user IDs are HMAC-pseudonymized before they
+are used as memory keys. A user can send `連結網站` to Celine on LINE, then
+enter the one-time code on `/ai-avatar` to let the website continue the same
+conversation. Codes expire after 10 minutes and are consumed once.
+
+Never commit `.env`, LINE credentials, API keys, Vercel tokens, private keys, or
+local credentials.
+
 ## Future Integrations
 
-The contact form opens the visitor's email app with a prefilled message to `steven@line101chat.com` and provides a copy fallback. The site has no backend, database, CRM, server-side email sender, booking system, or LINE official account API integration. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.
+The contact form opens the visitor's email app with a prefilled message to `steven@line101chat.com` and provides a copy fallback. Beyond the optional Upstash-backed Celine memory, LINE AI avatar webhook, and existing local proxy/payment routes, the site has no general CRM, server-side email sender, or booking system. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.
+
+## Private Peak OS Dashboard
+
+`/peak-os` is an owner-authenticated, dynamically rendered executive cockpit. It receives a
+strict Executive State 2.0 projection through signed outbound synchronization from the local Peak
+OS worker; it never opens the live SQLite database or exposes a Windows inbound port. The former
+`/peak` entry redirects to this cockpit. The feature is disabled by default and is not included in
+navigation or the sitemap. See
+[`docs/peak-os-dashboard.md`](docs/peak-os-dashboard.md) for setup, security, testing, first login,
+rotation, incident response, and rollback.

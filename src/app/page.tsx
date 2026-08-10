@@ -180,29 +180,77 @@ export function HomeContent({ locale = "zh" }: { locale?: Locale } = {}) {
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
             <p className="text-sm font-black uppercase tracking-[0.08em] text-emerald-300">
-              {isEnglish ? "9-Second LINE AI Demo" : "9 秒 LINE AI 知識助理短片"}
+              {isEnglish ? "New short story" : "新短片｜叮咚地獄"}
             </p>
             <h2 className="mt-4 text-3xl font-black leading-tight tracking-[0] sm:text-4xl">
-              {isEnglish ? "Stop answering the same LINE questions by hand" : "別再手動回答一樣的 LINE 問題"}
+              {isEnglish ? "The lunch break every Taiwan SME owner knows" : "叮咚地獄：老闆的一分鐘"}
             </h2>
             <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
               {isEnglish
-                ? "Turn your FAQs, PDFs, SOPs, and website content into a LINE AI assistant that answers repeated customer questions automatically."
-                : "把 FAQ、PDF、SOP 和網站資料交給 LINE101Chat。客戶一問，AI 就能根據你的知識內容直接回答。"}
+                ? "A 30-second mini-story: repeated LINE questions interrupt lunch, LINE101Chat handles the routine answers, and the owner still handles the questions that need judgment."
+                : "一支 30 秒小故事：午餐才剛打開，LINE 問題就開始叮咚。重複問題交給 LINE101Chat，真正需要判斷的，還是交給人。"}
             </p>
             <Link
               href={localizePath("/book-demo", locale)}
               className="mt-7 inline-flex min-h-11 items-center justify-center rounded-lg bg-[#06c755] px-5 py-3 text-sm font-black text-slate-950 shadow-sm hover:bg-[#40d878]"
             >
-              {isEnglish ? "Discuss your AI assistant" : "預約討論 AI 助理"}
+              {isEnglish ? "Plan a small FAQ PoC" : "用一份 FAQ 做小型 PoC"}
             </Link>
           </div>
 
           <ViewportPromoVideo
-            src="/videos/line101chat-hook-promo-9s.mp4"
-            poster="/videos/line101chat-hook-promo-9s-poster.png"
-            ariaLabel={isEnglish ? "LINE101Chat promotional video" : "LINE101Chat LINE AI 知識助理宣傳短片"}
+            src="/videos/line101chat-dingdong-hell-short-04.mp4"
+            poster="/videos/line101chat-dingdong-hell-short-04-poster.png"
+            ariaLabel={isEnglish ? "LINE101Chat dingdong hell short story video" : "LINE101Chat 叮咚地獄短片"}
           />
+        </div>
+      </section>
+
+      <section className="bg-emerald-50 px-5 py-16 sm:px-8 lg:px-10">
+        <div className="mx-auto grid max-w-7xl gap-8 rounded-lg border border-emerald-200 bg-white p-6 shadow-sm sm:p-8 lg:grid-cols-[1fr_360px] lg:items-center">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.08em] text-emerald-700">
+              {isEnglish ? "LINE101 Avatar" : "LINE101 AI分身"}
+            </p>
+            <h2 className="mt-3 text-3xl font-black leading-tight tracking-[0] text-slate-950 sm:text-4xl">
+              {isEnglish
+                ? "Meet Celine, LINE101Chat’s knowledge-grounded virtual representative"
+                : "先認識 Celine，再想像你的知識型 AI 分身"}
+            </h2>
+            <p className="mt-4 max-w-3xl text-base leading-8 text-slate-600">
+              {isEnglish
+                ? "Celine is the working proof: a recognizable virtual representative with verified knowledge, cross-channel memory, and human handoff across website chat and LINE."
+                : "Celine 是 LINE101Chat 的實際示範：有辨識度的個性、可信知識、跨通道記憶與真人交接。她能自然接住網站與 LINE 裡的問題，也知道什麼時候該交給團隊。"}
+            </p>
+            <Link
+              href="/ai-avatar"
+              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-[#06c755] px-5 py-3 text-sm font-black text-white shadow-sm hover:bg-[#05b54e]"
+            >
+              {isEnglish ? "Talk to Celine" : "和 Celine 聊聊"}
+            </Link>
+          </div>
+          <div className="rounded-lg bg-slate-950 p-5 text-white">
+            <div className="flex items-center gap-3">
+              <div className="relative h-12 w-12 overflow-hidden rounded-full border-2 border-[#06c755] bg-white">
+                <Image
+                  src="/presenter/4.png"
+                  alt=""
+                  fill
+                  sizes="48px"
+                  className="object-cover object-top"
+                />
+              </div>
+              <div>
+                <p className="font-black">Celine · LINE101 Avatar</p>
+                <p className="text-xs font-bold text-emerald-300">Personality · RAG · Memory · Handoff</p>
+              </div>
+            </div>
+            <p className="mt-5 rounded-lg bg-white/10 p-4 text-sm leading-7 text-slate-200">
+              {isEnglish
+                ? "Warm but direct. Grounded in approved knowledge. Clearly presented as LINE101’s virtual representative, with real decisions handed to the team."
+                : "溫暖，但不繞路；回答有根據，也坦白自己是 AI。真正需要承諾的事，交給真正的人。"}
+            </p>
+          </div>
         </div>
       </section>
 

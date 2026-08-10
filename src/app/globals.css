@@ -9,7 +9,7 @@
 }
 
 @theme inline {
-  --font-sans: "Noto Sans TC", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", "Manrope", ui-sans-serif, system-ui, sans-serif;
 }
 
 * {
@@ -23,7 +23,7 @@ body {
 }
 
 body {
-  font-family: var(--font-noto-sans-tc), var(--font-manrope), "Segoe UI", sans-serif;
+  font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", "Manrope", "Segoe UI", sans-serif;
   letter-spacing: 0;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
