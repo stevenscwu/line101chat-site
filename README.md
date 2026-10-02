@@ -1,198 +1,62 @@
-# LINE101Chat Business Website
+# Daily Practice companion website
 
-LINE101Chat is a Taiwan-focused enterprise AI knowledge assistant website for SMEs, schools, education organizations, manufacturers, HR/admin/IT teams, and LINE-based customer service teams.
+Japanese and English study desk for the Japanese Daily Android pilot. This replaces the unrelated LINE101Chat business site on the existing **line101chat-site** Vercel project and **line101chat.com** domain. The existing Next.js/npm architecture and lockfile are retained.
 
-The site now presents confidential company knowledge search through LINE as the core service and translation as an optional module:
+`C:\JPApp\companion-web` is the canonical source alongside the mobile app. `C:\line101chat-site` is the deployment checkout. Copy only companion source/configuration into that checkout; never restore legacy routes, content, business assets or API handlers. Previous working files are preserved outside either deployable source tree in an ignored recovery archive.
 
-- Enterprise AI Knowledge Assistant for official-document Q&A with source-grounded answers
-- LINE-based company knowledge search with cloud, local, or private deployment options
-- Confidentiality positioning around data boundaries, source citation, and controlled deployment
-- SME Cloud RAG and Local / Private RAG deployment options
-- LINE Translation Optional Module for Indonesian ⇄ Traditional Chinese communication
-- NTUT / National Taipei University of Technology engineering team positioning for the Taiwan market
+## Run and verify
 
-Production domain:
+Use Node 22 or later:
 
-```text
-https://line101chat.com/
-```
-
-Repository:
-
-```text
-https://github.com/stevenscwu/line101chat-site
-```
-
-## Stack
-
-- Next.js 16 with App Router
-- TypeScript
-- Tailwind CSS v4
-- Static pages suitable for Vercel
-- Local presenter images from `public/presenter`
-- LINE service QR code from `public/service.jpg`
-- `next/image` for local images
-- Traditional Chinese pages at the root routes with matching English pages under `/en`
-- Header language switcher that maps each page to its Chinese or English counterpart
-- Structured `/book-demo` flow with seven PoC qualification questions and email/LINE fallback
-- `/document-readiness-checklist` lead magnet page that can be printed or saved as PDF
-- SEO blog and detailed NTUT iFIRST RAG case-study pages
-- `/101recipe` local recipe PDF retrieval page, proxied to the 101recipe bot backend
-
-## Presenter Assets
-
-Presenter files inspected in `public/presenter`:
-
-```text
-1.png
-2.png
-3.png
-4.png
-5.png
-6.png
-7.png
-8.png
-host-main.png
-```
-
-Chosen images are configured in:
-
-```text
-src/data/presenter.ts
-```
-
-Current assignment:
-
-- Home hero: `3.png`
-- Home CTA: `1.png`
-- RAG page: `4.png`
-- Translation page: `2.png`
-- About page: `1.png`
-- Contact page: `1.png`
-
-Only the business-suit presenter images are used on the website to keep the identity consistent and professional.
-
-## Local Development
-
-```bash
-npm install
+```sh
+npm ci
 npm run dev
-```
-
-Open:
-
-```text
-http://localhost:3000/
-```
-
-For the 101recipe page, run the bot backend first:
-
-```bash
-cd C:\line101chat\chatbots\101recipe
-npm run dev
-```
-
-Then run the site on another port:
-
-```bash
-cd C:\line101chat-site
-npm run dev -- -p 3001
-```
-
-Open:
-
-```text
-http://localhost:3001/101recipe
-```
-
-The site proxies `/api/101recipe/*` to the bot backend. Configure the backend URL with:
-
-```env
-RECIPE_BOT_API_BASE_URL=http://127.0.0.1:3000
-```
-
-## Production Checks
-
-```bash
-npm run build
-```
-
-Optional lint check:
-
-```bash
 npm run lint
-```
-
-## Deployment
-
-Vercel deploys from GitHub. Typical workflow:
-
-```bash
-npm install
-npm run dev
+npm test
 npm run build
-git add .
-git commit -m "Build LINE101Chat business website"
-git push
 ```
 
-Vercel auto deploys from GitHub after push.
+No credentials are required for file preparation, a browser-local library, JSON downloads or browser practice. Unsupported/missing TTS voices show an explicit message. Speech uses the browser provider and may require a network connection.
 
-Vercel project:
+## Learning workflow
 
-```text
-https://vercel.com/line101chats-projects?repo=https://github.com/stevenscwu/line101chat-site
-```
+- Upload UTF-8 TXT, Markdown or lesson JSON, or paste a passage. PDF/Word/OCR extraction is not implemented; paste extracted text.
+- Choose Japanese/English, review sentence boundaries, edit or split/join lines, add a title/level/topic and optional meanings.
+- Save to a browser-local library (20 lessons / 1 MB), filter/search, listen and mark practice progress.
+- Download compact schema-v3 JSON for Android 0.4.0+, or explicitly create a private transfer link.
+- Libraries and progress are separate per browser/device. Transfers are snapshots, not automatic synchronization or an account backup.
 
-## Pages
+Validation: 256 KB lesson JSON, 60,000 source characters, 1–200 lines, 1–300 Unicode characters per line. Optional translations are user-supplied. v1/v2 Japanese lesson files remain accepted. Cross-client fixtures live in the app repository's `examples/website-*-v3.json` and are imported by Dart tests.
 
-- `/`
-- `/services`
-- `/rag-chatbot`
-- `/translation-chatbot`
-- `/case-studies`
-- `/case-studies/ntut-ifirst-rag`
-- `/101recipe`
-- `/pricing`
-- `/book-demo`
-- `/document-readiness-checklist`
-- `/blog`
-- `/blog/rag-chatbot-document-preparation`
-- `/contact`
-- `/line`
-- `/translation-service`
-- `/about`
-- `/privacy`
-- `/feiz` noindexed private shortcut for Zoho Mail access
-- English equivalents under `/en`, for example `/en/services`, `/en/pricing`, `/en/book-demo`, and `/en/contact`
+## Private transfer configuration
 
-## Translation Bot Payments
+Configure server-only variables from `.env.example` in the existing Vercel project:
 
-The `/translation-service` page supports the Chinese ⇄ Indonesian LINE Translation Bot subscription flow:
+| Variable | Purpose |
+| --- | --- |
+| `BLOB_READ_WRITE_TOKEN` | Existing **private** Vercel Blob store |
+| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Durable atomic abuse limits; existing `KV_REST_API_URL`, `KV_REST_API_TOKEN` aliases work |
+| `TRANSFER_SECRET` | Random HMAC secret, at least 32 characters; rotation invalidates existing links |
+| `CRON_SECRET` | Separate random secret for the daily expired-transfer cleanup endpoint |
 
-- `POST /api/translation-payments/create`
-- `GET /api/translation-payments/confirm`
-- `POST /api/translation-payments/reconcile`
-- Admin table at `/translation-service/admin`
+OIDC Blob credentials can instead use `BLOB_STORE_ID` and `VERCEL_OIDC_TOKEN`. Storage credentials stay on the server. Missing configuration disables transfers; there is no filesystem or memory persistence fallback in production. Existing unrelated cloud records are never read or deleted by this feature.
 
-Required LINE Pay environment variables:
+`POST /api/transfers` accepts `{lesson}` and returns `{token,url,expiresAt}`. `GET /api/transfers/[token]` returns `{lesson,expiresAt}`. `DELETE` revokes the link and deletes that object. Tokens are 256-bit random capabilities; their HMACs form private storage keys. The page URL carries the token in its fragment. Anyone with a token can read that lesson; this is not identity-based account authorization.
 
-```text
-LINE_PAY_CHANNEL_ID
-LINE_PAY_CHANNEL_SECRET
-LINE_PAY_API_BASE_URL
-LINE_PAY_CONFIRM_URL
-LINE_PAY_CANCEL_URL
-```
+Access expires in 48 hours. `vercel.json` schedules authenticated `/api/transfers/cleanup` daily at 04:00 UTC; provision `CRON_SECRET` before deployment. Cleanup deletes only expired objects in `language-companion/transfers/v3/`. Expiry blocks access even if cleanup fails; it is not immediate physical erasure. Write limits: 10/hour/client and 500/day globally. Read limits: 60/minute/client and 10,000/day globally. Monitor usage before widening this public pilot.
 
-Recommended production admin variable:
+After deployment, smoke-test a synthetic Japanese/English lesson through create → fetch → Android preview → revoke → unavailable. Verify old business pages/API routes/assets return 404, inspect mobile layout, and verify the cleanup invocation. Unit mocks do not prove live storage configuration or Android audio hardware.
 
-```text
-TRANSLATION_PAYMENTS_ADMIN_TOKEN
-```
+## Deployment and provenance
 
-Payment records are stored through the local file-backed store in `.data/translation-payments.json` during local development. For production billing, replace the store with a durable database or configure durable storage before accepting real payments.
+Verified live on 2026-10-02 at https://line101chat.com. Final deployment:
+`dpl_B4E1A2zCvdeKxYnB4ya2mojTaFdo` (Next.js 16.3.8). Validation passed: 35 unit/API
+tests, lint/build, 12 browser workflow checks, 4 focused production-build browser
+checks, and 13 live API/retired-route checks. Both actual synthetic language
+transfers were created/read/revoked successfully. Full npm audit reported zero
+advisories after compatible dependency patches. Physical Android audio/link-import
+acceptance remains a device test; cross-client JSON fixtures passed Dart tests.
 
-## Future Integrations
+Deploy using the existing `.vercel/project.json` linkage; do not create a new hosting project. Retain the existing Git repository and Vercel domain. Credentials and `.vercel` are ignored. Source files are in Git; learner text, transfer links, browser profiles and APK binaries are not.
 
-The contact form opens the visitor's email app with a prefilled message to `steven@line101chat.com` and provides a copy fallback. The site has no backend, database, CRM, server-side email sender, booking system, or LINE official account API integration. Email hosting is expected to be managed in Zoho Mail Admin and DNS records in Vercel DNS.
+The thesis/NSTC research phase is documented in the app's `docs/research-roadmap.md`. This website does not invoke research agents, SAST scanners, model APIs or pronunciation scoring. Do not use learning material as a research dataset without a separate decision.
