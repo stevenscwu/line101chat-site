@@ -1,10 +1,24 @@
-export const metadata = { title: "Your privacy" };
+import policy from "@/content/privacy.json";
+
+export const metadata = {
+  title: policy.title,
+  description: "How 說日語 and its companion website handle lessons, recordings, optional transcription, transfers and deletion.",
+};
+
 export default function Privacy() {
-  return <main id="main" className="reading-page"><span className="eyebrow">YOUR MATERIAL, YOUR CHOICE</span><h1>Your privacy.</h1><p className="lead">You decide when a lesson leaves your browser.</p>
-    <section><h2>Preparing and saving lessons</h2><p>Files you select and text you paste are processed in your browser. Your saved library, practice progress and preferences are stored on this device. They are not an account or a cloud backup. Download lesson files before clearing browser data.</p></section>
-    <section><h2>Private transfers</h2><p>Only choosing “Create transfer link” uploads the selected lesson, including its original text and any notes, to private server storage. The link grants access to anyone who has it. It expires after 48 hours; you can revoke it sooner using “Revoke link”. Expired links stop working immediately. Expired records are removed by scheduled cleanup when configured. Expiration alone is not a promise of immediate physical deletion.</p><p>Transfer requests use a pseudonymous IP identifier for short-lived abuse prevention. Hosting infrastructure may retain ordinary request logs. Transfers are not used for AI training or security research by this application.</p></section>
-    <section><h2>Listening and Android recordings</h2><p>Browser listening uses your device or browser speech service, which may use the network. The Android app supports installed offline voices. Recordings remain on Android and are never included in website lesson transfers.</p></section>
-    <section><h2>No generated meanings</h2><p>The site does not send learning material to a language model. Sentence splitting follows punctuation and line boundaries. Translations, notes and level labels are supplied by you.</p></section>
-    <section><h2>Questions</h2><p>Contact <a href="mailto:steven@line101chat.com">steven@line101chat.com</a> for questions about this pilot.</p></section>
-  </main>;
+  return (
+    <main id="main" className="reading-page">
+      <span className="eyebrow">說日語 · JAPANESE & ENGLISH</span>
+      <h1>{policy.title}</h1>
+      <p>Last updated: {policy.updated}</p>
+      <p className="lead">{policy.introduction}</p>
+      {policy.sections.map((section) => (
+        <section key={section.heading}>
+          <h2>{section.heading}</h2>
+          {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+        </section>
+      ))}
+      <p>Privacy contact: <a href={`mailto:${policy.contact}`}>{policy.contact}</a></p>
+    </main>
+  );
 }
