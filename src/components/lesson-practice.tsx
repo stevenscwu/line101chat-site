@@ -10,6 +10,7 @@ type LessonPracticeProps = {
   lesson: Lesson;
   onClose: () => void;
   onProgress?: (completed: number) => void;
+  persistProgress?: boolean;
 };
 
 function readProgress(): Record<string, string[]> {
@@ -24,7 +25,7 @@ function readProgress(): Record<string, string[]> {
   return value as Record<string, string[]>;
 }
 
-export function LessonPractice({ lesson, onClose, onProgress }: LessonPracticeProps) {
+export function LessonPractice({ lesson, onClose, onProgress, persistProgress = true }: LessonPracticeProps) {
   const titleId = useId();
   const [index, setIndex] = useState(0);
   const [showMeaning, setShowMeaning] = useState(false);
@@ -60,7 +61,7 @@ export function LessonPractice({ lesson, onClose, onProgress }: LessonPracticePr
       setSpeaking(false);
       setSpeechError(null);
       try {
-        const saved = readProgress();
+        const saved = persistProgress ? readProgress() : {};
         const allowed = new Set(lesson.sentences.map((sentence) => sentence.id));
         const ids = [...new Set((Object.hasOwn(saved, lesson.id) ? saved[lesson.id] : []).filter((id) => allowed.has(id)))];
         setCompleted(ids);
@@ -76,7 +77,7 @@ export function LessonPractice({ lesson, onClose, onProgress }: LessonPracticePr
       utteranceRef.current = null;
       if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     };
-  }, [lesson]);
+  }, [lesson, persistProgress]);
 
   useEffect(() => {
     const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -183,6 +184,12 @@ export function LessonPractice({ lesson, onClose, onProgress }: LessonPracticePr
 
   function markPractised() {
     const ids = [...new Set([...completed, row.id])].filter((id) => currentIds.has(id));
+    if (!persistProgress) {
+      setCompleted(ids);
+      setStorageError(null);
+      onProgressRef.current?.(ids.length);
+      return;
+    }
     try {
       const saved = readProgress();
       const previousIds = Object.hasOwn(saved, lesson.id) ? saved[lesson.id] : [];
@@ -241,7 +248,7 @@ export function LessonPractice({ lesson, onClose, onProgress }: LessonPracticePr
         </div>
         <div className="practice-mark">
           <button className="button primary" disabled={completed.includes(row.id)} onClick={markPractised}><Check size={18} aria-hidden="true" />{completed.includes(row.id) ? "Practised" : "Mark as practised"}</button>
-          <p className="muted">{storageError ? "Progress is tracked for this session." : "Progress is saved in this browser."}</p>
+          <p className="muted">{!persistProgress || storageError ? "Progress is tracked for this session." : "Progress is saved in this browser."}</p>
         </div>
         {storageError && <p className="form-message error" role="alert">{storageError}</p>}
         {finished && <div className="practice-complete form-message success" role="status"><CheckCircle2 size={22} aria-hidden="true" /><div><strong>A little progress, made.</strong><p>You&apos;ve practised every line. Repeat a favourite or come back tomorrow.</p></div></div>}

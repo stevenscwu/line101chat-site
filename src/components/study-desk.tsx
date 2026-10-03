@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { ArrowDownToLine, ArrowRight, Check, ChevronRight, FileText, FolderOpen, Globe2, Layers3, Link2, Pencil, Plus, Search, Smartphone, Trash2, Upload, X } from "lucide-react";
 import { createLesson, LEVELS, MAX_LESSON_BYTES, parseLesson, SAMPLE_LESSONS, validateLesson, type Lesson, type LessonSentence, type TargetLanguage } from "@/lib/materials";
 import { LessonPractice } from "./lesson-practice";
@@ -134,6 +135,7 @@ export function StudyDesk() {
   const totalLines = library.reduce((sum, lesson) => sum + lesson.sentences.length, 0);
 
   return <main id="main" className="desk">
+    <aside className="account-entry-banner" lang="zh-Hant"><div><strong>說日語・個人雲端教材庫</strong><span>使用帳號儲存教材，在不同裝置讀取。下方的舊版離線工具只儲存在這個瀏覽器，不會自動上傳。</span></div><Link href="/account">前往個人教材庫</Link></aside>
     <section className="hero"><div className="hero-copy"><div className="eyebrow"><span className="live-dot" /> YOUR EVERYDAY LANGUAGE COMPANION</div><h1>A little language.<br /><em>A little every day.</em></h1><p>Your notes, your stories, your next conversation.<br className="desktop-break" /> Turn the things you want to learn into lessons you’ll return to.</p><div className="hero-actions"><button className="primary" onClick={() => { importRef.current?.scrollIntoView({ behavior: "smooth" }); document.getElementById("source-title")?.focus({ preventScroll: true }); }}><Plus size={18} /> Add your material</button><button className="text-button" onClick={() => setPractising(SAMPLE_LESSONS[0])}>Try a sample lesson <ArrowRight size={17} /></button></div><div className="language-tags"><span><i className="japan-dot" /> Japanese <span className="native">日本語</span></span><span><Globe2 size={14} /> English</span><span className="quiet">Made for your own pace.</span></div></div>
       <div className="hero-art" aria-label="Preview of a Japanese practice card"><div className="paper-back" /><div className="lesson-preview"><div className="preview-top"><span>今日のひとこと</span><span>01 / 04</span></div><span className="preview-label">A LITTLE CONVERSATION</span><p className="preview-japanese" lang="ja">週末は何を<br />したいですか。</p><p className="preview-translation">What would you like to do this weekend?</p><div className="preview-bottom"><span className="waveform" aria-hidden="true">▂ ▅ ▃ ▇ ▄ ▆ ▂ ▅ ▃ ▆ ▄ ▂</span><span>Listen. Repeat. Make it yours.</span></div></div><div className="floating-note"><Check size={16} /><span>One sentence at a time.</span></div><span className="art-caption">A SMALL STEP IS STILL A STEP.</span></div>
     </section>
