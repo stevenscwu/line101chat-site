@@ -5,19 +5,19 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://line101chat.com"),
-  title: { default: "Daily Practice — Japanese & English", template: "%s | Daily Practice" },
-  description: "Turn your Japanese and English materials into small, organized lessons. Prepare on the web, listen and practise, and take your lessons to Android.",
-  openGraph: { type: "website", siteName: "Daily Practice", title: "A little language, every day.", description: "Your Japanese & English study companion. Bring your material. Make it a lesson." },
-  twitter: { card: "summary", title: "Daily Practice — Japanese & English" },
+  title: { default: "說日語 · 每天一句", template: "%s | 說日語" },
+  description: "將日語教材整理成小課程。在網頁準備教材，聆聽與跟讀，並在 Android 繼續學習。",
+  openGraph: { type: "website", siteName: "說日語", title: "每天一句，慢慢練習。", description: "你的私人日語學習夥伴。從自己的教材開始，一句一句練習。" },
+  twitter: { card: "summary", title: "說日語 · 每天一句" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>
-    <a className="skip-link" href="#main">Skip to content</a>
-    <header className="site-header"><Link href="/" className="brand"><span className="brand-icon"><BookOpen size={22} /></span><span>daily<span className="brand-light">practice</span><small>JAPANESE & ENGLISH</small></span></Link>
-      <nav aria-label="Main navigation"><Link href="/">Study desk</Link><Link href="/guide">How it works</Link><Link className="header-app" href="/guide#android">Android companion <ArrowUpRight size={15} /></Link></nav>
+  return <html lang="zh-Hant"><body>
+    <a className="skip-link" href="#main">跳到主要內容</a>
+    <header className="site-header"><Link href="/" className="brand"><span className="brand-icon"><BookOpen size={22} /></span><span>說日語<small>每天一句，慢慢練習</small></span></Link>
+      <nav aria-label="主要導覽"><Link href="/">教材工作台</Link><Link href="/guide">使用說明</Link><Link href="/account" lang="zh-Hant">個人教材庫</Link><Link className="header-app" href="/guide#android">Android 應用程式 <ArrowUpRight size={15} /></Link></nav>
     </header>
     {children}
-    <footer className="site-footer"><span>Small lessons. A daily habit.</span><div><Link href="/privacy">Your privacy</Link><Link href="/guide">Import guide</Link><span>日本語 · English</span></div></footer>
+    <footer className="site-footer"><span>一句一句，養成每天練習的習慣。</span><div><Link href="/privacy">隱私權說明</Link><Link href="/guide">匯入說明</Link><span>日本語</span></div></footer>
   </body></html>;
 }

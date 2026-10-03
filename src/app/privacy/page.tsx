@@ -7,8 +7,8 @@ export const metadata = {
 
 export default function Privacy() {
   return (
-    <main id="main" className="reading-page">
-      <span className="eyebrow">說日語 · JAPANESE & ENGLISH</span>
+    <main id="main" className="reading-page" lang="en">
+      <span className="eyebrow">說日語 · 日本語</span>
       <h1>{policy.title}</h1>
       <p>Last updated: {policy.updated}</p>
       <p className="lead">{policy.introduction}</p>
