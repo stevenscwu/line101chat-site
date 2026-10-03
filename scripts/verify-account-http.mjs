@@ -42,7 +42,7 @@ try {
   checks++;
   const home = await fetch(root + "/");
   assert.equal(home.status, 200);
-  assert.match(await home.text(), /Daily Practice/);
+  assert.match(await home.text(), /說日語/);
   checks++;
   console.log(`Passed ${checks} local production HTTP checks.`);
 } finally {

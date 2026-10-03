@@ -16,7 +16,7 @@ describe("account public configuration and content security", () => {
     const csp = headers[0].headers.find((entry) => entry.key === "Content-Security-Policy")!.value;
     expect(csp).toContain("connect-src 'self' https://config-tests.supabase.co/auth/v1/;");
     expect(csp).not.toContain("sb_publishable_");
-    expect(headers.find((entry) => entry.source === "/account")?.headers).toContainEqual({ key: "Cache-Control", value: "private, no-store" });
+    expect(headers.find((entry) => entry.source === "/account/:path*")?.headers).toContainEqual({ key: "Cache-Control", value: "private, no-store" });
   });
   it("does not open outbound Auth connections for disabled or privileged-key configuration", async () => {
     vi.stubEnv("ACCOUNT_BACKEND", "supabase"); vi.stubEnv("SUPABASE_URL", "https://config-tests.supabase.co");

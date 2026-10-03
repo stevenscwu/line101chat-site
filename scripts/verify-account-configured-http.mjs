@@ -16,6 +16,16 @@ try {
     server.stdout.on("data", (chunk) => { if (chunk.toString().includes("Ready")) { clearTimeout(timeout); resolve(); } });
   });
   const root = `http://127.0.0.1:${port}`;
+  for (const path of ["signup", "recover", "auth-return"]) {
+    const response = await fetch(`${root}/account/${path}`);
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get("cache-control"), /no-store/);
+    assert.equal(response.headers.get("referrer-policy"), "no-referrer");
+    const body = await response.text();
+    assert.match(body, /noindex/);
+    assert.match(body, /說日語/);
+    assert.doesNotMatch(body, /JAPANESE &amp; ENGLISH/);
+  }
   const page = await fetch(`${root}/account`);
   assert.equal(page.status, 200);
   assert.match(page.headers.get("cache-control"), /no-store/);
@@ -30,5 +40,5 @@ try {
     assert.equal((await response.json()).code, "AUTHENTICATION_REQUIRED");
   }
   assert.equal((await fetch(`${root}/`)).status, 200);
-  console.log("Passed 9 configured local HTTP checks. No authentication or account mutation attempted.");
+  console.log("Passed 27 configured local HTTP checks. No authentication or account mutation attempted.");
 } finally { server.kill("SIGTERM"); }

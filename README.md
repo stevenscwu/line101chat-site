@@ -1,6 +1,6 @@
 # Daily Practice companion website
 
-A Japanese and English study desk built with Next.js. Prepare learning material,
+A Japanese learning study desk built with Next.js. Prepare learning material,
 practice listening and speaking, and keep a browser-local library.
 
 ## Run and verify
@@ -38,13 +38,14 @@ revoked.
 
 ## Private account preview
 
-The `/account` interface supports managed sign-in for existing users, an isolated
+The `/account` interface supports managed sign-in, learner signup, email confirmation,
+and email password recovery, plus an isolated
 private lesson library, explicit uploads and downloads, and storage-usage limits.
 Browser-local lessons are never uploaded automatically. Account sessions and
 fetched account lessons stay in memory and clear on reload or sign-out.
 
-This test branch is intended for Vercel Preview only. Account routes return HTTP
-503 until the deployment has all three non-secret configuration values:
+Account routes return HTTP 503 until the deployment has all three non-secret
+configuration values:
 
 - `ACCOUNT_BACKEND=supabase`
 - `SUPABASE_URL`: the approved HTTPS Supabase project URL
@@ -71,3 +72,28 @@ objects; configure a separate `CRON_SECRET` before enabling scheduled cleanup.
 Keep environment files, credentials, personal lessons, and transfer links out of
 source control. Configure Preview separately from Production, and verify the
 intended environment before enabling backend services.
+
+## Learner signup and recovery
+
+- `/account/signup`: email/password signup and confirmation resend.
+- `/account/recover`: request a password reset email with a generic response.
+- `/account/auth-return`: verifies the managed Auth callback, confirms signup or
+  accepts a new password, then directs the learner to sign in explicitly.
+- New-password forms require 12–256 characters. Provider checks still apply.
+- Callback tokens and sessions stay in isolated memory; the callback strips its
+  URL fragment before contacting Auth. No application tables store passwords.
+- Production callbacks are fixed to `https://line101chat.com/account/auth-return`.
+  Other deployment origins fail closed unless deliberately added to the code
+  and the provider redirect allowlist in a reviewed change. Local HTTP test
+  origins are supported for development.
+
+Before opening registration beyond project-team testing, configure an approved
+SMTP service and verify delivery to an authorized learner address. Supabase’s
+default SMTP restricts delivery to project-team addresses and has a low sending
+limit. A successful unit test or generic form response does not establish email
+delivery. See the [official SMTP guide](https://supabase.com/docs/guides/auth/auth-smtp)
+and [password Auth guide](https://supabase.com/docs/guides/auth/passwords).
+
+No real email or password-reset operation runs in the test suite. These tests
+exercise the real SDK against mocked transport plus DOM interaction and lifecycle
+checks. A learner must privately enter their own password for live acceptance.

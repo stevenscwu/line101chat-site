@@ -57,7 +57,7 @@ function SignInForm({ controller, state }: { controller: AccountController; stat
     try { await controller.signIn(email.trim(), password); } finally { setPassword(""); }
   }
   return <section className="account-card account-signin" aria-labelledby="signin-title">
-    <div><span className="account-status-label">私人帳號</span><h2 id="signin-title">登入你的教材庫</h2><p>使用已建立的帳號。教材不會與其他學員共用。</p></div>
+    <div><span className="account-status-label">私人帳號</span><h2 id="signin-title">登入你的教材庫</h2><p>使用自己的電子郵件與密碼。教材不會與其他學員共用。</p></div>
     {state.error && <p className="account-error" role="alert">{state.error}</p>}
     <form onSubmit={signIn}>
       <label htmlFor="account-email">電子郵件</label><input id="account-email" name="email" type="email" autoComplete="username" inputMode="email" required maxLength={254} value={email} onChange={(event) => setEmail(event.target.value)} disabled={state.signInBusy || state.signOutBusy} />
@@ -65,7 +65,7 @@ function SignInForm({ controller, state }: { controller: AccountController; stat
       <button className="account-primary" type="submit" disabled={state.signInBusy || state.signOutBusy}>{state.signOutBusy ? "正在完成登出…" : state.signInBusy ? "正在登入…" : "登入"}</button>
     </form>
     <p className="account-note">登入狀態只保留在這一頁的記憶體。重新整理或離開後，需要再次登入。這個網站不會儲存你的密碼。</p>
-    <p className="account-note">目前僅供已建立的帳號使用。公開註冊與寄送密碼重設信的功能尚未開放。</p>
+    <div className="account-actions"><Link className="account-secondary" href="/account/signup">建立學員帳號</Link><Link className="account-text-button" href="/account/recover">忘記密碼</Link></div>
   </section>;
 }
 

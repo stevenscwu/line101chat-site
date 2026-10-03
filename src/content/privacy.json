@@ -1,19 +1,27 @@
 {
   "title": "說日語 Privacy Policy",
-  "updated": "2026-10-02",
+  "updated": "2026-10-03",
   "url": "https://line101chat.com/privacy",
   "contact": "steven@line101chat.com",
-  "introduction": "This policy covers 說日語 (Android package com.stevenwu.speakjapanese), a Japanese and English practice app developed by Steven Wu, and its Daily Practice companion website at line101chat.com.",
+  "introduction": "This policy covers 說日語 (Android package com.stevenwu.speakjapanese), a Japanese learning app developed by Steven Wu, and its companion website at line101chat.com. Some older offline tools also support English.",
   "sections": [
     {
       "heading": "1. Lessons and practice on your device",
       "paragraphs": [
-        "The app stores imported lesson text, meanings, notes, language and level labels, practice progress and preferences on your phone to provide learning features. It accesses files you explicitly select for import. Core practice does not require an account. The app does not automatically upload your lesson library or progress.",
-        "Files selected and text pasted into the website are processed in your browser. Saved lessons, progress and preferences use local browser storage. The website and Android app do not automatically synchronize their libraries or progress."
+        "The app stores imported lesson text, meanings, notes, language and level labels, practice progress and preferences on your phone to provide learning features. It accesses files you explicitly select for import. Offline practice does not require an account. Existing offline lessons are not automatically uploaded when you create or sign in to an account.",
+        "The website’s offline study desk processes selected files and pasted text in your browser, and saves its lessons, progress and preferences in local browser storage. This offline library is separate from the private cloud library at /account. To move existing offline lessons to your account, select a file, preview it and confirm the upload. Practice progress and recordings are not synchronized by the cloud lesson library."
       ]
     },
     {
-      "heading": "2. Microphone, recordings and optional transcription",
+      "heading": "2. Learner accounts and private cloud lessons",
+      "paragraphs": [
+        "Supabase Auth handles account registration, email confirmation, sign-in and password recovery. It processes your email address and authentication information, including a password hash and session records. The application does not store plaintext passwords in lesson data or custom application tables, and its administrators cannot view your password. Confirmation and recovery emails are sent through the configured authentication email service.",
+        "When you confirm an upload or save an edit in your signed-in cloud library, the lesson title, original text, practice sentences, translations, notes and labels are sent to Supabase and stored with your account identifier, revision information, timestamps and storage-usage totals. Your signed-in cloud library is the authoritative copy for supported website and Android account clients. Other learners cannot access these lessons through the application. Product-administrator status does not grant access to learner content.",
+        "Cloud lesson requests use authenticated HTTPS connections and owner-based database rules. Website account sessions and retrieved lessons are kept in page memory and clear when you sign out or reload. Email verification and recovery links contain temporary authentication information; the callback page removes it from the address bar and keeps any recovery session only in memory. Do not share these links. Supabase and the hosting provider may process connection details and service logs to operate and secure the service."
+      ]
+    },
+    {
+      "heading": "3. Microphone, recordings and optional transcription",
       "paragraphs": [
         "The app requests microphone permission for speaking practice. When you choose to record, audio and information needed to identify and replay the recording are saved in the app's private storage on your phone. Saved practice recordings are not uploaded by the app and are not included in website lesson transfers.",
         "Optional transcription uses a separate live microphone attempt to display recognized speech. It is off by default in the recording practice screen. If you enable it and start a transcription attempt, your phone's speech recognition service may send that live audio to its provider for processing. The provider and its retention practices depend on your device and speech-service settings; its own privacy policy applies. The app does not send previously saved recordings for transcription. You can leave optional transcription off and still record and replay locally.",
@@ -21,30 +29,31 @@
       ]
     },
     {
-      "heading": "3. Optional lesson transfers and service providers",
+      "heading": "4. Optional lesson transfers and service providers",
       "paragraphs": [
-        "Only choosing Create transfer link uploads the selected lesson, including original text, practice lines, meanings, notes and labels, to our private server storage. This lets you import the lesson on another device. Downloading a lesson JSON file does not create a server transfer. Opening or importing a transfer link makes a network request to our service.",
+        "The separate Create transfer link action uploads the selected lesson, including original text, practice lines, meanings, notes and labels, to private transfer storage. This lets you import a snapshot on another device. Downloading a lesson JSON file does not create a server transfer. Opening or importing a transfer link makes a network request to our service. Account-library uploads follow the account rules above and do not create a shareable transfer link.",
         "A transfer link is an access credential: anyone holding the complete link can read or revoke the lesson. Share it only with intended recipients. Links expire after 48 hours and can be revoked sooner. Expiration immediately blocks access through the service; scheduled daily cleanup removes expired stored transfer objects. Cleanup failures can delay physical deletion. Revoking a link requests deletion of its stored transfer. Revocation and expiration do not delete copies already downloaded to another device.",
         "Vercel provides website hosting and private Blob storage. Upstash Redis provides short-lived request counters for abuse prevention. Our transfer service uses a keyed, pseudonymous IP-derived identifier rather than storing a raw IP address in those counters. Per-client counters expire after approximately one minute for reads or one hour for writes; aggregate daily counters expire after approximately one day. Hosting and speech providers may also process IP addresses, request information and technical logs under their own service policies. We do not promise a fixed deletion time for infrastructure logs or provider backups."
       ]
     },
     {
-      "heading": "4. Purpose, security and sharing",
+      "heading": "5. Purpose, security and sharing",
       "paragraphs": [
-        "We use the information above to provide lesson preparation, practice, transfers and abuse prevention. Server transfers use HTTPS and private storage; access through the app is controlled by the unguessable transfer link. Treat the full link as confidential. No storage or transmission method can guarantee absolute security.",
+        "We use the information above to provide accounts, password recovery, private cloud lessons, lesson preparation, practice, transfers and abuse prevention. Private account content uses authenticated owner-based access rules. Separate transfer links use HTTPS and private storage, with access controlled by the unguessable link. No storage or transmission method can guarantee absolute security.",
         "The current app and companion do not include advertising or marketing analytics, sell learner data, send lessons to a generative AI model, or use your lessons or recordings for AI training or security research. Apart from recipients you give a link to, hosting/storage providers and the optional speech services described above, the application does not intentionally share learner content with other parties."
       ]
     },
     {
-      "heading": "5. Retention, deletion and your controls",
+      "heading": "6. Retention, deletion and your controls",
       "paragraphs": [
         "Local app data remains on your device until you remove it. Delete individual recordings from Saved recordings or the practice screen. To remove all app-private lessons, progress and recordings, use Android Settings > Apps > 說日語 > Storage > Clear storage, or uninstall the app. These actions are irreversible; preserve any material you need first. Exported files and original import files remain wherever you saved them and must be deleted separately.",
-        "On the website, remove saved lessons with the library's delete control. Clear this site's browser data to remove all local lessons, progress and preferences. Download any lessons you want to keep first. Clearing local browser data does not revoke a server transfer: use Revoke link or let it expire as described above.",
-        "You can revoke microphone permission in Android settings and stop using optional transcription. Because core use has no account, there is no account to delete. We cannot recover or remotely delete data held only on your device. For privacy questions or assistance with server-held information, contact us below. If you email us, we receive your email address and message to respond; avoid attaching sensitive lessons, recordings or passwords."
+        "On the website’s offline study desk, remove saved lessons with its library delete control. Clear this site’s browser data to remove local lessons, progress and preferences. Download any lessons you want to keep first. Clearing local browser data, signing out or uninstalling the Android app does not delete cloud account lessons or revoke a server transfer. Use Revoke link or let a transfer expire as described above.",
+        "Cloud account lessons remain stored until deleted through an available service process. This test version does not yet provide self-service account or cloud-lesson deletion controls. For a request concerning your account or server-held data, contact the existing privacy address below; identity verification may be necessary before the request can be handled. No fixed cloud-data retention period is currently promised. Infrastructure logs and provider backups may follow separate retention practices. Download copies of lessons you need to retain. Storage-limit or plan changes do not automatically erase your cloud lessons.",
+        "You can revoke microphone permission in Android settings and stop using optional transcription. We cannot recover or remotely delete data held only on your device. If you email us, we receive your email address and message to respond; avoid attaching sensitive lessons, recordings or passwords."
       ]
     },
     {
-      "heading": "6. Policy updates and contact",
+      "heading": "7. Policy updates and contact",
       "paragraphs": [
         "We will update this page and its date when data handling changes, and provide additional in-app disclosure or consent when required. The app includes an offline copy of the policy for its release; this URL provides the current version. For questions about 說日語 or the companion website, contact Steven Wu at steven@line101chat.com."
       ]
